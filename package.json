@@ -27,8 +27,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "startreact": "react-scripts start",
-    "start": "npm-run-all --parallel watch:server start:web",
+    "start": "npm-run-all --parallel watch:server build",
+    "start:local": "npm-run-all --parallel watch:server start:web",
     "start:web": "react-scripts start",
     "start:server": "node src/server",
     "watch:server": "nodemon --watch src/server src/server",

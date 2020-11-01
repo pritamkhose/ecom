@@ -11,4 +11,4 @@ or Using nodemon
 $ npm install -g nodemon
 $ nodemon
 ```
-Your GraphQL running on [localhost:4000](http://localhost:4000/).
+Your GraphQL running on [localhost:3000](http://localhost:3000/).
