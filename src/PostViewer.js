@@ -16,25 +16,29 @@ export const GET_POSTS = gql`
 export default () => (
     <div>
         <Query query={GET_POSTS}>
-            {({ loading, data }) => !loading && (
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Author</th>
-                            <th>Body</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.posts.map(post => (
-                            <tr key={post.id}>
-                                <td>{post.author}</td>
-                                <td>{post.body}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            )}
+            {({ loading, data }) =>
+                (!loading && data !== undefined && data.posts !== undefined) ?
+                    (
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>Author</th>
+                                    <th>Body</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.posts.map(post => (
+                                    <tr key={post.id}>
+                                        <td>{post.author}</td>
+                                        <td>{post.body}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    )
+                    : <p>Something went wrong!</p>}
         </Query>
-        <hr/>
+        <hr />
+        <p>Environment  = {process.env.NODE_ENV}</p>
     </div>
 );

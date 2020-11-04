@@ -85,7 +85,7 @@ app.use(function (req, res, next) {
 });
 // error handler
 app.use(function (err, req, res, next) {
-  if (req.url == '/') {
+  if (req.url === '/') {
     res.sendFile(path.join(folderpath, "public", "loading.html"));
   } else {
     // render the error page json

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Container } from 'reactstrap';
 
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import PostViewer from './PostViewer';
 import PostEditor from './PostEditor';

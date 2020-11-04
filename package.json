@@ -29,7 +29,8 @@
   "scripts": {
     "start": "npm-run-all --parallel watch:server build",
     "start:local": "npm-run-all --parallel watch:server start:web",
-    "start:web": "react-scripts start",
+    "start:web": "set PORT=3001 && react-scripts start",
+    "start:web-linux": "export PORT=3001 && react-scripts start",
     "start:server": "node src/server",
     "watch:server": "nodemon --watch src/server src/server",
     "build": "react-scripts build",
