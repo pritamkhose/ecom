@@ -72,7 +72,7 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 app.get('/api', (req, res) => {
-  res.json({ title: 'Ecom App', date: (new Date()), status: true });
+  res.json({ title: 'Ecom App', date: (new Date()), status: true, 'Env' : process.env.ENV || process.env.NODE_ENV || 'NA'});
 });
 
 // React App with add middleware
