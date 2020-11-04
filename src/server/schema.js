@@ -75,7 +75,7 @@ const resolvers = {
     return Customer.findById(id);
   },
   addCustomer: ({ name, producer, rating }) => {
-    $: aCustomer = new Customer({
+    var aCustomer = new Customer({
       name: name,
       producer: producer,
       rating: rating,
