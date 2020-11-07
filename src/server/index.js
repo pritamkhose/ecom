@@ -1,7 +1,11 @@
-const dotenv = require('dotenv');
-const result = dotenv.config()
-if (result.error) {
-  throw result.error
+try{
+  const dotenv = require('dotenv');
+  const result = dotenv.config()
+  if (result.error) {
+    throw result.error
+  }
+} catch (error) {
+  console.log(error)
 }
 
 const express = require("express");
