@@ -40,5 +40,6 @@ export default () => (
         </Query>
         <hr />
         <p>Environment  = {process.env.NODE_ENV}</p>
+        <p>API_URL  = {process.env.REACT_APP_API_URL} </p>
     </div>
 );

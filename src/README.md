@@ -5,9 +5,15 @@
 Make sure you have Node JS.
 
 ```sh
-$ npm start
-or
-$ npm run startreact
+npm run start:local
 ```
 
-Your React app running on [localhost:3000](http://localhost:3000/).
+Your React app running on [localhost:3001](http://localhost:3001/).
+
+## Running App Production
+
+```sh
+npm run start
+or
+nodemon
+```

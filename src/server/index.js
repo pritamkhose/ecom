@@ -1,3 +1,9 @@
+const dotenv = require('dotenv');
+const result = dotenv.config()
+if (result.error) {
+  throw result.error
+}
+
 const express = require("express");
 var createError = require("http-errors");
 const cors = require("cors");
