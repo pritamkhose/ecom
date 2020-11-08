@@ -68,7 +68,11 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   if (req.url === "/") {
     res.sendFile(path.join(folderpath, "public", "loading.html"));
-  } else {
+  } else if (req.method === "GET") {
+    // on refresh URL redirect to React UI
+    res.sendFile(path.join(folderpath, "build", path.sep , "index.html"));
+  }
+  else {
     // render the error page json
     res.status(err.status || 500).json({
       date: new Date(),

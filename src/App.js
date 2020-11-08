@@ -1,11 +1,19 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+import logo from "./image/logo.svg";
 import { Navbar, Nav, Container, Badge } from "react-bootstrap";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 
 import Home from "./component/home/home";
 import About from "./component/home/about";
+import NotFound from "./component/home/notfound";
+
 import PostHome from "./component/post/PostHome";
 import CustomersHome from "./component/customers/Home";
 import CustomersEdit from "./component/customers/Edit";
@@ -76,18 +84,24 @@ class App extends Component {
             <Route path="/about">
               <Badge variant="primary">About</Badge>
               <div style={{ minHeight: this.state.minHight }}>
-                <About/>
+                <About />
               </div>
             </Route>
             <Route exact path="/customers">
               <Badge variant="primary">List of Customers</Badge>
-              <div >
-                <CustomersHome style={{ minHeight: this.state.minHight }}/>
+              <div style={{ minHeight: this.state.minHight }}>
+                <CustomersHome />
               </div>
             </Route>
             <Route path={["/customer/edit/:id", "/customers/edit"]}>
               <CustomersEdit />
             </Route>
+            <Route path="/notfound">
+              <div style={{ minHeight: this.state.minHight }}>
+                <NotFound />
+              </div>
+            </Route>
+            <Redirect to="/notfound" />
           </Switch>
         </div>
         <footer className="border-top footer" bg="light" variant="light">
