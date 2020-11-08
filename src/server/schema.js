@@ -26,7 +26,7 @@ const typeDefs = buildASTSchema(gql`
       producer: String!
       rating: Float
     ): Customer
-    deleteCustomer(id: ID!): String
+    deleteCustomer(id: ID!): Customer
   }
 
   input PostInput {

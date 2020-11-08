@@ -12,7 +12,7 @@ import {
 } from 'reactstrap';
 import { Form as FinalForm, Field } from 'react-final-form';
 
-import client from './apollo';
+import client from '../../apollo';
 import { GET_POSTS } from './PostViewer';
 
 const SUBMIT_POST = gql`

@@ -3,3 +3,11 @@ https://reactjs.org/docs/create-a-new-react-app.html
 https://developer.okta.com/blog/2018/10/11/build-simple-web-app-with-express-react-graphql
 
 https://levelup.gitconnected.com/how-to-render-react-app-using-express-server-in-node-js-a428ec4dfe2b
+
+https://github.com/didinj/node-express-mongodb-reactjs-graphql
+
+https://www.djamware.com/post/5cbd1e9a80aca754f7a9d1f2/node-express-reactjs-graphql-and-mongodb-crud-web-application
+
+https://stackoverflow.com/questions/46020018/error-eperm-operation-not-permitted-unlink-d-sources-node-modules-fseven
+
+https://stackoverflow.com/questions/16073603/how-do-i-update-each-dependency-in-package-json-to-the-latest-version
