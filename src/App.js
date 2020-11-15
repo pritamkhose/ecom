@@ -13,6 +13,7 @@ import {
 import Home from "./component/home/home";
 import About from "./component/home/about";
 import NotFound from "./component/home/notfound";
+import Login from "./component/home/login";
 
 import PostHome from "./component/post/PostHome";
 import CustomersHome from "./component/customers/Home";
@@ -24,6 +25,23 @@ class App extends Component {
   state = {
     navExpanded: false,
     minHight: "450px",
+    isLogin: localStorage.getItem("name") ? true : false,
+    name: localStorage.getItem("name"),
+    imageUrl: localStorage.getItem("imageUrl"),
+  };
+
+  constructor(props) {
+    super(props);
+    // Bind the this context to the handler function
+    this.updateLogin = this.updateLogin.bind(this);
+  }
+
+  updateLogin = () => {
+    this.setState({
+      isLogin: localStorage.getItem("name") ? true : false,
+      name: localStorage.getItem("name"),
+      imageUrl: localStorage.getItem("imageUrl"),
+    });
   };
 
   setNavExpanded = (expanded) => {
@@ -44,7 +62,7 @@ class App extends Component {
           onToggle={this.setNavExpanded}
           expanded={this.state.navExpanded}
         >
-          <Container style={{ margin: "0px" }}>
+          <Container style={{ margin: "0px", width: "100%" }}>
             <Navbar.Brand>
               <Link to={"/"} className="navbar-brand row">
                 <img src={logo} alt={logo} height="30"></img> Pritam Ecom
@@ -66,6 +84,31 @@ class App extends Component {
                   About
                 </Link>
               </Nav>
+              {this.state.isLogin ? (
+                <Link
+                  to={"/profile"}
+                  className="nav-link"
+                  style={{ float: "end" }}
+                >
+                  <img
+                    src={this.state.imageUrl}
+                    alt={this.state.name}
+                    height="30"
+                  ></img>
+                  {" " + this.state.name}
+                </Link>
+              ) : (
+                <Link
+                  to={"/login"}
+                  className="nav-link"
+                  style={{ float: "end" }}
+                >
+                  <i className="fa fa-sign-in" aria-hidden="true">
+                    {" "}
+                    Login
+                  </i>
+                </Link>
+              )}
             </Navbar.Collapse>
           </Container>
         </Navbar>
@@ -76,6 +119,11 @@ class App extends Component {
               <div style={{ minHeight: this.state.minHight }}>
                 <Home />
                 <Product />
+              </div>
+            </Route>
+            <Route exact path={["/login", "/profile"]}>
+              <div style={{ minHeight: this.state.minHight }}>
+                <Login updateLogin={this.updateLogin} />
               </div>
             </Route>
             <Route exact path="/post">

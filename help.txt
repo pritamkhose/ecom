@@ -16,3 +16,8 @@ https://react-bootstrap.netlify.app/migrating/
 
 https://stackoverflow.com/questions/19778620/provide-an-image-for-whatsapp-link-sharing
 
+https://zoejoyuliao.medium.com/add-google-sign-in-and-sign-out-to-your-react-app-and-get-the-accesstoken-2ee16bfd8297
+
+https://developers.google.com/identity/sign-in/web/sign-in?authuser=1
+
+https://console.developers.google.com/apis/credentials?authuser=1&project=
