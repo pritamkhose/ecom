@@ -18,6 +18,8 @@ import PostHome from "./component/post/PostHome";
 import CustomersHome from "./component/customers/Home";
 import CustomersEdit from "./component/customers/Edit";
 
+import Product from "./component/product/list";
+
 class App extends Component {
   state = {
     navExpanded: false,
@@ -73,6 +75,7 @@ class App extends Component {
               <Badge variant="primary">Home</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <Home />
+                <Product />
               </div>
             </Route>
             <Route exact path="/post">

@@ -1,0 +1,49 @@
+.OverlapRating {
+  width: fit-content;
+  bottom: 60px;
+  position: absolute;
+}
+
+.Overlap {
+  width: fit-content;
+  top: 4px;
+  position: absolute;
+}
+
+.Card {
+  margin: 4px;
+}
+
+.td{
+  margin: 0px;
+  padding: 0px;
+}
+
+.Title {
+  margin-left: 8px;
+  margin-bottom: 0px;
+  font-weight: bolder;
+}
+
+.Price {
+  margin: 0px;
+  padding: 0 4px;
+  align-self: flex-end;
+  font-weight: normal;
+}
+
+.PriceCancel {
+  margin: 0px;
+  margin-right: 8px;
+  align-self: flex-end;
+  font-weight: lighter;
+  font-style: italic;
+  text-decoration: line-through;
+}
+
+.link {
+  color: #FFF;
+}
+.link:hover {
+   color:  #FFF;
+}
