@@ -11,3 +11,8 @@ https://www.djamware.com/post/5cbd1e9a80aca754f7a9d1f2/node-express-reactjs-grap
 https://stackoverflow.com/questions/46020018/error-eperm-operation-not-permitted-unlink-d-sources-node-modules-fseven
 
 https://stackoverflow.com/questions/16073603/how-do-i-update-each-dependency-in-package-json-to-the-latest-version
+
+https://react-bootstrap.netlify.app/migrating/
+
+https://stackoverflow.com/questions/19778620/provide-an-image-for-whatsapp-link-sharing
+
