@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Table, Container } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
+import axios from "axios";
+
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -25,24 +27,50 @@ class Login extends Component {
   }
 
   login(response) {
-    // console.log(response);
     if (response.accessToken) {
       this.setState((state) => ({
         isLogined: true,
         accessToken: response.accessToken,
       }));
       localStorage.clear();
-      localStorage.setItem("accessToken", response.accessToken);
+      // localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("email", response.profileObj.email);
       localStorage.setItem("name", response.profileObj.name);
-      localStorage.setItem("givenName", response.profileObj.givenName);
-      localStorage.setItem("familyName", response.profileObj.familyName);
-      localStorage.setItem("googleId", response.profileObj.googleId);
+      // localStorage.setItem("givenName", response.profileObj.givenName);
+      // localStorage.setItem("familyName", response.profileObj.familyName);
+      // localStorage.setItem("googleId", response.profileObj.googleId);
       localStorage.setItem("imageUrl", response.profileObj.imageUrl);
-      localStorage.setItem("loginTime", Date.now());
-      this.props.updateLogin();
-      this.props.history.push("/");
+      // localStorage.setItem("loginTime", Date.now());
+      this.updateInfo(
+        response.profileObj.email,
+        response.profileObj.name,
+        response
+      );
     }
+  }
+
+  updateInfo(email, name, info) {
+    var baseURL =
+      (process.env.REACT_APP_API_URL !== undefined
+        ? process.env.REACT_APP_API_URL
+        : "") + "/api/";
+    axios
+      .post(baseURL + "auth/social", {
+        email,
+        name,
+        date: Date.now(),
+        info,
+      })
+      .then(
+        (response) => {
+          localStorage.setItem("token", response.data.user.token);
+          this.props.updateLogin();
+          this.props.history.push("/");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   logout(response) {
