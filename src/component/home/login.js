@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { Table, Container } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
 import { GoogleLogin, GoogleLogout } from "react-google-login";
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
-    console.log(process.env.GOOGLE_CLIENT_ID);
+    if (process.env.NODE_ENV === "development") {
+      console.log(process.env);
+    }
 
     this.state = {
       isLogined: localStorage.getItem("name") ? true : false,
@@ -38,7 +41,7 @@ export default class Login extends Component {
       localStorage.setItem("imageUrl", response.profileObj.imageUrl);
       localStorage.setItem("loginTime", Date.now());
       this.props.updateLogin();
-      this.props.router.push('/');
+      this.props.history.push("/");
     }
   }
 
@@ -49,7 +52,7 @@ export default class Login extends Component {
     }));
     localStorage.clear();
     this.props.updateLogin();
-    this.props.router.push('/');
+    this.props.history.push("/");
   }
 
   handleLoginFailure(response) {
@@ -75,7 +78,9 @@ export default class Login extends Component {
             </td>
           </tr>
           <tr>
-            <td colSpan="2"><h3>{localStorage.getItem("name")}</h3></td>
+            <td colSpan="2">
+              <h3>{localStorage.getItem("name")}</h3>
+            </td>
           </tr>
           <tr>
             <td>First Name</td>
@@ -125,14 +130,10 @@ export default class Login extends Component {
               responseType="code,token"
             />
           )}
-          {/* {this.state.accessToken ? (
-            <p>
-              Your Access Token: <br />
-              <br /> {this.state.accessToken}
-            </p>
-          ) : null} */}
         </div>
       </Container>
     );
   }
 }
+
+export default withRouter(Login);
