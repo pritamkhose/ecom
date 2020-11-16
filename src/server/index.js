@@ -50,6 +50,7 @@ app.use(
 // app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('body-parser').json())
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/mongoclient', require('./routes/mongoclient'));
 
 app.get("/api", (req, res) => {
   res.json({

@@ -5,21 +5,28 @@ import logo from "../../image/logo.svg";
 import { Link } from "react-router-dom";
 
 export default class ProductItem extends Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+  }
+
   render() {
     return (
-      <Link to={"/productDetails/" + this.props.index} className="link">
+      <Link to={"/productDetails/" + this.props.value._id} className="link">
         <Card className="Card">
           <img
             height="220rem"
-            alt={this.props.value}
-            src="https://images.bewakoof.com/original/high-colors-half-sleeve-t-shirt-black-men-s-printed-t-shirts-297481-1604906907.jpg?tr=q-100"
+            alt={this.props.value.product}
+            src={this.props.value.searchImage}
           />
           <Badge className="Overlap" variant="primary">
-            New
+            {this.props.value.brand}
           </Badge>
-          <Badge className="OverlapRating" variant="success">
-            {this.props.index} *
-          </Badge>
+          {this.props.value.rating === 0 ? null : (
+            <Badge className="OverlapRating" variant="success">
+              {this.props.value.rating}
+            </Badge>
+          )}
           <Table style={{ margin: 0, padding: 0 }}>
             <tbody>
               <tr>
@@ -28,7 +35,7 @@ export default class ProductItem extends Component {
                   colSpan="3"
                   className="Title"
                 >
-                  {this.props.value}
+                  {this.props.value.product}
                 </td>
               </tr>
               <tr>
@@ -36,16 +43,16 @@ export default class ProductItem extends Component {
                   style={{ margin: 0, padding: 0, border: "none" }}
                   className="Price"
                 >
-                  ₹ {this.props.index}00
+                  ₹ {this.props.value.price}
                 </td>
                 <td
                   style={{ margin: 0, padding: 0, border: "none" }}
                   className="PriceCancel"
                 >
-                  ₹ {this.props.index}50
+                  ₹ {this.props.value.mrp}
                 </td>
                 <td style={{ margin: 0, padding: 0, border: "none" }}>
-                  <Link to={"/cart/" + this.props.index}>
+                  <Link to={"/cart/" + this.props.value._id}>
                     <img src={logo} alt={logo} height="30"></img>
                   </Link>
                 </td>

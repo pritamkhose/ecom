@@ -308,6 +308,105 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "auth social",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"eg@rediff.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/social",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"social"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Mongo client",
+			"item": [
+				{
+					"name": "http://localhost:3000/api/mongoclient?collection=productmyntra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"search\": {\r\n        \"brand\": \"ADIDAS\"\r\n    },\r\n    \"projection\": {\r\n        \"_id\": 0,\r\n        \"productId\": 1,\r\n        \"product\": 1\r\n    },\r\n    \"sort\": {\r\n        \"_id\": 1\r\n    },\r\n    \"limit\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient?collection=productmyntra",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "productmyntra"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7fd16c43-8d7b-4cab-bfac-89952b1b7454",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2f3a2dce-b99a-48a2-a372-a50313adaef7",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "all",
 			"request": {
 				"method": "POST",
