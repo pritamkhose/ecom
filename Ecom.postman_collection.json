@@ -380,6 +380,46 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "By id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient/id?collection=productmyntra&id=5fb0cedb70dc841e94384f1b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient",
+								"id"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "productmyntra"
+								},
+								{
+									"key": "id",
+									"value": "5fb0cedb70dc841e94384f1b"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [

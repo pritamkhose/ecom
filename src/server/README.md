@@ -28,3 +28,16 @@ or Using nodemon
 npm install -g nodemon
 nodemon
 ```
+
+## Get Graphql schema via apollo cilent
+```sh
+apollo schema:download --endpoint=http://localhost:3000/graphql  ecom_schema.json
+  √ Loading Apollo Project
+  √ Saving schema to ecom_schema.json
+```
+check dir where created ecom_schema.json scema file
+
+## Install apollo cilent
+```sh
+npm i -g apollo
+```

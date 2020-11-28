@@ -21,3 +21,9 @@ https://zoejoyuliao.medium.com/add-google-sign-in-and-sign-out-to-your-react-app
 https://developers.google.com/identity/sign-in/web/sign-in?authuser=1
 
 https://console.developers.google.com/apis/credentials?authuser=1&project=
+
+https://react-bootstrap.github.io/components/carousel/
+
+https://developers.google.com/web/tools/chrome-devtools/remote-debugging
+
+https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
