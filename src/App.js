@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import logo from "./image/logo.svg";
-import { Navbar, Nav, Container, Badge } from "react-bootstrap";
+import { Navbar, Nav, Badge } from "react-bootstrap";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -21,6 +21,7 @@ import CustomersEdit from "./component/customers/Edit";
 
 import Product from "./component/product/List";
 import ProductDetails from "./component/product/Detail";
+import Cart from "./component/product/Cart";
 
 class App extends Component {
   state = {
@@ -60,12 +61,13 @@ class App extends Component {
           bg="light"
           variant="light"
           expand="lg"
+          style={{ position: "sticky", top: 0, zIndex: 1 }}
           onToggle={this.setNavExpanded}
           expanded={this.state.navExpanded}
         >
-          <Container style={{ margin: "0px", width: "100%" }}>
+          <span style={{ margin: "0px", width: "100%", display: "contents" }}>
             <Navbar.Brand>
-              <Link to={"/"} className="navbar-brand row">
+              <Link to={"/"} className="navbar-brand">
                 <img src={logo} alt={logo} height="30"></img> Pritam Ecom
               </Link>
             </Navbar.Brand>
@@ -85,19 +87,28 @@ class App extends Component {
                   About
                 </Link>
               </Nav>
+              <Link
+                to={"/cart"}
+                className="nav-link"
+                style={{ float: "end", color: "rgba(0,0,0,.5)" }}
+              >
+                Cart
+              </Link>
               {this.state.isLogin ? (
-                <Link
-                  to={"/profile"}
-                  className="nav-link"
-                  style={{ float: "end" }}
-                >
-                  <img
-                    src={this.state.imageUrl}
-                    alt={this.state.name}
-                    height="30"
-                  ></img>
-                  {" " + this.state.name}
-                </Link>
+                <>
+                  <Link
+                    to={"/profile"}
+                    className="nav-link"
+                    style={{ float: "end", color: "rgba(0,0,0,.5)" }}
+                  >
+                    <img
+                      src={this.state.imageUrl}
+                      alt={this.state.name}
+                      height="30"
+                    ></img>
+                    {" " + this.state.name}
+                  </Link>
+                </>
               ) : (
                 <Link
                   to={"/login"}
@@ -111,7 +122,7 @@ class App extends Component {
                 </Link>
               )}
             </Navbar.Collapse>
-          </Container>
+          </span>
         </Navbar>
         <div>
           <Switch>
@@ -142,6 +153,12 @@ class App extends Component {
                 <About />
               </div>
             </Route>
+            <Route path="/cart">
+              <Badge variant="primary">Cart</Badge>
+              <div style={{ minHeight: this.state.minHight }}>
+                <Cart />
+              </div>
+            </Route>
             <Route exact path="/customers">
               <Badge variant="primary">List of Customers</Badge>
               <div style={{ minHeight: this.state.minHight }}>
@@ -163,7 +180,6 @@ class App extends Component {
           <div className="footer-copyright text-center py-3">
             © 2020 Copyright :{" "}
             <Link to={"/"} className="nav-link">
-              {" "}
               Pritam Ecom
             </Link>
           </div>

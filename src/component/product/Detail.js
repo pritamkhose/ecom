@@ -72,17 +72,17 @@ class Details extends Component {
     var isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
       navigator.userAgent.toLowerCase()
     );
-    console.log(navigator.userAgent.toLowerCase());
+    // console.log(navigator.userAgent.toLowerCase());
     console.log(isMobile);
     return isMobile;
   }
 
   addCart() {
     if(this.state.isLogined) {
-      var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
+      // var baseURL =
+      // (process.env.REACT_APP_API_URL !== undefined
+      //   ? process.env.REACT_APP_API_URL
+      //   : "") + "/api/";
     // axios
     //   .put(baseURL + "mongoclient/updateOne?collection=cart&id=" + this.state.aObj._id, this.state.cart)
     //   .then(
@@ -134,7 +134,7 @@ class Details extends Component {
                 <tr key="rating">
                   <td>Rating</td>
                   <td>
-                    <b> {aObj.rating}</b> / 5 *
+                    <b> {aObj.rating}</b> / 5 🌟
                   </td>
                   <td>Total Rating: {aObj.ratingCount}</td>
                 </tr>
@@ -195,7 +195,7 @@ class Details extends Component {
                     <tr key="rating">
                       <td>Rating</td>
                       <td>
-                        <b> {aObj.rating}</b> / 5 *
+                        <b> {aObj.rating}</b> / 5 🌟
                       </td>
                       <td>Total Rating: {aObj.ratingCount}</td>
                     </tr>

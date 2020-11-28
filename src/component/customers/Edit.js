@@ -143,7 +143,7 @@ class Edit extends Component {
       <div className="container">
         <div className="panel panel-default">
           <div className="panel-heading">
-            <h3 className="panel-title"></h3>
+            <h3 className="panel-title">Edit</h3>
           </div>
           <div className="panel-body">
             <form

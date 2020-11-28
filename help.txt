@@ -27,3 +27,6 @@ https://react-bootstrap.github.io/components/carousel/
 https://developers.google.com/web/tools/chrome-devtools/remote-debugging
 
 https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
+
+https://scotch.io/bar-talk/convert-class-components-to-functional-components-in-a-react-project-solution-to-code-challenge-14
+

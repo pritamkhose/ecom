@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Product from "./ProductItem";
-import { Container, Row } from "react-bootstrap";
+import ProductItem from "./ProductItem";
+import { Row, Spinner } from "react-bootstrap";
 import axios from "axios";
 
 export default class List extends Component {
@@ -44,19 +44,29 @@ export default class List extends Component {
   render() {
     const items = [];
     for (const [index, value] of Object.entries(this.state.aList)) {
-      items.push(
-        <Product key={index} index={index} value={value}>
-          {value}
-        </Product>
-      );
+      items.push(<ProductItem key={index} index={index} value={value} />);
     }
 
     return (
-      <Container>
-        <Row xs="2" sm="2" md="4" lg="6" xl="8">
-          {items}
-        </Row>
-      </Container>
+      <>
+        {this.state.aList.length === 0 ? (
+          this.showLoading()
+        ) : (
+          <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: "0px" }}>
+            {items}
+          </Row>
+        )}
+      </>
+    );
+  }
+
+  showLoading() {
+    return (
+      <div className="text-center py-3">
+        <Spinner animation="border" role="status" variant="info">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
     );
   }
 }
