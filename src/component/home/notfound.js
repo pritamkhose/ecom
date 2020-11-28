@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import notfound from "./../../image/notfound.svg";
-import "./NotFound.css";
+import "./notfound.css";
 
 export default class NotFound extends Component {
   render() {
