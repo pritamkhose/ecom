@@ -33,14 +33,14 @@ class Login extends Component {
         accessToken: response.accessToken,
       }));
       localStorage.clear();
-      // localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("email", response.profileObj.email);
       localStorage.setItem("name", response.profileObj.name);
-      // localStorage.setItem("givenName", response.profileObj.givenName);
-      // localStorage.setItem("familyName", response.profileObj.familyName);
+      localStorage.setItem("givenName", response.profileObj.givenName);
+      localStorage.setItem("familyName", response.profileObj.familyName);
       // localStorage.setItem("googleId", response.profileObj.googleId);
       localStorage.setItem("imageUrl", response.profileObj.imageUrl);
-      // localStorage.setItem("loginTime", Date.now());
+      localStorage.setItem("loginTime", Date.now());
       this.updateInfo(
         response.profileObj.email,
         response.profileObj.name,

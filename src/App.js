@@ -10,16 +10,17 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Home from "./component/home/home";
-import About from "./component/home/about";
-import NotFound from "./component/home/notfound";
-import Login from "./component/home/login";
+import Home from "./component/home/Home";
+import About from "./component/home/About";
+import NotFound from "./component/home/NotFound";
+import Login from "./component/home/Login";
 
 import PostHome from "./component/post/PostHome";
 import CustomersHome from "./component/customers/Home";
 import CustomersEdit from "./component/customers/Edit";
 
-import Product from "./component/product/list";
+import Product from "./component/product/List";
+import ProductDetails from "./component/product/Detail";
 
 class App extends Component {
   state = {
@@ -120,6 +121,9 @@ class App extends Component {
                 <Home />
                 <Product />
               </div>
+            </Route>
+            <Route exact path="/pid/:id">
+              <ProductDetails />
             </Route>
             <Route exact path={["/login", "/profile"]}>
               <div style={{ minHeight: this.state.minHight }}>

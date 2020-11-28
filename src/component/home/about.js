@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import { Container } from "react-bootstrap";
 
 export default class About extends Component {
   render() {
     return (
-      <div>
+      <Container>
         <a href="https://github.com/pritamkhose/ecom" >Github Repos</a>
-      </div>
+      </Container>
     );
   }
 }

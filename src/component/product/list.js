@@ -19,14 +19,26 @@ export default class List extends Component {
       (process.env.REACT_APP_API_URL !== undefined
         ? process.env.REACT_APP_API_URL
         : "") + "/api/";
-    axios.post(baseURL + "mongoclient?collection=productmyntra", {}).then(
-      (response) => {
-        this.setState({ aList: response.data });
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    axios
+      .post(baseURL + "mongoclient?collection=productmyntra", {
+        projection: {
+          productId: 1,
+          product: 1,
+          searchImage: 1,
+          brand: 1,
+          rating: 1,
+          price: 1,
+          mrp: 1,
+        },
+      })
+      .then(
+        (response) => {
+          this.setState({ aList: response.data });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   render() {
