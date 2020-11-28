@@ -10,16 +10,16 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Home from "./component/home/Home";
-import About from "./component/home/About";
-import NotFound from "./component/home/NotFound";
-import Login from "./component/home/Login";
+import Home from "./component/home/home";
+import About from "./component/home/about";
+import NotFound from "./component/home/notfound";
+import Login from "./component/home/login";
 
 import PostHome from "./component/post/PostHome";
 import CustomersHome from "./component/customers/Home";
 import CustomersEdit from "./component/customers/Edit";
 
-import Product from "./component/product/List";
+import Product from "./component/product/list";
 import ProductDetails from "./component/product/Detail";
 import Cart from "./component/product/Cart";
 
