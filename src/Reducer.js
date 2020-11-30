@@ -1,6 +1,8 @@
 export const initialState = {
   basket:
-    localStorage.getItem("cart") == null ? [] : JSON.parse(localStorage.getItem("cart")),
+    localStorage.getItem("cart") == null
+      ? []
+      : JSON.parse(localStorage.getItem("cart")),
   user: null,
 };
 
@@ -20,7 +22,20 @@ const Reducer = (state, action) => {
       };
 
     case "ADD_TO_BASKET":
-      var temp = [...state.basket, action.item];
+      const indexAdd = state.basket.findIndex(
+        (basketItem) => basketItem._id === action.item._id
+      );
+      var temp = [];
+      if (indexAdd >= 0) {
+        let newBasket = [...state.basket];
+        var tempobj = action.item;
+        tempobj.qty = tempobj.qty + 1;
+        temp = [...state.basket.splice(indexAdd, 1), tempobj];
+      } else {
+        var tempobj = action.item;
+        tempobj.qty = 1;
+        temp = [...state.basket, tempobj];
+      }
       localStorage.setItem("cart", JSON.stringify(temp));
       return {
         ...state,

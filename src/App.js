@@ -89,6 +89,7 @@ class App extends Component {
               </Nav>
               <Link
                 to={"/cart"}
+                onClick={this.setNavClose}
                 className="nav-link"
                 style={{ float: "end", color: "rgba(0,0,0,.5)" }}
               >
@@ -98,6 +99,7 @@ class App extends Component {
                 <>
                   <Link
                     to={"/profile"}
+                    onClick={this.setNavClose}
                     className="nav-link"
                     style={{ float: "end", color: "rgba(0,0,0,.5)" }}
                   >
@@ -112,6 +114,7 @@ class App extends Component {
               ) : (
                 <Link
                   to={"/login"}
+                  onClick={this.setNavClose}
                   className="nav-link"
                   style={{ float: "end" }}
                 >

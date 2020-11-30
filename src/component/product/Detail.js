@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import "./ProductItem.css";
 import axios from "axios";
+import AddCartBtn from "./AddCartBtn";
 
 class Details extends Component {
   constructor(props) {
@@ -18,11 +19,9 @@ class Details extends Component {
     this.state = {
       id: props.match.params.id,
       aObj: {},
-      cart: [],
       isEdit: props.match.params.id ? true : false,
       isLogined: localStorage.getItem("name") ? true : false,
     };
-    this.addCart = this.addCart.bind(this);
     this.getData(props.match.params.id);
   }
 
@@ -73,29 +72,8 @@ class Details extends Component {
       navigator.userAgent.toLowerCase()
     );
     // console.log(navigator.userAgent.toLowerCase());
-    console.log(isMobile);
+    // console.log(isMobile);
     return isMobile;
-  }
-
-  addCart() {
-    if(this.state.isLogined) {
-      // var baseURL =
-      // (process.env.REACT_APP_API_URL !== undefined
-      //   ? process.env.REACT_APP_API_URL
-      //   : "") + "/api/";
-    // axios
-    //   .put(baseURL + "mongoclient/updateOne?collection=cart&id=" + this.state.aObj._id, this.state.cart)
-    //   .then(
-    //     (response) => {
-    //       this.setState({ cart: response.data });
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
-    } else {
-        alert("To add item in cart, Please Login!")
-    }
   }
 
   showData(aObj) {
@@ -122,13 +100,7 @@ class Details extends Component {
                 </tr>
                 <tr key="cart">
                   <td colSpan="3">
-                    <Button
-                      className="btn btn-primary"
-                      style={{ width: "-webkit-fill-available" }}
-                      onClick={this.addCart}
-                    >
-                      Add to Cart
-                    </Button>
+                    <AddCartBtn aObj={aObj} />
                   </td>
                 </tr>
                 <tr key="rating">
@@ -183,13 +155,7 @@ class Details extends Component {
                     </tr>
                     <tr key="cart">
                       <td colSpan="3">
-                        <Button
-                          className="btn btn-primary"
-                          style={{ width: "-webkit-fill-available" }}
-                          onClick={this.addCart}
-                        >
-                          Add to Cart
-                        </Button>
+                        <AddCartBtn aObj={aObj} />
                       </td>
                     </tr>
                     <tr key="rating">
@@ -231,22 +197,24 @@ class Details extends Component {
     return (
       <Container>
         <Carousel>
-          {arr.map((x, i) => (
-            <Carousel.Item key={i} interval={2000}>
-              <img
-                height="450rem"
-                className="d-block w-100"
-                alt={x.view}
-                src={x.src}
-              />
-              <Carousel.Caption>
-                <h3>{x.view}</h3>
-                <p>
-                  {i + 1} / {arr.length}
-                </p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          ))}
+          {arr.map(function (x, i) {
+            return x.src != null && x.src.length > 0 ? (
+              <Carousel.Item key={i} interval={2000}>
+                <img
+                  height="450rem"
+                  className="d-block w-100"
+                  alt={x.view}
+                  src={x.src}
+                />
+                <Carousel.Caption>
+                  <h3>{x.view}</h3>
+                  <p>
+                    {i + 1} / {arr.length}
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+            ) : null;
+          })}
         </Carousel>
       </Container>
     );

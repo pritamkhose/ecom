@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import { useStateValue } from "../../StateProvider";
@@ -6,20 +6,28 @@ import { useStateValue } from "../../StateProvider";
 import { Card, Row, Col, Button } from "react-bootstrap";
 
 const CartItem = (aObj) => {
-  const [{ basket }, dispatch] = useStateValue();
+  const [{}, dispatch] = useStateValue();
+
+  var [itemPrice] = useState(aObj.value.price * aObj.value.qty);
+  const [showItemPrice, setItemPrice] = useState(aObj.value.price * aObj.value.qty);
 
   const removeFromBasket = () => {
     // remove the item from the basket
     dispatch({
       type: "REMOVE_FROM_BASKET",
-      id: aObj.value._id,
+      _id: aObj.value._id,
     });
+  };
+
+  const handleChange = (event) => {
+    itemPrice = aObj.value.price * event.target.value;
+    setItemPrice(itemPrice);
   };
 
   return (
     <Card className="Card">
       <Row>
-        <Col className="col-3">
+        <Col className="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3">
           <Link to={`${"/pid"}/${aObj.value._id}`}>
             <img
               height="220rem"
@@ -29,7 +37,6 @@ const CartItem = (aObj) => {
           </Link>
         </Col>
         <Col>
-          <br />
           <Link
             to={`${"/pid"}/${aObj.value._id}`}
             style={{ color: "rgba(0,0,0,.5)" }}
@@ -56,7 +63,13 @@ const CartItem = (aObj) => {
             </Col>
             <Col>
               Qty :{" "}
-              <select name="qty" id="qty">
+              <select
+                name="qty"
+                id="qty"
+                // onClick={() => setItemPrice(count + 1)}
+                onChange={handleChange}
+                value={aObj.value.qty}
+              >
                 {Array.apply(1, Array(10)).map(function (x, i) {
                   return (
                     <option value={i + 1} key={i + 1}>
@@ -77,7 +90,7 @@ const CartItem = (aObj) => {
                 }}
                 className="Price"
               >
-                ₹ {aObj.value.price}
+                ₹ {showItemPrice}
               </p>
             </Col>
           </Row>

@@ -30,3 +30,7 @@ https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
 
 https://scotch.io/bar-talk/convert-class-components-to-functional-components-in-a-react-project-solution-to-code-challenge-14
 
+https://dev.to/igor_bykov/react-calling-functional-components-as-functions-1d3l
+
+https://reactjs.org/docs/hooks-state.html
+

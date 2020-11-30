@@ -12,13 +12,13 @@ import reducer, { initialState } from "./Reducer";
 import { StateProvider } from "./StateProvider";
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ApolloProvider client={client}>
       <StateProvider initialState={initialState} reducer={reducer}>
         <App />
       </StateProvider>
-    </ApolloProvider>
-  </React.StrictMode>,
+    </ApolloProvider>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
 
