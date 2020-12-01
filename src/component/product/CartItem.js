@@ -8,7 +8,7 @@ import { Card, Row, Col, Button } from "react-bootstrap";
 const CartItem = (aObj) => {
   const [{}, dispatch] = useStateValue();
 
-  var [itemPrice] = useState(aObj.value.price * aObj.value.qty);
+  var [qty, setQty] = useState(aObj.value.qty);
   const [showItemPrice, setItemPrice] = useState(aObj.value.price * aObj.value.qty);
 
   const removeFromBasket = () => {
@@ -20,8 +20,14 @@ const CartItem = (aObj) => {
   };
 
   const handleChange = (event) => {
-    itemPrice = aObj.value.price * event.target.value;
-    setItemPrice(itemPrice);
+    setItemPrice(aObj.value.price * event.target.value);
+    setQty(event.target.value);
+    var temp = aObj.value;
+    temp.qty = Number(event.target.value);
+    dispatch({
+      type: "UPDATE_FROM_BASKET",
+      item: temp
+    });
   };
 
   return (
@@ -66,9 +72,8 @@ const CartItem = (aObj) => {
               <select
                 name="qty"
                 id="qty"
-                // onClick={() => setItemPrice(count + 1)}
                 onChange={handleChange}
-                value={aObj.value.qty}
+                value={qty}
               >
                 {Array.apply(1, Array(10)).map(function (x, i) {
                   return (

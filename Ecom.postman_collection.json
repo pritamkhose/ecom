@@ -317,7 +317,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\" : \"eg@rediff.com\"\r\n}",
+							"raw": "{\r\n    \"email\" : \"eg53@rediff.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -415,6 +415,46 @@
 								{
 									"key": "id",
 									"value": "5fb0cedb70dc841e94384f1b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cart\": [\r\n        {\r\n            \"_id\": \"5fb0cedb70dc841e94384f1d\",\r\n            \"productId\": 12031744,\r\n            \"product\": \"ADIDAS Men Black Pictoris Running Shoes\",\r\n            \"rating\": 4.928571,\r\n            \"brand\": \"ADIDAS\",\r\n            \"searchImage\": \"http://assets.myntassets.com/assets/images/12031744/2020/10/13/6ce41e63-3066-445a-8a11-806febd0c89e1602564660571-ADIDAS-Men-Sports-Shoes-9701602564658426-1.jpg\",\r\n            \"mrp\": 3799,\r\n            \"price\": 3419,\r\n            \"qty\": 6\r\n        },\r\n        {\r\n            \"_id\": \"5fb0cedb70dc841e94384f1b\",\r\n            \"productId\": 11353478,\r\n            \"product\": \"ADIDAS Men Red & White Easy Vulcanised 2.0 Skateboarding Shoes\",\r\n            \"rating\": 0,\r\n            \"brand\": \"ADIDAS\",\r\n            \"searchImage\": \"http://assets.myntassets.com/assets/images/11353478/2020/10/14/b0e64a1b-ee1e-41ab-8731-9d59e89426b31602668556236-ADIDAS-Men-Casual-Shoes-7231602668554631-1.jpg\",\r\n            \"mrp\": 3999,\r\n            \"price\": 3599,\r\n            \"qty\": 1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient/updateone?collection=cart&id=5fc5fc33b659c728ccba4b43",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient",
+								"updateone"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "cart"
+								},
+								{
+									"key": "id",
+									"value": "5fc5fc33b659c728ccba4b43"
 								}
 							]
 						}

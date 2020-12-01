@@ -88,7 +88,7 @@ router.post("/id", (req, res) => {
       var db = client.db(process.env.mongoDB);
       try {
         db.collection(req.query.collection)
-          .find({ _id: new mongodb.ObjectID(req.query.id)})
+          .find({ _id: new mongodb.ObjectID(req.query.id) })
           .toArray(function (findErr, result) {
             if (!findErr) {
               if (result === undefined || result.length === 0) {
@@ -120,8 +120,6 @@ router.post("/id", (req, res) => {
   });
 });
 
-
-
 // update one
 router.put("/updateone", (req, res) => {
   if (!req.query.collection) {
@@ -137,9 +135,7 @@ router.put("/updateone", (req, res) => {
   }
 
   if (!req.body) {
-    return res
-      .status(422)
-      .json({ error: "Request body is missingr" });
+    return res.status(422).json({ error: "Request body is missingr" });
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
@@ -152,7 +148,12 @@ router.put("/updateone", (req, res) => {
         newvalues,
         function (findErr, result) {
           if (!findErr) {
-            res.status(200).json(result);
+            if (result.result.nModified === 0) {
+              // res.status(201).json(result.result.nModified);
+              createObjByID(req, res, db, req.query.collection, client);
+            } else {
+              res.status(200).json(result);
+            }
           } else {
             res.status(500).json({
               error: "Collection Error",
@@ -171,5 +172,22 @@ router.put("/updateone", (req, res) => {
   });
 });
 
+var createObjByID = function (req, res, db, collectionname, client) {
+  var reqbody = {
+    _id: new mongodb.ObjectID(req.query.id),
+    cart: req.body.cart,
+  };
+  db.collection(collectionname).insert(reqbody, function (findErr, result) {
+    if (!findErr) {
+      res.status(200).json(result);
+    } else {
+      res.status(500).json({
+        error: "Database Connection Error",
+        error_message: findErr,
+      });
+    }
+    client.close();
+  });
+};
 
 module.exports = router;

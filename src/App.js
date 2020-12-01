@@ -22,6 +22,7 @@ import CustomersEdit from "./component/customers/Edit";
 import Product from "./component/product/list";
 import ProductDetails from "./component/product/Detail";
 import Cart from "./component/product/Cart";
+import CartCount from "./component/product/CartCount";
 
 class App extends Component {
   state = {
@@ -67,7 +68,11 @@ class App extends Component {
         >
           <span style={{ margin: "0px", width: "100%", display: "contents" }}>
             <Navbar.Brand>
-              <Link to={"/"} className="navbar-brand">
+              <Link
+                to={"/"}
+                onClick={this.setNavClose}
+                className="navbar-brand"
+              >
                 <img src={logo} alt={logo} height="30"></img> Pritam Ecom
               </Link>
             </Navbar.Brand>
@@ -93,7 +98,7 @@ class App extends Component {
                 className="nav-link"
                 style={{ float: "end", color: "rgba(0,0,0,.5)" }}
               >
-                Cart
+                <CartCount />
               </Link>
               {this.state.isLogin ? (
                 <>

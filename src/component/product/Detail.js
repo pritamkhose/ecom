@@ -6,8 +6,7 @@ import {
   Row,
   Spinner,
   Badge,
-  Carousel,
-  Button,
+  Carousel
 } from "react-bootstrap";
 import "./ProductItem.css";
 import axios from "axios";

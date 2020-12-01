@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const initialState = {
   basket:
     localStorage.getItem("cart") == null
@@ -8,12 +10,11 @@ export const initialState = {
 
 // Selector
 export const getBasketTotal = (basket) =>
-  basket?.reduce((amount, item) => item.price + amount, 0);
+  basket?.reduce((amount, item) => item.price * item.qty + amount, 0);
 
 export const getCart = () => initialState.basket;
 
 const Reducer = (state, action) => {
-  // console.log(action);
   switch (action.type) {
     case "GET_BASKET":
       return {
@@ -27,16 +28,34 @@ const Reducer = (state, action) => {
       );
       var temp = [];
       if (indexAdd >= 0) {
-        let newBasket = [...state.basket];
-        var tempobj = action.item;
-        tempobj.qty = tempobj.qty + 1;
-        temp = [...state.basket.splice(indexAdd, 1), tempobj];
+        temp = [...state.basket];
+        var tempObj = temp[indexAdd];
+        if (tempObj.qty < 10) {
+          tempObj.qty = tempObj.qty + 1;
+        } else {
+          tempObj.qty = 10;
+        }
+        temp[indexAdd] = tempObj;
       } else {
         var tempobj = action.item;
         tempobj.qty = 1;
         temp = [...state.basket, tempobj];
       }
       localStorage.setItem("cart", JSON.stringify(temp));
+      updateCart(temp);
+      return {
+        ...state,
+        basket: temp,
+      };
+
+    case "UPDATE_FROM_BASKET":
+      const indexUpdate = state.basket.findIndex(
+        (basketItem) => basketItem._id === action.item._id
+      );
+      var temp = [...state.basket];
+      temp[indexUpdate] = action.item;
+      localStorage.setItem("cart", JSON.stringify(temp));
+      updateCart(temp);
       return {
         ...state,
         basket: temp,
@@ -63,6 +82,7 @@ const Reducer = (state, action) => {
         );
       }
       localStorage.setItem("cart", JSON.stringify(newBasket));
+      updateCart(newBasket);
       return {
         ...state,
         basket: newBasket,
@@ -77,6 +97,58 @@ const Reducer = (state, action) => {
     default:
       return state;
   }
+
+  function updateCart(obj) {
+    if (localStorage.getItem("uid")) {
+      var baseURL =
+        (process.env.REACT_APP_API_URL !== undefined
+          ? process.env.REACT_APP_API_URL
+          : "") + "/api/";
+      axios
+        .put(
+          baseURL +
+            "mongoclient/updateone?collection=cart&id=" +
+            localStorage.getItem("uid"),
+          { cart: obj }
+        )
+        .then(
+          (response) => {
+            // console.log(response.data);
+          },
+          (error) => {
+            // console.log(error);
+          }
+        );
+    }
+  }
+
+  function getCartAPI() {
+    if (localStorage.getItem("uid")) {
+      var baseURL =
+        (process.env.REACT_APP_API_URL !== undefined
+          ? process.env.REACT_APP_API_URL
+          : "") + "/api/";
+      axios
+        .post(
+          baseURL +
+            "mongoclient/id?collection=cart&id=" +
+            localStorage.getItem("uid"),
+          {}
+        )
+        .then(
+          (response) => {
+            console.log(response.data);
+            localStorage.setItem("cart", response.data.cart);
+            return response.data.cart;
+          },
+          (error) => {
+            console.log(error);
+            return [];
+          }
+        );
+    }
+  }
+    
 };
 
 export default Reducer;

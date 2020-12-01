@@ -64,6 +64,7 @@ class Login extends Component {
       .then(
         (response) => {
           localStorage.setItem("token", response.data.user.token);
+          localStorage.setItem("uid", response.data.user.id);
           this.props.updateLogin();
           this.props.history.push("/");
         },
