@@ -121,33 +121,6 @@ const Reducer = (state, action) => {
         );
     }
   }
-
-  function getCartAPI() {
-    if (localStorage.getItem("uid")) {
-      var baseURL =
-        (process.env.REACT_APP_API_URL !== undefined
-          ? process.env.REACT_APP_API_URL
-          : "") + "/api/";
-      axios
-        .post(
-          baseURL +
-            "mongoclient/id?collection=cart&id=" +
-            localStorage.getItem("uid"),
-          {}
-        )
-        .then(
-          (response) => {
-            console.log(response.data);
-            localStorage.setItem("cart", response.data.cart);
-            return response.data.cart;
-          },
-          (error) => {
-            console.log(error);
-            return [];
-          }
-        );
-    }
-  }
     
 };
 

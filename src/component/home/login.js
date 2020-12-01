@@ -65,13 +65,30 @@ class Login extends Component {
         (response) => {
           localStorage.setItem("token", response.data.user.token);
           localStorage.setItem("uid", response.data.user.id);
-          this.props.updateLogin();
-          this.props.history.push("/");
+          this.updateCart(response.data.user.id);
         },
         (error) => {
           console.log(error);
         }
       );
+  }
+
+  updateCart(uid) {
+    var baseURL =
+      (process.env.REACT_APP_API_URL !== undefined
+        ? process.env.REACT_APP_API_URL
+        : "") + "/api/";
+    axios.post(baseURL + "mongoclient/id?collection=cart&id=" + uid, {}).then(
+      (response) => {
+        localStorage.setItem("cart", JSON.stringify(response.data.cart));
+        this.props.updateLogin();
+        this.props.history.push("/");
+      },
+      (error) => {
+        console.log(error);
+        localStorage.setItem("cart", []);
+      }
+    );
   }
 
   logout(response) {

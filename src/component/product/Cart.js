@@ -1,15 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import { useStateValue } from "../../StateProvider";
 import { getBasketTotal } from "../../Reducer";
+
+import axios from "axios";
 
 import { Button, Card, Row, Col } from "react-bootstrap";
 import CartItem from "./CartItem";
 import logo from "./../../image/logo.svg";
 
 const Cart = (props) => {
-  const [{ basket }] = useStateValue();
+  const [{ basket }, dispatch] = useStateValue();
+
+  const [cart, setCart] = useState([]);
+  useEffect(() => {
+    if (localStorage.getItem("uid")) {
+      var baseURL =
+        (process.env.REACT_APP_API_URL !== undefined
+          ? process.env.REACT_APP_API_URL
+          : "") + "/api/";
+      axios
+        .post(
+          baseURL +
+            "mongoclient/id?collection=cart&id=" +
+            localStorage.getItem("uid"),
+          {}
+        )
+        .then(
+          (response) => {
+            localStorage.setItem("cart", JSON.stringify(response.data.cart));
+            setCart(response.data.cart);
+          },
+          (error) => {
+            console.log(error);
+            setCart([]);;
+          }
+        );
+    }
+  }, []);
 
   return (
     <>
@@ -42,7 +71,9 @@ const Cart = (props) => {
                 </h5>
               </Col>
               <Col>
-                <Button style={{ width: "100%" }}>Buy Now</Button>
+                <Button style={{ width: "100%" }} >
+                  Buy Now
+                </Button>
               </Col>
             </Row>
           </Card>

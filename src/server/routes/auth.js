@@ -8,18 +8,15 @@ router.post("/social", (req, res) => {
     });
   }
 
+  if (!req.body.info) {
+    return res.status(422).json({
+      error: "info is required",
+    });
+  }
+
   Users.findOne({ email: req.body.email }).then((user) => {
-    var finalUser = new Users(req.body);
-    finalUser.setSocialPassword(req.body.username + req.body.email, req);
-    if (!user) {
-      return finalUser
-        .save()
-        .then(() => res.json({ user: finalUser.toAuthJSON() }))
-        .catch((err) => {
-          res.status(400).json({ error_message: err });
-        });
-    } else {
-      var loginHistory = finalUser.loginHistory;
+    if (user) {
+      var loginHistory = user.loginHistory;
       loginHistory.push({ date: new Date(), requestDetails: req.headers });
       Users.updateOne(
         {
@@ -30,12 +27,20 @@ router.post("/social", (req, res) => {
         }
       )
         .then((doc) => {
-          // console.log(doc);
+          return res.json({ user: user.toAuthJSON() });
         })
         .catch((err) => {
           console.log(err);
         });
-      return res.json({ user: finalUser.toAuthJSON() });
+    } else {
+      var finalUser = new Users(req.body);
+      finalUser.setSocialPassword(req.body.username + req.body.email, req);
+      finalUser
+        .save()
+        .then(() => res.json({ user: finalUser.toAuthJSON() }))
+        .catch((err) => {
+          res.status(400).json({ error_message: err });
+        });
     }
   });
 });
