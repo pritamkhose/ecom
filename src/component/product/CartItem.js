@@ -5,11 +5,13 @@ import { useStateValue } from "../../StateProvider";
 
 import { Card, Row, Col, Button } from "react-bootstrap";
 
-const CartItem = (aObj) => {
+const CartItem = (aObj, isEdit) => {
   const [{}, dispatch] = useStateValue();
 
   var [qty, setQty] = useState(aObj.value.qty);
-  const [showItemPrice, setItemPrice] = useState(aObj.value.price * aObj.value.qty);
+  const [showItemPrice, setItemPrice] = useState(
+    aObj.value.price * aObj.value.qty
+  );
 
   const removeFromBasket = () => {
     // remove the item from the basket
@@ -26,7 +28,7 @@ const CartItem = (aObj) => {
     temp.qty = Number(event.target.value);
     dispatch({
       type: "UPDATE_FROM_BASKET",
-      item: temp
+      item: temp,
     });
   };
 
@@ -69,20 +71,19 @@ const CartItem = (aObj) => {
             </Col>
             <Col>
               Qty :{" "}
-              <select
-                name="qty"
-                id="qty"
-                onChange={handleChange}
-                value={qty}
-              >
-                {Array.apply(1, Array(10)).map(function (x, i) {
-                  return (
-                    <option value={i + 1} key={i + 1}>
-                      {i + 1}
-                    </option>
-                  );
-                })}
-              </select>
+              {isEdit ? (
+                <select name="qty" id="qty" onChange={handleChange} value={qty}>
+                  {Array.apply(1, Array(10)).map(function (x, i) {
+                    return (
+                      <option value={i + 1} key={i + 1}>
+                        {i + 1}
+                      </option>
+                    );
+                  })}
+                </select>
+              ) : (
+                <b>{qty}</b>
+              )}
             </Col>
 
             <Col>

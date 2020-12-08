@@ -6,12 +6,12 @@ import { getBasketTotal } from "../../Reducer";
 
 import axios from "axios";
 
-import { Button, Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import CartItem from "./CartItem";
 import logo from "./../../image/logo.svg";
 
 const Cart = (props) => {
-  const [{ basket }, dispatch] = useStateValue();
+  const [{ basket }] = useStateValue();
 
   const [cart, setCart] = useState([]);
   useEffect(() => {
@@ -71,9 +71,9 @@ const Cart = (props) => {
                 </h5>
               </Col>
               <Col>
-                <Button style={{ width: "100%" }} >
-                  Buy Now
-                </Button>
+                <Link to="/confirm" className="btn btn-primary" style={{ width: "100%" }}>
+                Buy Now
+              </Link>
               </Col>
             </Row>
           </Card>

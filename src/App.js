@@ -23,6 +23,9 @@ import Product from "./component/product/list";
 import ProductDetails from "./component/product/Detail";
 import Cart from "./component/product/Cart";
 import CartCount from "./component/product/CartCount";
+import Address from "./component/product/Address";
+import OrderHistory from "./component/product/OrderHistory";
+import OrderConfirm from "./component/product/OrderConfirm";
 
 class App extends Component {
   state = {
@@ -92,14 +95,6 @@ class App extends Component {
                   About
                 </Link>
               </Nav>
-              <Link
-                to={"/cart"}
-                onClick={this.setNavClose}
-                className="nav-link"
-                style={{ float: "end", color: "rgba(0,0,0,.5)" }}
-              >
-                <CartCount />
-              </Link>
               {this.state.isLogin ? (
                 <>
                   <Link
@@ -110,7 +105,7 @@ class App extends Component {
                   >
                     <img
                       src={this.state.imageUrl}
-                      alt={this.state.name}
+                      alt=""
                       height="30"
                     ></img>
                     {" " + this.state.name}
@@ -129,6 +124,14 @@ class App extends Component {
                   </i>
                 </Link>
               )}
+              <Link
+                to={"/cart"}
+                onClick={this.setNavClose}
+                className="nav-link"
+                style={{ float: "end", color: "rgba(0,0,0,.5)" }}
+              >
+                <CartCount />
+              </Link>
             </Navbar.Collapse>
           </span>
         </Navbar>
@@ -165,6 +168,21 @@ class App extends Component {
               <Badge variant="primary">Cart</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <Cart />
+              </div>
+            </Route>
+            <Route path="/address">
+              <div style={{ minHeight: this.state.minHight }}>
+                <Address />
+              </div>
+            </Route>
+            <Route path="/orders">
+              <div style={{ minHeight: this.state.minHight }}>
+                <OrderHistory />
+              </div>
+            </Route>
+            <Route path="/confirm">
+              <div style={{ minHeight: this.state.minHight }}>
+                <OrderConfirm />
               </div>
             </Route>
             <Route exact path="/customers">

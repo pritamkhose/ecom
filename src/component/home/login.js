@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table, Container } from "react-bootstrap";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import axios from "axios";
 
@@ -143,6 +143,18 @@ class Login extends Component {
           <tr>
             <td>Last Login Time</td>
             <td>{localStorage.getItem("loginTime")}</td>
+          </tr>
+          <tr>
+            <td>
+              <Link to="/address" className="btn btn-primary">
+                My Address
+              </Link>
+            </td>
+            <td>
+              <Link to="/orders" className="btn btn-primary">
+              Order History
+              </Link>
+            </td>
           </tr>
           <tr>
             <td colSpan="2"></td>

@@ -34,3 +34,19 @@ https://dev.to/igor_bykov/react-calling-functional-components-as-functions-1d3l
 
 https://reactjs.org/docs/hooks-state.html
 
+https://bezkoder.com/react-hooks-crud-axios-api/
+
+-----------------------------------------------------------------------------------
+
+https://dashboard.razorpay.com/app/payments
+
+https://dev.to/soumyadey/integrate-razorpay-in-your-react-app-2nib
+
+https://github.com/Soumya-Dey/Razorpay-payment-gateway-react-node
+
+https://razorpay.com/docs/payment-gateway/server-integration/nodejs/usage/
+
+https://razorpay.com/docs/payment-gateway/payment-flow/
+
+https://razorpay.com/docs/payment-gateway/payments/capture-settings/#auto-capture-all-payments
+-----------------------------------------------------------------------------------

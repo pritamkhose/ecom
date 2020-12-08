@@ -51,6 +51,7 @@ app.use(
 app.use(require('body-parser').json())
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/mongoclient', require('./routes/mongoclient'));
+app.use('/api/razorpay/payment/', require('./routes/razorpay'));
 
 app.get("/api", (req, res) => {
   res.json({
