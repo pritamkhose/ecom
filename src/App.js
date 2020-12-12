@@ -24,6 +24,7 @@ import ProductDetails from "./component/product/Detail";
 import Cart from "./component/product/Cart";
 import CartCount from "./component/product/CartCount";
 import Address from "./component/product/Address";
+import AddressEdit from "./component/product/AddressEdit";
 import OrderHistory from "./component/product/OrderHistory";
 import OrderConfirm from "./component/product/OrderConfirm";
 
@@ -164,15 +165,20 @@ class App extends Component {
                 <About />
               </div>
             </Route>
-            <Route path="/cart">
+            <Route exact path="/cart">
               <Badge variant="primary">Cart</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <Cart />
               </div>
             </Route>
-            <Route path="/address">
+            <Route exact path="/address">
               <div style={{ minHeight: this.state.minHight }}>
                 <Address />
+              </div>
+            </Route>
+            <Route exact path="/address/:id">
+              <div style={{ minHeight: this.state.minHight }}>
+                <AddressEdit />
               </div>
             </Route>
             <Route path="/orders">

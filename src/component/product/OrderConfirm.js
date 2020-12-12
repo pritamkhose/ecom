@@ -29,8 +29,8 @@ const OrderConfirm = (props) => {
         )
         .then(
           (response) => {
-            localStorage.setItem("cart", JSON.stringify(response.data.cart));
-            setCart(response.data.cart);
+            localStorage.setItem("cart", JSON.stringify(response.data.data));
+            setCart(response.data.data);
           },
           (error) => {
             console.log(error);

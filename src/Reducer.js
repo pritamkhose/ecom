@@ -52,13 +52,13 @@ const Reducer = (state, action) => {
       const indexUpdate = state.basket.findIndex(
         (basketItem) => basketItem._id === action.item._id
       );
-      var temp = [...state.basket];
-      temp[indexUpdate] = action.item;
-      localStorage.setItem("cart", JSON.stringify(temp));
-      updateCart(temp);
+      var tempUpdate = [...state.basket];
+      tempUpdate[indexUpdate] = action.item;
+      localStorage.setItem("cart", JSON.stringify(tempUpdate));
+      updateCart(tempUpdate);
       return {
         ...state,
-        basket: temp,
+        basket: tempUpdate,
       };
 
     case "EMPTY_BASKET":
@@ -109,7 +109,7 @@ const Reducer = (state, action) => {
           baseURL +
             "mongoclient/updateone?collection=cart&id=" +
             localStorage.getItem("uid"),
-          { cart: obj }
+          { data: obj }
         )
         .then(
           (response) => {

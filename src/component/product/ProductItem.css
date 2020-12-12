@@ -55,3 +55,15 @@
 .link:hover {
   color: #fff;
 }
+
+.AddrLineText {
+  margin: 0px;
+  padding: 0px;
+  text-align: left!important;
+}
+
+.CardAddress {
+  padding: 10px;
+  margin: 4px;
+  margin-bottom: 10px;
+}

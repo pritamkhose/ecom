@@ -80,7 +80,7 @@ class Login extends Component {
         : "") + "/api/";
     axios.post(baseURL + "mongoclient/id?collection=cart&id=" + uid, {}).then(
       (response) => {
-        localStorage.setItem("cart", JSON.stringify(response.data.cart));
+        localStorage.setItem("cart", JSON.stringify(response.data.data));
         this.props.updateLogin();
         this.props.history.push("/");
       },

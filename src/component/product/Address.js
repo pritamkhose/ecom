@@ -1,69 +1,119 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { Spinner, Badge } from "reactstrap";
 import "./ProductItem.css";
+import { Card, Spinner, Badge } from "reactstrap";
 import axios from "axios";
+import addaddress from "../../image/addaddress.svg";
 
-class Address extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      aObj: {},
-      isLogined: localStorage.getItem("uid") ? true : false,
-    };
+const Address = (props) => {
+  const [address, setAddress] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+
+  useEffect(() => {
     if (localStorage.getItem("uid")) {
-      this.getData(localStorage.getItem("uid"));
+      var baseURL =
+        (process.env.REACT_APP_API_URL !== undefined
+          ? process.env.REACT_APP_API_URL
+          : "") + "/api/";
+      setLoading(true);
+      axios
+        .post(
+          baseURL +
+            "mongoclient/id?collection=address&id=" +
+            localStorage.getItem("uid"),
+          {}
+        )
+        .then(
+          (response) => {
+            setLoading(false);
+            setAddress(response.data);
+            response.data !== undefined
+              ? <p></p>
+              : setEmptyAddress(props);
+          },
+          (error) => {
+            setLoading(false);
+            setAddress([]);
+          }
+        );
     } else {
-      this.props.history.push("/login");
+      props.history.push("/login");
     }
-  }
+  }, []);
 
-  getData(id) {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
-    axios.post(baseURL + "mongoclient/id?collection=address&id=" + id, {}).then(
-      (response) => {
-        this.setState({ aObj: response.data });
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+  return (
+    <div>
+      <Badge variant="primary">Address</Badge>
+      {isLoading ? showLoading() : showData(address.data, props)}
+    </div>
+  );
+};
 
-  render() {
-    return (
-      <div>
-        <Badge variant="primary">Address</Badge>
-        {this.state.aObj === undefined
-          ? this.showLoading()
-          : this.showData(this.state.aObj)}
-      </div>
-    );
-  }
+const showLoading = () => {
+  return (
+    <div className="text-center py-3">
+      <Spinner animation="border" role="status" variant="primary" />
+    </div>
+  );
+};
 
-  showLoading() {
-    return (
-      <div className="text-center py-3">
-        <Spinner animation="border" role="status" variant="info">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  }
+const openLink = (props, id) => {
+  props.history.push("/address/" + id);
+};
 
-  isMobile() {
-    var isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
-      navigator.userAgent.toLowerCase()
-    );
-    return isMobile;
-  }
+const setEmptyAddress = (props) => {
+  return (
+    <Card className="Card" key="empty" onClick={() => openLink(props, "new")}>
+      <h5>
+        <img
+          src={addaddress}
+          alt="Cart"
+          height="50"
+          width="50"
+          style={{ margin: 20 }}
+        ></img>
+        <br />
+        Add Address
+      </h5>
+    </Card>
+  );
+};
 
-  showData(data) {
-    return <p>{data}</p>;
-  }
-}
+const showData = (data, props) => {
+  return (
+    <div className="text-center py-3">
+      {setEmptyAddress(props)}
+      {data?.map((item, i) => (
+        <Card
+          className="CardAddress"
+          key={i}
+          onClick={() => openLink(props, i)}
+        >
+          <h5 className="AddrLineText">
+            {item["firstName"] + " " + item["lastName"]}
+          </h5>
+          <p className="AddrLineText">
+            <b>Mobile No : </b>
+            {item["mobileno"]}
+          </p>
+          <p className="AddrLineText">
+            {item["atype"] !== undefined ? item["atype"] : null}
+          </p>
+          <p className="AddrLineText">{item["address"]}</p>
+          <p className="AddrLineText">
+            {item["landmark"] !== undefined ? item["landmark"] : null}
+          </p>
+          <p className="AddrLineText">{item["area"]}</p>
+          <p className="AddrLineText">
+            {item["city"] + " - " + item["pincode"]}
+          </p>
+          <p className="AddrLineText">
+            {item["state"] + ", " + item["country"]}
+          </p>
+        </Card>
+      ))}
+    </div>
+  );
+};
 
 export default withRouter(Address);
