@@ -317,7 +317,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\" : \"eg53@rediff.com\"\r\n}",
+							"raw": "{\r\n    \"email\" : \"pritamkhose@gmail.com\",\r\n    \"info\" : {\r\n        \"name\" :\"pritamkhose\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -460,6 +460,112 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "updateone",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"atype\": \"Home\",\r\n  \"city\": \"Ahmednagar\",\r\n  \"firstName\": \"Priyanka\",\r\n  \"lastName\": \"Khose\",\r\n  \"mobileno\": \"8421365845\",\r\n  \"address\": \"42, Ambikanagar, Kedgaon Ahmednagar Maharashtra 414005\",\r\n  \"area\": \"Chch\",\r\n  \"country\": \"India\",\r\n  \"pincode\": \"414005\",\r\n  \"state\": \"MAHARASHTRA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient/updateone?collection=address&id=5fb277be6625c10055afc5b9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient",
+								"updateone"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "address"
+								},
+								{
+									"key": "id",
+									"value": "5fb277be6625c10055afc5b9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get address id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"search\": {\r\n        \"uid\": \"5fb277be6625c10055afc5b9\",\r\n        \"addrid\": \"pfadttpsr\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient?collection=address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "address"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient/delete?collection=address&id=5fd5f9c0ff28d237bc433b2a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "address"
+								},
+								{
+									"key": "id",
+									"value": "5fd5f9c0ff28d237bc433b2a"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -482,6 +588,281 @@
 							""
 						]
 					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "http://localhost:3000/api/razorpay/payment/orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": \"10100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/razorpay/payment/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"razorpay",
+								"payment",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/api/razorpay/payment/success",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/razorpay/payment/success",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"razorpay",
+								"payment",
+								"success"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Razorpay",
+			"item": [
+				{
+					"name": "Fetch Orders",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "0vFjiVy7REfZMW4m7oCDC2dB",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "rzp_test_piBaUtLnjBNwoK",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.razorpay.com/v1/orders?count=100&skip=0",
+							"protocol": "https",
+							"host": [
+								"api",
+								"razorpay",
+								"com"
+							],
+							"path": [
+								"v1",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "100"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Orders by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "0vFjiVy7REfZMW4m7oCDC2dB",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "rzp_test_piBaUtLnjBNwoK",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.razorpay.com/v1/orders/order_G9gyYlxDOEvM3R",
+							"protocol": "https",
+							"host": [
+								"api",
+								"razorpay",
+								"com"
+							],
+							"path": [
+								"v1",
+								"orders",
+								"order_G9gyYlxDOEvM3R"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Payments by Order",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "0vFjiVy7REfZMW4m7oCDC2dB",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "rzp_test_piBaUtLnjBNwoK",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.razorpay.com/v1/orders/order_G9gyYlxDOEvM3R/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"razorpay",
+								"com"
+							],
+							"path": [
+								"v1",
+								"orders",
+								"order_G9gyYlxDOEvM3R",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 1000000,\n  \"currency\": \"INR\",\n  \"receipt\": \"Receipt no. 1\",\n  \"payment_capture\": 1,\n  \"notes\": {\n    \"notes_key_1\": \"Tea, Earl Grey, Hot\",\n    \"notes_key_2\": \"Tea, Earl Grey… decaf.\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.razorpay.com/v1/orders",
+							"protocol": "https",
+							"host": [
+								"api",
+								"razorpay",
+								"com"
+							],
+							"path": [
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": {\n    \"notes_key_1\": \"Beam me up Scotty\",\n    \"notes_key_2\": \"Engage\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.razorpay.com/v1/orders/{order_id}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"razorpay",
+								"com"
+							],
+							"path": [
+								"v1",
+								"orders",
+								"{order_id}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}

@@ -175,7 +175,7 @@ router.put("/updateone", (req, res) => {
 var createObjByID = function (req, res, db, collectionname, client) {
   var reqbody = {
     _id: new mongodb.ObjectID(req.query.id),
-    data: req.body.data
+    data: req.body.data,
   };
   db.collection(collectionname).insert(reqbody, function (findErr, result) {
     if (!findErr) {
@@ -189,5 +189,89 @@ var createObjByID = function (req, res, db, collectionname, client) {
     client.close();
   });
 };
+
+// insert one
+router.put("/insert", (req, res) => {
+  if (!req.query.collection) {
+    return res
+      .status(422)
+      .json({ error: "Collection name is missing in Request parameter" });
+  }
+
+  if (!req.body) {
+    return res.status(422).json({ error: "Request body is missingr" });
+  }
+
+  MongoClient.connect(process.env.mongoURL, function (err, client) {
+    if (!err) {
+      var db = client.db(process.env.mongoDB);
+      db.collection(req.query.collection).insertOne(
+        req.body,
+        function (findErr, result) {
+          if (!findErr) {
+            if (result.result.nModified === 0) {
+              res.status(201).json(result);
+            } else {
+              res.status(200).json(result);
+            }
+          } else {
+            res.status(500).json({
+              error: "Collection Error",
+              error_message: findErr,
+            });
+          }
+          client.close();
+        }
+      );
+    } else {
+      res.status(500).json({
+        error: "Database Connection Error",
+        error_message: err,
+      });
+    }
+  });
+});
+
+// delete one
+router.delete("/delete", (req, res) => {
+  if (!req.query.collection) {
+    return res
+      .status(422)
+      .json({ error: "Collection name is missing in Request parameter" });
+  }
+
+  if (!req.query.id) {
+    return res
+      .status(422)
+      .json({ error: "ID is missing in Request parameter" });
+  }
+
+  MongoClient.connect(process.env.mongoURL, function (err, client) {
+    if (!err) {
+      var db = client.db(process.env.mongoDB);
+      db.collection(req.query.collection).deleteOne(
+        {
+          _id: new mongodb.ObjectID(req.query.id),
+        },
+        function (findErr, result) {
+          if (!findErr) {
+            res.status(200).json(result);
+          } else {
+            res.status(500).json({
+              error: "Collection Error",
+              error_message: findErr,
+            });
+          }
+          client.close();
+        }
+      );
+    } else {
+      res.status(500).json({
+        error: "Database Connection Error",
+        error_message: err,
+      });
+    }
+  });
+});
 
 module.exports = router;

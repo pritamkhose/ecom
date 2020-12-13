@@ -17,19 +17,16 @@ const Address = (props) => {
           : "") + "/api/";
       setLoading(true);
       axios
-        .post(
-          baseURL +
-            "mongoclient/id?collection=address&id=" +
-            localStorage.getItem("uid"),
-          {}
-        )
+        .post(baseURL + "mongoclient?collection=address", {
+          search: {
+            uid: localStorage.getItem("uid"),
+          },
+        })
         .then(
           (response) => {
             setLoading(false);
             setAddress(response.data);
-            response.data !== undefined
-              ? <p></p>
-              : setEmptyAddress(props);
+            response.data !== undefined ? <p></p> : setEmptyAddress(props);
           },
           (error) => {
             setLoading(false);
@@ -44,7 +41,42 @@ const Address = (props) => {
   return (
     <div>
       <Badge variant="primary">Address</Badge>
-      {isLoading ? showLoading() : showData(address.data, props)}
+      {isLoading ? (
+        showLoading()
+      ) : (
+        <div className="text-center py-3">
+          {setEmptyAddress(props)}
+          {address?.map((item, i) => (
+            <Card
+              className="CardAddress"
+              key={i}
+              onClick={() => openLink(props, item["addrid"])}
+            >
+              <h5 className="AddrLineText">
+                {item["firstName"] + " " + item["lastName"]}
+              </h5>
+              <p className="AddrLineText">
+                <b>Mobile No : </b>
+                {item["mobileno"]}
+              </p>
+              <p className="AddrLineText">
+                {item["atype"] !== undefined ? item["atype"] : null}
+              </p>
+              <p className="AddrLineText">{item["address"]}</p>
+              <p className="AddrLineText">
+                {item["landmark"] !== undefined ? item["landmark"] : null}
+              </p>
+              <p className="AddrLineText">{item["area"]}</p>
+              <p className="AddrLineText">
+                {item["city"] + " - " + item["pincode"]}
+              </p>
+              <p className="AddrLineText">
+                {item["state"] + ", " + item["country"]}
+              </p>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -76,43 +108,6 @@ const setEmptyAddress = (props) => {
         Add Address
       </h5>
     </Card>
-  );
-};
-
-const showData = (data, props) => {
-  return (
-    <div className="text-center py-3">
-      {setEmptyAddress(props)}
-      {data?.map((item, i) => (
-        <Card
-          className="CardAddress"
-          key={i}
-          onClick={() => openLink(props, i)}
-        >
-          <h5 className="AddrLineText">
-            {item["firstName"] + " " + item["lastName"]}
-          </h5>
-          <p className="AddrLineText">
-            <b>Mobile No : </b>
-            {item["mobileno"]}
-          </p>
-          <p className="AddrLineText">
-            {item["atype"] !== undefined ? item["atype"] : null}
-          </p>
-          <p className="AddrLineText">{item["address"]}</p>
-          <p className="AddrLineText">
-            {item["landmark"] !== undefined ? item["landmark"] : null}
-          </p>
-          <p className="AddrLineText">{item["area"]}</p>
-          <p className="AddrLineText">
-            {item["city"] + " - " + item["pincode"]}
-          </p>
-          <p className="AddrLineText">
-            {item["state"] + ", " + item["country"]}
-          </p>
-        </Card>
-      ))}
-    </div>
   );
 };
 
