@@ -26,7 +26,6 @@ const Address = (props) => {
           (response) => {
             setLoading(false);
             setAddress(response.data);
-            response.data !== undefined ? <p></p> : setEmptyAddress(props);
           },
           (error) => {
             setLoading(false);

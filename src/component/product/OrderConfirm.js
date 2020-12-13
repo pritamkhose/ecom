@@ -6,14 +6,18 @@ import { getBasketTotal } from "../../Reducer";
 
 import axios from "axios";
 
-import { Button, Card, Row, Col } from "react-bootstrap";
+import { Button, Card, Spinner, Badge, Row, Col } from "react-bootstrap";
 import OrderItem from "./OrderItem";
 import logo from "./../../image/logo.svg";
 
 const OrderConfirm = (props) => {
-  const [{ basket }] = useStateValue();
-
+  const [{ basket }, dispatch] = useStateValue();
   const [cart, setCart] = useState([]);
+
+  const [address, setAddress] = useState([]);
+  const [choiceAddress, setChoiceAddress] = useState("");
+  const [isLoading, setLoading] = useState(false);
+
   useEffect(() => {
     if (localStorage.getItem("uid")) {
       var baseURL =
@@ -37,6 +41,23 @@ const OrderConfirm = (props) => {
             setCart([]);
           }
         );
+      setLoading(true);
+      axios
+        .post(baseURL + "mongoclient?collection=address", {
+          search: {
+            uid: localStorage.getItem("uid"),
+          },
+        })
+        .then(
+          (response) => {
+            setLoading(false);
+            setAddress(response.data);
+          },
+          (error) => {
+            setLoading(false);
+            setAddress([]);
+          }
+        );
     } else {
       props.history.push("/login");
     }
@@ -57,6 +78,10 @@ const OrderConfirm = (props) => {
   }
 
   async function displayRazorpay() {
+    var delAddr = address.find((element) => {
+      return element.addrid === choiceAddress;
+    });
+
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined
         ? process.env.REACT_APP_API_URL
@@ -72,7 +97,7 @@ const OrderConfirm = (props) => {
     }
 
     const result = await axios.post(baseURL + "payment/orders", {
-      amount: getBasketTotal(basket) //+ "00",
+      amount: getBasketTotal(basket),
     });
 
     if (!result) {
@@ -80,14 +105,16 @@ const OrderConfirm = (props) => {
       return;
     }
 
-    const { amount, id: order_id, currency, receipt } = result.data;
+    const { amount, id: order_id, currency, receipt } = result.data.order;
+    const razorpayPaymentKey = result.data.razorpayPaymentKey;
+    const serverdate = result.data.serverdate;
 
     const options = {
-      key: "rzp_test_piBaUtLnjBNwoK", // Enter the Key ID generated from the Dashboard
+      key: razorpayPaymentKey, // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
       name: "Pritam Ecom",
-      description: "Pay-" + new Date(),
+      description: "Pay-" + serverdate,
       image: { logo },
       order_id: order_id,
       handler: async function (response) {
@@ -96,29 +123,43 @@ const OrderConfirm = (props) => {
           razorpayPaymentId: response.razorpay_payment_id,
           razorpayOrderId: response.razorpay_order_id,
           razorpaySignature: response.razorpay_signature,
+          receipt: receipt,
+          amount: amount.toString(),
+          currency: currency,
+          serverdate,
+          userdate: new Date().toISOString(),
+          uid: localStorage.getItem("uid"),
+          name: delAddr.firstName + " " + delAddr.lastName,
+          email: localStorage.getItem("email"),
+          contact: delAddr.mobileno,
+          address: delAddr,
+          product: cart,
         };
 
         const result = await axios.post(baseURL + "payment/success", data);
 
         if (result.data.msg === "success") {
           setCart([]);
-          localStorage.setItem("cart", JSON.stringify([]));
+          dispatch({
+            type: "EMPTY_BASKET",
+          });
           props.history.push("/orders");
-          alert("Your order " + result.data.orderId + " is successful put with us!");
+          alert(
+            "Your order " + result.data.orderId + " is successful put with us!"
+          );
         } else {
           alert(result.data.msg);
         }
       },
       prefill: {
-        name: localStorage.getItem("name"),
+        name: delAddr.firstName + " " + delAddr.lastName,
         email: localStorage.getItem("email"),
-        contact: "9999999999",
+        contact: delAddr.mobileno,
       },
       notes: {
         order_id: order_id,
         receipt: receipt,
-        date: new Date().toISOString(),
-        address: "Soumya Dey Corporate Office",
+        uid: localStorage.getItem("uid"),
       },
       theme: {
         color: "#61dafb",
@@ -129,46 +170,139 @@ const OrderConfirm = (props) => {
     paymentObject.open();
   }
 
-  return (
-    <>
-      {basket === null || basket === undefined || basket.length === 0 ? (
-        <div className="center">
-          <h3>Your cart is Empty!</h3>
-          <img src={logo} alt={logo} height="200" className="center"></img>
-          <br />
-          <Link
-            to="/"
-            className="btn btn-primary"
-            style={{ color: "rgba(0,0,0,.5)" }}
+  async function selectAddress(item) {
+    setChoiceAddress(item.addrid, () => {
+      showAddress();
+    });
+  }
+
+  function showAddress() {
+    return (
+      <div>
+        {address.length !== 0 ? (
+          <Badge variant="success">Select a delivery address</Badge>
+        ) : null}
+        {address?.map((item, i) => (
+          <Card
+            className="CardAddress"
+            key={i}
+            style={{
+              background: choiceAddress === item["addrid"] ? "#8bf1de" : "none",
+            }}
+            onClick={() => selectAddress(item)}
           >
-            Continue Shopping
-          </Link>
-        </div>
+            <h5 className="AddrLineText">
+              {item["firstName"] + " " + item["lastName"]}
+            </h5>
+            <p className="AddrLineText">
+              <b>Mobile No : </b>
+              {item["mobileno"]}
+            </p>
+            <p className="AddrLineText">
+              {item["atype"] !== undefined ? item["atype"] : null}
+            </p>
+            <p className="AddrLineText">{item["address"]}</p>
+            <p className="AddrLineText">
+              {item["landmark"] !== undefined ? item["landmark"] : null}
+            </p>
+            <p className="AddrLineText">{item["area"]}</p>
+            <p className="AddrLineText">
+              {item["city"] + " - " + item["pincode"]}
+            </p>
+            <p className="AddrLineText">
+              {item["state"] + ", " + item["country"]}
+            </p>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <Badge variant="primary">Order Review</Badge>
+      {isLoading ? (
+        showLoading()
       ) : (
         <>
-          {basket?.map((item) => (
-            <OrderItem value={item} key={item._id} />
-          ))}
-          <Card className="Card" style={{ padding: "10px" }}>
-            <Row style={{ margin: "0px" }}>
-              <Col>
-                <h5 style={{ textAlign: "center" }}>{basket.length} Items</h5>
-              </Col>
-              <Col>
-                <h5 style={{ textAlign: "center" }}>
-                  {getBasketTotal(basket)} ₹{" "}
-                </h5>
-              </Col>
-              <Col>
-                <Button style={{ width: "100%" }} onClick={displayRazorpay}>
-                  PAY WITH RAZORPAY
-                </Button>
-              </Col>
-            </Row>
-          </Card>
+          {basket === null || basket === undefined || basket.length === 0 ? (
+            <div className="center">
+              <h3>Your cart is Empty!</h3>
+              <img src={logo} alt={logo} height="200" className="center"></img>
+              <br />
+              <Link
+                to="/"
+                className="btn btn-primary"
+                style={{ color: "rgba(0,0,0,.5)" }}
+              >
+                Continue Shopping
+              </Link>
+            </div>
+          ) : (
+            <>
+              {basket?.map((item) => (
+                <OrderItem value={item} key={item._id} />
+              ))}
+              {showAddress()}
+              <Card className="Card" style={{ padding: "10px" }}>
+                <Row style={{ margin: "0px" }}>
+                  <Col>
+                    <h5 style={{ textAlign: "center" }}>
+                      {basket.length} Items
+                    </h5>
+                  </Col>
+                  <Col>
+                    <h5 style={{ textAlign: "center" }}>
+                      {getBasketTotal(basket)} ₹{" "}
+                    </h5>
+                  </Col>
+                  <Col>
+                    {address.length === 0 ? (
+                      <Button
+                        style={{
+                          width: "100%",
+                          background: "#dc3545",
+                          border: "#dc3545",
+                        }}
+                        onClick={() => props.history.push("/address")}
+                      >
+                        Add Delivery Address
+                      </Button>
+                    ) : choiceAddress !== undefined &&
+                      choiceAddress.length > 2 ? (
+                      <Button
+                        style={{ width: "100%" }}
+                        onClick={displayRazorpay}
+                      >
+                        Pay with RAZORPAY
+                      </Button>
+                    ) : (
+                      <Button
+                        style={{
+                          width: "100%",
+                          background: "#28a745",
+                          border: "#28a745",
+                        }}
+                      >
+                        Select a delivery address
+                      </Button>
+                    )}
+                  </Col>
+                </Row>
+              </Card>
+            </>
+          )}
         </>
       )}
-    </>
+    </div>
+  );
+};
+
+const showLoading = () => {
+  return (
+    <div className="text-center py-3">
+      <Spinner animation="border" role="status" variant="primary" />
+    </div>
   );
 };
 

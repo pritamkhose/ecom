@@ -62,7 +62,8 @@ const Reducer = (state, action) => {
       };
 
     case "EMPTY_BASKET":
-      localStorage.setItem("cart", []);
+      localStorage.setItem("cart", JSON.stringify([]));
+      updateCart([])
       return {
         ...state,
         basket: [],

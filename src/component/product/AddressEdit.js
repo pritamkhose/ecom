@@ -49,7 +49,7 @@ class AddressEdit extends Component {
                 },
                 function () {
                   if (
-                    this.state.address.length == 1 &&
+                    this.state.address.length === 1 &&
                     this.state.address[0]["addrid"] === this.state.addressID
                   ) {
                   } else {

@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
+var mongodb = require("mongodb");
+var MongoClient = mongodb.MongoClient;
 
 const PaymentDetailsSchema = mongoose.Schema({
   razorpayDetails: {
@@ -28,7 +30,7 @@ router.post("/orders", async (req, res) => {
     });
 
     const options = {
-      amount: req.body.amount,
+      amount: req.body.amount + "00",
       currency: "INR",
       receipt: getRandomNo(),
     };
@@ -37,7 +39,11 @@ router.post("/orders", async (req, res) => {
 
     if (!order) return res.status(500).json({ msg: "Some error occured" });
 
-    res.status(200).json(order);
+    res.status(200).json({
+      order,
+      razorpayPaymentKey: process.env.RAZORPAY_KEY_ID,
+      serverdate: new Date().toISOString(),
+    });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -81,6 +87,8 @@ router.post("/success", async (req, res) => {
 
     await newPayment.save();
 
+    savePayment(req.body);
+
     res.json({
       msg: "success",
       orderId: razorpayOrderId,
@@ -90,5 +98,29 @@ router.post("/success", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+var savePayment = function (body) {
+  MongoClient.connect(process.env.mongoURL, function (err, client) {
+    if (!err) {
+      var db = client.db(process.env.mongoDB);
+      db.collection("orders").insertOne(body, function (findErr, result) {
+        if (!findErr) {
+          // console.log(result);
+        } else {
+          console.log({
+            error: "Collection Error",
+            error_message: findErr,
+          });
+        }
+        client.close();
+      });
+    } else {
+      console.log({
+        error: "Database Connection Error",
+        error_message: err,
+      });
+    }
+  });
+};
 
 module.exports = router;

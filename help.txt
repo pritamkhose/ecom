@@ -55,3 +55,9 @@ https://final-form.org/docs/react-final-form/examples/field-level-validation
 
 https://codesandbox.io/s/z9525
 
+-----------------------------------------------------------------------------------
+https://react-bootstrap.github.io/components/badge/
+
+https://react-bootstrap.github.io/components/spinners/
+
+-----------------------------------------------------------------------------------
