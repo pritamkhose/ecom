@@ -71,3 +71,6 @@ https://react-bootstrap.github.io/components/badge/
 https://react-bootstrap.github.io/components/spinners/
 
 -----------------------------------------------------------------------------------
+
+https://fkhadra.github.io/react-toastify/introduction
+

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ProductItem from "./ProductItem";
 import { Row, Spinner } from "react-bootstrap";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 export default class List extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ export default class List extends Component {
             {items}
           </Row>
         )}
+        <ToastContainer />
       </>
     );
   }

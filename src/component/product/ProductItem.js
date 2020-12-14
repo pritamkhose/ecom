@@ -6,6 +6,9 @@ import "./ProductItem.css";
 import logo from "../../image/logo.svg";
 import { withRouter } from "react-router-dom";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const MAX_LENGTH = 36;
 
 const ProductItem = (props) => {
@@ -18,6 +21,15 @@ const ProductItem = (props) => {
     dispatch({
       type: "ADD_TO_BASKET",
       item: obj,
+    });
+    toast.success("🛒 " + obj.product, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
     });
   };
 

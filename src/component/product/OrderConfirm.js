@@ -4,6 +4,9 @@ import { withRouter } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
 import { getBasketTotal } from "../../Reducer";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import axios from "axios";
 
 import { Button, Card, Spinner, Badge, Row, Col } from "react-bootstrap";
@@ -150,10 +153,17 @@ const OrderConfirm = (props) => {
           dispatch({
             type: "EMPTY_BASKET",
           });
-          props.history.push("/orders");
-          alert(
-            "Your order " + result.data.orderId + " is successful put with us!"
-          );
+          toast("🚀 Your order " + result.data.orderId + " is successful put with us!", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+            props.history.push("/orders");
+            alert("🚀 Your order " + result.data.orderId + " is successful put with us!");
         } else {
           alert(result.data.msg);
         }
@@ -299,6 +309,7 @@ const OrderConfirm = (props) => {
           )}
         </>
       )}
+      <ToastContainer />
     </div>
   );
 };

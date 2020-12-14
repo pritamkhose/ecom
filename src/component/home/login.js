@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Table, Container } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import axios from "axios";
 
 import FacebookLogin from "react-facebook-login";
@@ -83,9 +86,9 @@ class Login extends Component {
     axios.post(baseURL + "mongoclient/id?collection=cart&id=" + uid, {}).then(
       (response) => {
         var data = response.data.data;
-        data !== undefined && data !== null 
-        ? localStorage.setItem("cart", JSON.stringify(response.data.data)) 
-        : localStorage.setItem("cart", [])
+        data !== undefined && data !== null
+          ? localStorage.setItem("cart", JSON.stringify(response.data.data))
+          : localStorage.setItem("cart", []);
         this.props.updateLogin();
         this.props.history.push("/");
       },
@@ -102,6 +105,15 @@ class Login extends Component {
       accessToken: "",
     }));
     localStorage.clear();
+    toast.warn("Logout", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     this.props.updateLogin();
     this.props.history.push("/");
   }
@@ -138,7 +150,7 @@ class Login extends Component {
             <td colSpan="2">
               <img
                 src={localStorage.getItem("imageUrl")}
-                alt={this.state.name}
+                alt=""
                 height="150"
                 width="150"
               ></img>
@@ -190,6 +202,7 @@ class Login extends Component {
                 onLogoutSuccess={this.logout}
                 onFailure={this.handleLogoutFailure}
               ></GoogleLogout>
+              <ToastContainer />
             </>
           ) : (
             <div>
