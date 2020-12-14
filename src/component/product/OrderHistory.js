@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./ProductItem.css";
 import { Card, Spinner, Badge } from "reactstrap";
 import axios from "axios";
+
 import OrderItem from "./OrderItem";
+import CartEmpty from "./CartEmpty";
 
 const OrderHistory = (props) => {
   const [orders, setOrders] = useState([]);
@@ -25,7 +27,13 @@ const OrderHistory = (props) => {
         .then(
           (response) => {
             setLoading(false);
-            setOrders(response.data);
+            if (
+              response.data !== undefined &&
+              response.data !== null &&
+              response.data !== ""
+            ) {
+              setOrders(response.data);
+            }
           },
           (error) => {
             setLoading(false);
@@ -99,6 +107,16 @@ const OrderHistory = (props) => {
               </Card>
             </Card>
           ))}
+          {orders.length === 0 ? (
+            <>
+              <Card className="Card" key="empty">
+                <br />
+                <h5>We are looking forward to receive your order.</h5>
+                <br />
+              </Card>
+              <CartEmpty />
+            </>
+          ) : null}
         </div>
       )}
     </div>
@@ -111,10 +129,6 @@ const showLoading = () => {
       <Spinner animation="border" role="status" variant="primary" />
     </div>
   );
-};
-
-const openLink = (props, id) => {
-  props.history.push("/address/" + id);
 };
 
 export default withRouter(OrderHistory);

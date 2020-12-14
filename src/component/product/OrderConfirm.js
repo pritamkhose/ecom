@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { useStateValue } from "../../StateProvider";
 import { getBasketTotal } from "../../Reducer";
@@ -8,6 +8,7 @@ import axios from "axios";
 
 import { Button, Card, Spinner, Badge, Row, Col } from "react-bootstrap";
 import OrderItem from "./OrderItem";
+import CartEmpty from "./CartEmpty";
 import logo from "./../../image/logo.svg";
 
 const OrderConfirm = (props) => {
@@ -51,7 +52,13 @@ const OrderConfirm = (props) => {
         .then(
           (response) => {
             setLoading(false);
-            setAddress(response.data);
+            if (
+              response.data !== undefined &&
+              response.data !== null &&
+              response.data !== ""
+            ) {
+              setAddress(response.data);
+            }
           },
           (error) => {
             setLoading(false);
@@ -226,18 +233,16 @@ const OrderConfirm = (props) => {
       ) : (
         <>
           {basket === null || basket === undefined || basket.length === 0 ? (
-            <div className="center">
-              <h3>Your cart is Empty!</h3>
-              <img src={logo} alt={logo} height="200" className="center"></img>
-              <br />
-              <Link
-                to="/"
-                className="btn btn-primary"
-                style={{ color: "rgba(0,0,0,.5)" }}
-              >
-                Continue Shopping
-              </Link>
-            </div>
+            <>
+              <Card className="Card" key="empty">
+                <br />
+                <h5 style={{ textAlign: "center" }}>
+                  We are looking forward to receive your order.
+                </h5>
+                <br />
+              </Card>
+              <CartEmpty />
+            </>
           ) : (
             <>
               {basket?.map((item) => (

@@ -2,9 +2,9 @@ import axios from "axios";
 
 export const initialState = {
   basket:
-    localStorage.getItem("cart") == null
-      ? []
-      : JSON.parse(localStorage.getItem("cart")),
+    localStorage.getItem("cart") !== undefined && localStorage.getItem("cart") !== null 
+      ? JSON.parse(localStorage.getItem("cart")) 
+      : [],
   user: null,
 };
 

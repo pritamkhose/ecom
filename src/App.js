@@ -86,11 +86,8 @@ class App extends Component {
                 <Link to={"/"} className="nav-link">
                   Home
                 </Link>
-                <Link to={"/post"} className="nav-link">
-                  Posts
-                </Link>
-                <Link to={"/customers"} className="nav-link">
-                  Customers
+                <Link to={"/orders"} className="nav-link">
+                  Orders
                 </Link>
                 <Link to={"/about"} className="nav-link">
                   About
@@ -104,11 +101,7 @@ class App extends Component {
                     className="nav-link"
                     style={{ float: "end", color: "rgba(0,0,0,.5)" }}
                   >
-                    <img
-                      src={this.state.imageUrl}
-                      alt=""
-                      height="30"
-                    ></img>
+                    <img src={this.state.imageUrl} alt="" height="30"></img>
                     {" " + this.state.name}
                   </Link>
                 </>

@@ -3,7 +3,9 @@ import { withRouter } from "react-router-dom";
 import "./ProductItem.css";
 import { Card, Spinner, Badge } from "reactstrap";
 import axios from "axios";
+
 import addaddress from "../../image/addaddress.svg";
+import CartEmpty from "./CartEmpty";
 
 const Address = (props) => {
   const [address, setAddress] = useState([]);
@@ -25,7 +27,13 @@ const Address = (props) => {
         .then(
           (response) => {
             setLoading(false);
-            setAddress(response.data);
+            if (
+              response.data !== undefined &&
+              response.data !== null &&
+              response.data !== ""
+            ) {
+              setAddress(response.data);
+            }
           },
           (error) => {
             setLoading(false);
@@ -45,6 +53,7 @@ const Address = (props) => {
       ) : (
         <div className="text-center py-3">
           {setEmptyAddress(props)}
+          {address.length === 0 ? <CartEmpty /> : null}
           {address?.map((item, i) => (
             <Card
               className="CardAddress"

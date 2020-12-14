@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { Card, Row, Col } from "react-bootstrap";
 import CartItem from "./CartItem";
-import logo from "./../../image/logo.svg";
+import CartEmpty from "./CartEmpty";
 
 const Cart = (props) => {
   const [{ basket }] = useStateValue();
@@ -43,18 +43,7 @@ const Cart = (props) => {
   return (
     <>
       {basket === null || basket === undefined || basket.length === 0 ? (
-        <div className="center">
-          <h3>Your cart is Empty!</h3>
-          <img src={logo} alt={logo} height="200" className="center"></img>
-          <br />
-          <Link
-            to="/"
-            className="btn btn-primary"
-            style={{ color: "rgba(0,0,0,.5)" }}
-          >
-            Continue Shopping
-          </Link>
-        </div>
+         <CartEmpty/>
       ) : (
         <>
           {basket?.map((item) => (
