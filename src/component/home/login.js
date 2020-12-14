@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 
 import axios from "axios";
 
+import FacebookLogin from "react-facebook-login";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -24,6 +25,7 @@ class Login extends Component {
     this.handleLoginFailure = this.handleLoginFailure.bind(this);
     this.logout = this.logout.bind(this);
     this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
+    this.handleLoginFacebook = this.handleLoginFacebook.bind(this);
   }
 
   login(response) {
@@ -36,11 +38,9 @@ class Login extends Component {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("email", response.profileObj.email);
       localStorage.setItem("name", response.profileObj.name);
-      localStorage.setItem("givenName", response.profileObj.givenName);
-      localStorage.setItem("familyName", response.profileObj.familyName);
       // localStorage.setItem("googleId", response.profileObj.googleId);
       localStorage.setItem("imageUrl", response.profileObj.imageUrl);
-      localStorage.setItem("loginTime", Date.now());
+      localStorage.setItem("loginTime", new Date().toISOString());
       this.updateInfo(
         response.profileObj.email,
         response.profileObj.name,
@@ -69,6 +69,8 @@ class Login extends Component {
         },
         (error) => {
           console.log(error);
+          localStorage.clear();
+          alert("Something went Wrong! Try again...");
         }
       );
   }
@@ -80,7 +82,10 @@ class Login extends Component {
         : "") + "/api/";
     axios.post(baseURL + "mongoclient/id?collection=cart&id=" + uid, {}).then(
       (response) => {
-        localStorage.setItem("cart", JSON.stringify(response.data.data));
+        var data = response.data.data;
+        data !== undefined && data !== null 
+        ? localStorage.setItem("cart", JSON.stringify(response.data.data)) 
+        : localStorage.setItem("cart", [])
         this.props.updateLogin();
         this.props.history.push("/");
       },
@@ -102,11 +107,27 @@ class Login extends Component {
   }
 
   handleLoginFailure(response) {
-    alert("Failed to log in");
+    alert("Google - Failed to log in");
   }
 
   handleLogoutFailure(response) {
-    alert("Failed to log out");
+    alert("Google - Failed to log out");
+  }
+
+  handleLoginFacebook(response) {
+    if (response.accessToken) {
+      this.setState({ isLogined: true, accessToken: response.accessToken });
+      localStorage.clear();
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("email", response.email);
+      localStorage.setItem("name", response.name);
+      localStorage.setItem("facebookId", response.userID);
+      localStorage.setItem("imageUrl", response.picture.data.url);
+      localStorage.setItem("loginTime", new Date().toISOString());
+      this.updateInfo(response.email, response.name, response);
+    } else {
+      alert("Facebook - Failed to log in");
+    }
   }
 
   getProfile() {
@@ -129,14 +150,6 @@ class Login extends Component {
             </td>
           </tr>
           <tr>
-            <td>First Name</td>
-            <td>{localStorage.getItem("givenName")}</td>
-          </tr>
-          <tr>
-            <td>Last Name</td>
-            <td>{localStorage.getItem("familyName")}</td>
-          </tr>
-          <tr>
             <td>Email</td>
             <td>{localStorage.getItem("email")}</td>
           </tr>
@@ -152,7 +165,7 @@ class Login extends Component {
             </td>
             <td>
               <Link to="/orders" className="btn btn-primary">
-              Order History
+                Order History
               </Link>
             </td>
           </tr>
@@ -179,14 +192,27 @@ class Login extends Component {
               ></GoogleLogout>
             </>
           ) : (
-            <GoogleLogin
-              clientId={GOOGLE_CLIENT_ID}
-              buttonText="Sign in with Google"
-              onSuccess={this.login}
-              onFailure={this.handleLoginFailure}
-              cookiePolicy={"single_host_origin"}
-              responseType="code,token"
-            />
+            <div>
+              <GoogleLogin
+                clientId={GOOGLE_CLIENT_ID}
+                buttonText="Sign in with Google"
+                onSuccess={this.login}
+                onFailure={this.handleLoginFailure}
+                cookiePolicy={"single_host_origin"}
+                responseType="code,token"
+              />
+              <br />
+              <br />
+              <br />
+              <FacebookLogin
+                appId="396350414949326"
+                autoLoad={false}
+                fields="name,email,picture"
+                // onClick={this.componentClicked}
+                icon="fa-facebook"
+                callback={this.handleLoginFacebook}
+              />
+            </div>
           )}
         </div>
       </Container>

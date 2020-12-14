@@ -16,11 +16,21 @@ https://react-bootstrap.netlify.app/migrating/
 
 https://stackoverflow.com/questions/19778620/provide-an-image-for-whatsapp-link-sharing
 
+-----------------------------------------------------------------------------------
 https://zoejoyuliao.medium.com/add-google-sign-in-and-sign-out-to-your-react-app-and-get-the-accesstoken-2ee16bfd8297
 
 https://developers.google.com/identity/sign-in/web/sign-in?authuser=1
 
 https://console.developers.google.com/apis/credentials?authuser=1&project=
+
+-----------------------------------------------------------------------------------
+https://www.npmjs.com/package/react-facebook-login
+
+https://developers.facebook.com/apps/
+
+https://www.djamware.com/post/5e6d6a9a05efef95f94c4aed/reactjs-tutorial-facebook-login-example
+
+-----------------------------------------------------------------------------------
 
 https://react-bootstrap.github.io/components/carousel/
 
