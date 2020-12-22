@@ -74,3 +74,10 @@ https://react-bootstrap.github.io/components/spinners/
 
 https://fkhadra.github.io/react-toastify/introduction
 
+-----------------------------------------------------------------------------------
+https://www.w3schools.com/nodejs/nodejs_email.asp
+
+https://mailtrap.io/inboxes/1164203/messages
+
+https://sendgrid.com/docs/for-developers/sending-email/curl-examples/
+-----------------------------------------------------------------------------------

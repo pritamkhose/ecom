@@ -84,8 +84,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Posts",
@@ -168,8 +167,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Customers",
@@ -304,8 +302,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Auth",
@@ -340,8 +337,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Mongo client",
@@ -572,7 +568,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "7fd16c43-8d7b-4cab-bfac-89952b1b7454",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -582,15 +577,13 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "2f3a2dce-b99a-48a2-a372-a50313adaef7",
 						"type": "text/javascript",
 						"exec": [
 							""
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "orders",
@@ -648,8 +641,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Razorpay",
@@ -864,8 +856,77 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
+		},
+		{
+			"name": "Email",
+			"item": [
+				{
+					"name": "http://localhost:3000/api/email/send",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"to\": \"pritamkhose@gmail.com\",\r\n    \"subject\": \"Hello Pritam\",\r\n    \"html\": \"<!DOCTYPE html> <html lang=\\\"en\\\"> <head> <meta charset=\\\"utf-8\\\">   <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1\\\">   <link rel=\\\"stylesheet\\\" href=\\\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css\\\">  <script src=\\\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js\\\"></script>  </head> <body> <div class=\\\"card\\\"> <div class=\\\"CardAddress card\\\"><h5 class=\\\"AddrLineText\\\">ORDER_GCX8DWKYWPQDEQ</h5><hr><p class=\\\"AddrLineText\\\"><b>Date : </b>2020-12-14T14:28:51.250Z</p><p class=\\\"AddrLineText\\\"><b>Amount : </b>3599.00 INR</p><div class=\\\"CardAddress card\\\"><h5 class=\\\"AddrLineText\\\">Order Product</h5><hr><div class=\\\"Card card\\\"><div class=\\\"row\\\"><div class=\\\"col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col\\\"><a href=\\\"/pid/5fb0cedb70dc841e94384f1b\\\"><img height=\\\"220rem\\\" alt=\\\"ADIDAS Men Red &amp; White Easy Vulcanised 2.0 Skateboarding Shoes\\\" src=\\\"http://assets.myntassets.com/assets/images/11353478/2020/10/14/b0e64a1b-ee1e-41ab-8731-9d59e89426b31602668556236-ADIDAS-Men-Casual-Shoes-7231602668554631-1.jpg\\\"></a></div><div class=\\\"col\\\"><a href=\\\"/pid/5fb0cedb70dc841e94384f1b\\\" style=\\\"color: rgba(0, 0, 0, 0.5);\\\"><h5>ADIDAS Men Red &amp; White Easy Vulcanised 2.0 Skateboarding Shoes</h5></a><p style=\\\"margin-bottom: 4px;\\\">ADIDAS</p><p class=\\\"itemPrice\\\" style=\\\"font-weight: bold; padding: 0px; margin-bottom: 4px;\\\">₹ 3599</p><p class=\\\"qty\\\" style=\\\"font-weight: bold; padding: 0px; margin-bottom: 4px;\\\">Qty : 1</p><p class=\\\"Price\\\" style=\\\"font-weight: bold; padding: 0px; text-align: end; margin-right: 8px;\\\">Price : ₹ 3599</p></div></div></div></div><div class=\\\"CardAddress card\\\"><h5 class=\\\"AddrLineText\\\">Delivery Address</h5><hr><p class=\\\"AddrLineText\\\"><b>Prem Khose</b></p><p class=\\\"AddrLineText\\\">Mobile No :9787876620</p><p class=\\\"AddrLineText\\\">Home</p><p class=\\\"AddrLineText\\\">42, Ambikanagar, kedgaon</p><p class=\\\"AddrLineText\\\"></p><p class=\\\"AddrLineText\\\">kedgaon</p><p class=\\\"AddrLineText\\\">Ahmednagar - 414005</p><p class=\\\"AddrLineText\\\">MAHARASHTRA, India</p></div></div> </div> </body> </html>\\n\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/email/send",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"email",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://api.sendgrid.com/v3/mail/send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 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"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"personalizations\": [\r\n        {\r\n            \"to\": [\r\n                {\r\n                    \"email\": \"pritamkhose@gmail.com\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"from\": {\r\n        \"email\": \"pritamkhose1@gmail.com\"\r\n    },\r\n    \"subject\": \"Sending with SendGrid is Fun\",\r\n    \"content\": [\r\n        {\r\n            \"type\": \"text/plain\",\r\n            \"value\": \"and easy to do anywhere, even with cURL\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "https://api.sendgrid.com/v3/mail/send",
+							"protocol": "https",
+							"host": [
+								"api",
+								"sendgrid",
+								"com"
+							],
+							"path": [
+								"v3",
+								"mail",
+								"send"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "all",
@@ -893,6 +954,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
