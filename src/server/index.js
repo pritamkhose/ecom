@@ -53,6 +53,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/mongoclient', require('./routes/mongoclient'));
 app.use('/api/razorpay/payment/', require('./routes/razorpay'));
 app.use('/api/email/', require('./routes/email'));
+app.use('/api/sendPDF', require('./routes/pdf'));
 
 app.get("/api", (req, res) => {
   res.json({

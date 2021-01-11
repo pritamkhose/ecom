@@ -640,6 +640,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "http://localhost:3000/api/sendPDF/file?file=order_41587.pdf",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/sendPDF/file?file=order_41587.pdf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sendPDF",
+								"file"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": "order_41587.pdf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:3000/api/sendPDF",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"html\":\"<h5 class=\\\"AddrLineText\\\">ORDER_GCX8DWKYWPQDEQ</h5><hr><p class=\\\"AddrLineText\\\"><b>Date : </b>2020-12-14T14:28:51.250Z</p><p class=\\\"AddrLineText\\\"><b>Amount : </b>3599.00 INR</p><div class=\\\"CardAddress card\\\"><h5 class=\\\"AddrLineText\\\">Order Product</h5><hr><div class=\\\"Card card\\\"><div class=\\\"row\\\"><div class=\\\"col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col\\\"><a href=\\\"/pid/5fb0cedb70dc841e94384f1b\\\"><img height=\\\"220rem\\\" alt=\\\"ADIDAS Men Red &amp; White Easy Vulcanised 2.0 Skateboarding Shoes\\\" src=\\\"http://assets.myntassets.com/assets/images/11353478/2020/10/14/b0e64a1b-ee1e-41ab-8731-9d59e89426b31602668556236-ADIDAS-Men-Casual-Shoes-7231602668554631-1.jpg\\\"></a></div><div class=\\\"col\\\"><a href=\\\"/pid/5fb0cedb70dc841e94384f1b\\\" style=\\\"color: rgba(0, 0, 0, 0.5);\\\"><h5>ADIDAS Men Red &amp; White Easy Vulcanised 2.0 Skateboarding Shoes</h5></a><p style=\\\"margin-bottom: 4px;\\\">ADIDAS</p><p class=\\\"itemPrice\\\" style=\\\"font-weight: bold; padding: 0px; margin-bottom: 4px;\\\">₹ 3599</p><p class=\\\"qty\\\" style=\\\"font-weight: bold; padding: 0px; margin-bottom: 4px;\\\">Qty : 1</p><p class=\\\"Price\\\" style=\\\"font-weight: bold; padding: 0px; text-align: end; margin-right: 8px;\\\">Price : ₹ 3599</p></div></div></div></div><div class=\\\"CardAddress card\\\"><h5 class=\\\"AddrLineText\\\">Delivery Address</h5><hr><p class=\\\"AddrLineText\\\"><b>Prem Khose</b></p><p class=\\\"AddrLineText\\\">Mobile No :9787876620</p><p class=\\\"AddrLineText\\\">Home</p><p class=\\\"AddrLineText\\\">42, Ambikanagar, kedgaon</p><p class=\\\"AddrLineText\\\"></p><p class=\\\"AddrLineText\\\">kedgaon</p><p class=\\\"AddrLineText\\\">Ahmednagar - 414005</p><p class=\\\"AddrLineText\\\">MAHARASHTRA, India</p></div><button type=\\\"button\\\" class=\\\"btn btn-danger\\\">PDF</button>\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/sendPDF",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sendPDF"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
