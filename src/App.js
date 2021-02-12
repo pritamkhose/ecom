@@ -137,9 +137,10 @@ class App extends Component {
         <div>
           <Switch>
             <Route exact path="/">
-              <Badge variant="primary">Home</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <Home />
+                <Badge variant="primary">Products</Badge>
+                <ProductList />
               </div>
             </Route>
             <Route path="/products">

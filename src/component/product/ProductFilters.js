@@ -70,15 +70,15 @@ class ProductFilters extends Component {
 
   render() {
     return (
-      <div class="container" style={{ paddingBottom: "8px" }}>
-        <div class="row">
-          <div name="sort" class="col-4">
+      <div className="container" style={{ paddingBottom: "8px" }}>
+        <div className="row">
+          <div name="sort" className="col-4">
             <label>Sort :</label>
             <select
-              class="custom-select"
+              className="custom-select"
               name="sort"
               id="sort"
-              value={this.state.sort}
+              value={this.state.sort !== null ? this.state.sort : ""}
               onChange={this.handleChange}
             >
               <option value="">All</option>
@@ -91,13 +91,13 @@ class ProductFilters extends Component {
             </select>
           </div>
           {this.state.brandList !== null ? (
-            <div name="brand" class="col-4">
+            <div name="brand" className="col-4">
               <label>Brand :</label>
               <select
-                class="custom-select"
+                className="custom-select"
                 name="brand"
                 id="brand"
-                defaultValue={this.state.brand}
+                defaultValue={this.state.brand !== null ? this.state.brand : ""}
                 onChange={this.handleChange}
               >
                 <option key="NA" value="">
@@ -112,10 +112,10 @@ class ProductFilters extends Component {
             </div>
           ) : null}
           {this.state.categoryList !== null ? (
-            <div name="category" class="col-4">
+            <div name="category" className="col-4">
               <label>Category :</label>
               <select
-                class="custom-select"
+                className="custom-select"
                 name="category"
                 id="category"
                 defaultValue={this.state.category}
