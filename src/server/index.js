@@ -28,6 +28,8 @@ connect.then(
 
 const app = express();
 app.use(cors());
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: "50mb"}));
 
 app.get("/postman", function (req, res) {
   res.header("Content-Type", "application/json");

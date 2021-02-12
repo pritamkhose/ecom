@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ded05e74-c5f7-4819-800a-facb2f645c94",
+		"_postman_id": "dc2503e9-65ac-4be8-8ab1-784bd191d59c",
 		"name": "Ecom",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -562,6 +562,153 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "insert one",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"landingPageUrl\": \"Sunglasses/HRX-by-Hrithik-Roshan/HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses/2311891/buy\",\r\n    \"loyaltyPointsEnabled\": false,\r\n    \"adId\": \"\",\r\n    \"isPLA\": false,\r\n    \"productId\": 2311891,\r\n    \"product\": \"HRX by Hrithik Roshan Men Aviator Sunglasses\",\r\n    \"productName\": \"HRX by Hrithik Roshan Men Aviator Sunglasses\",\r\n    \"rating\": 4.16417932510376,\r\n    \"ratingCount\": 268,\r\n    \"isFastFashion\": false,\r\n    \"futureDiscountedPrice\": 0,\r\n    \"futureDiscountStartDate\": \"\",\r\n    \"discount\": 1500,\r\n    \"brand\": \"HRX by Hrithik Roshan\",\r\n    \"searchImage\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\",\r\n    \"effectiveDiscountPercentageAfterTax\": 0,\r\n    \"effectiveDiscountAmountAfterTax\": 0,\r\n    \"buyButtonWinnerSkuId\": 14966459,\r\n    \"buyButtonWinnerSellerPartnerId\": 4027,\r\n    \"relatedStylesCount\": 0,\r\n    \"relatedStylesType\": \"\",\r\n    \"productVideos\": [],\r\n    \"inventoryInfo\": [\r\n        {\r\n            \"skuId\": 14966459,\r\n            \"label\": \"L\",\r\n            \"inventory\": 77,\r\n            \"available\": true\r\n        }\r\n    ],\r\n    \"sizes\": \"L\",\r\n    \"images\": [\r\n        {\r\n            \"view\": \"default\",\r\n            \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\"\r\n        },\r\n        {\r\n            \"view\": \"right\",\r\n            \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/6db08907-f8bc-4e35-b06e-036e32a044421528117335764-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-4.jpg\"\r\n        },\r\n        {\r\n            \"view\": \"front\",\r\n            \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/8e7eac71-4aeb-414c-a48a-7ef05e10068b1528117335804-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-2.jpg\"\r\n        },\r\n        {\r\n            \"view\": \"search\",\r\n            \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\"\r\n        },\r\n        {\r\n            \"view\": \"top\",\r\n            \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/bfafff9e-56b3-4f5b-b54e-b55c988eae901528117335712-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-6.jpg\"\r\n        },\r\n        {\r\n            \"view\": \"left\",\r\n            \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/0f933a48-5d74-4830-89d7-6bdac6c5a5fa1528117335744-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-5.jpg\"\r\n        },\r\n        {\r\n            \"view\": \"size_representation\",\r\n            \"src\": \"\"\r\n        },\r\n        {\r\n            \"view\": \"back\",\r\n            \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/45eaa7e9-6d88-4260-8eb1-bbd79207b2071528117335779-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-3.jpg\"\r\n        }\r\n    ],\r\n    \"gender\": \"Men\",\r\n    \"primaryColour\": \"Grey\",\r\n    \"discountLabel\": \"Flat_Search_Percent\",\r\n    \"discountDisplayLabel\": \"(50% OFF)\",\r\n    \"additionalInfo\": \"Men Aviator Sunglasses\",\r\n    \"category\": \"Sunglasses\",\r\n    \"mrp\": 2999,\r\n    \"price\": 1499,\r\n    \"advanceOrderTag\": \"\",\r\n    \"colorVariantAvailable\": false,\r\n    \"productimagetag\": \"\",\r\n    \"listViews\": 0,\r\n    \"discountType\": \"1\",\r\n    \"tdBxGyText\": \"\",\r\n    \"catalogDate\": \"1525910400000\",\r\n    \"season\": \"Summer\",\r\n    \"year\": \"2019\",\r\n    \"isPersonalised\": false,\r\n    \"eorsPicksTag\": \"\",\r\n    \"personalizedCoupon\": \"\",\r\n    \"personalizedCouponValue\": 0,\r\n    \"productMeta\": \"\",\r\n    \"systemAttributes\": [],\r\n    \"attributeTagsPriorityList\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient/insert?collection=productmyntra",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient",
+								"insert"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "productmyntra"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insert many",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"landingPageUrl\": \"Sunglasses/HRX-by-Hrithik-Roshan/HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses/2311891/buy\",\r\n        \"loyaltyPointsEnabled\": false,\r\n        \"adId\": \"\",\r\n        \"isPLA\": false,\r\n        \"productId\": 2311891,\r\n        \"product\": \"HRX by Hrithik Roshan Men Aviator Sunglasses\",\r\n        \"productName\": \"HRX by Hrithik Roshan Men Aviator Sunglasses\",\r\n        \"rating\": 4.16417932510376,\r\n        \"ratingCount\": 268,\r\n        \"isFastFashion\": false,\r\n        \"futureDiscountedPrice\": 0,\r\n        \"futureDiscountStartDate\": \"\",\r\n        \"discount\": 1500,\r\n        \"brand\": \"HRX by Hrithik Roshan\",\r\n        \"searchImage\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\",\r\n        \"effectiveDiscountPercentageAfterTax\": 0,\r\n        \"effectiveDiscountAmountAfterTax\": 0,\r\n        \"buyButtonWinnerSkuId\": 14966459,\r\n        \"buyButtonWinnerSellerPartnerId\": 4027,\r\n        \"relatedStylesCount\": 0,\r\n        \"relatedStylesType\": \"\",\r\n        \"productVideos\": [],\r\n        \"inventoryInfo\": [\r\n            {\r\n                \"skuId\": 14966459,\r\n                \"label\": \"L\",\r\n                \"inventory\": 77,\r\n                \"available\": true\r\n            }\r\n        ],\r\n        \"sizes\": \"L\",\r\n        \"images\": [\r\n            {\r\n                \"view\": \"default\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"right\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/6db08907-f8bc-4e35-b06e-036e32a044421528117335764-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-4.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"front\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/8e7eac71-4aeb-414c-a48a-7ef05e10068b1528117335804-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-2.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"search\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"top\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/bfafff9e-56b3-4f5b-b54e-b55c988eae901528117335712-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-6.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"left\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/0f933a48-5d74-4830-89d7-6bdac6c5a5fa1528117335744-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-5.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"size_representation\",\r\n                \"src\": \"\"\r\n            },\r\n            {\r\n                \"view\": \"back\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/45eaa7e9-6d88-4260-8eb1-bbd79207b2071528117335779-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-3.jpg\"\r\n            }\r\n        ],\r\n        \"gender\": \"Men\",\r\n        \"primaryColour\": \"Grey\",\r\n        \"discountLabel\": \"Flat_Search_Percent\",\r\n        \"discountDisplayLabel\": \"(50% OFF)\",\r\n        \"additionalInfo\": \"Men Aviator Sunglasses\",\r\n        \"category\": \"Sunglasses\",\r\n        \"mrp\": 2999,\r\n        \"price\": 1499,\r\n        \"advanceOrderTag\": \"\",\r\n        \"colorVariantAvailable\": false,\r\n        \"productimagetag\": \"\",\r\n        \"listViews\": 0,\r\n        \"discountType\": \"1\",\r\n        \"tdBxGyText\": \"\",\r\n        \"catalogDate\": \"1525910400000\",\r\n        \"season\": \"Summer\",\r\n        \"year\": \"2019\",\r\n        \"isPersonalised\": false,\r\n        \"eorsPicksTag\": \"\",\r\n        \"personalizedCoupon\": \"\",\r\n        \"personalizedCouponValue\": 0,\r\n        \"productMeta\": \"\",\r\n        \"systemAttributes\": [],\r\n        \"attributeTagsPriorityList\": []\r\n    },\r\n    {\r\n        \"landingPageUrl\": \"Sunglasses/HRX-by-Hrithik-Roshan/HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses/2311891/buy\",\r\n        \"loyaltyPointsEnabled\": false,\r\n        \"adId\": \"\",\r\n        \"isPLA\": false,\r\n        \"productId\": 2311891,\r\n        \"product\": \"HRX by Hrithik Roshan Men Aviator Sunglasses\",\r\n        \"productName\": \"HRX by Hrithik Roshan Men Aviator Sunglasses\",\r\n        \"rating\": 4.16417932510376,\r\n        \"ratingCount\": 268,\r\n        \"isFastFashion\": false,\r\n        \"futureDiscountedPrice\": 0,\r\n        \"futureDiscountStartDate\": \"\",\r\n        \"discount\": 1500,\r\n        \"brand\": \"HRX by Hrithik Roshan\",\r\n        \"searchImage\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\",\r\n        \"effectiveDiscountPercentageAfterTax\": 0,\r\n        \"effectiveDiscountAmountAfterTax\": 0,\r\n        \"buyButtonWinnerSkuId\": 14966459,\r\n        \"buyButtonWinnerSellerPartnerId\": 4027,\r\n        \"relatedStylesCount\": 0,\r\n        \"relatedStylesType\": \"\",\r\n        \"productVideos\": [],\r\n        \"inventoryInfo\": [\r\n            {\r\n                \"skuId\": 14966459,\r\n                \"label\": \"L\",\r\n                \"inventory\": 77,\r\n                \"available\": true\r\n            }\r\n        ],\r\n        \"sizes\": \"L\",\r\n        \"images\": [\r\n            {\r\n                \"view\": \"default\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"right\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/6db08907-f8bc-4e35-b06e-036e32a044421528117335764-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-4.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"front\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/8e7eac71-4aeb-414c-a48a-7ef05e10068b1528117335804-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-2.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"search\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/dcbfaa27-ca39-4412-b4b1-8d555f7f54f61528117335821-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-1.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"top\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/bfafff9e-56b3-4f5b-b54e-b55c988eae901528117335712-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-6.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"left\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/0f933a48-5d74-4830-89d7-6bdac6c5a5fa1528117335744-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-5.jpg\"\r\n            },\r\n            {\r\n                \"view\": \"size_representation\",\r\n                \"src\": \"\"\r\n            },\r\n            {\r\n                \"view\": \"back\",\r\n                \"src\": \"http://assets.myntassets.com/assets/images/2311891/2018/6/4/45eaa7e9-6d88-4260-8eb1-bbd79207b2071528117335779-HRX-by-Hrithik-Roshan-Men-Aviator-Sunglasses-2971528117335626-3.jpg\"\r\n            }\r\n        ],\r\n        \"gender\": \"Men\",\r\n        \"primaryColour\": \"Grey\",\r\n        \"discountLabel\": \"Flat_Search_Percent\",\r\n        \"discountDisplayLabel\": \"(50% OFF)\",\r\n        \"additionalInfo\": \"Men Aviator Sunglasses\",\r\n        \"category\": \"Sunglasses\",\r\n        \"mrp\": 2999,\r\n        \"price\": 1499,\r\n        \"advanceOrderTag\": \"\",\r\n        \"colorVariantAvailable\": false,\r\n        \"productimagetag\": \"\",\r\n        \"listViews\": 0,\r\n        \"discountType\": \"1\",\r\n        \"tdBxGyText\": \"\",\r\n        \"catalogDate\": \"1525910400000\",\r\n        \"season\": \"Summer\",\r\n        \"year\": \"2019\",\r\n        \"isPersonalised\": false,\r\n        \"eorsPicksTag\": \"\",\r\n        \"personalizedCoupon\": \"\",\r\n        \"personalizedCouponValue\": 0,\r\n        \"productMeta\": \"\",\r\n        \"systemAttributes\": [],\r\n        \"attributeTagsPriorityList\": []\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient/insertmany?collection=productmyntra",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient",
+								"insertmany"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "productmyntra"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get productmyntra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"projection\": {\r\n        \"_id\": 0,\r\n        \"productId\": 1,\r\n        \"product\": 1,\r\n        \"searchImage\": 1,\r\n        \"brand\": 1,\r\n        \"rating\": 1,\r\n        \"price\": 1,\r\n        \"mrp\": 1\r\n    },\r\n    \"limit\": 12,\r\n    \"skip\" : 12\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient?collection=productmyntra",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "productmyntra"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "distinct field values",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/mongoclient/distinct?collection=productmyntra&id=brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"mongoclient",
+								"distinct"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "productmyntra"
+								},
+								{
+									"key": "id",
+									"value": "brand"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -977,6 +1124,88 @@
 								"v3",
 								"mail",
 								"send"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "myntra",
+			"item": [
+				{
+					"name": "Get Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://www.myntra.com/gateway/v2/search/nike-shoes?p=1&plaEnabled=false&rows=50&o=49",
+							"protocol": "https",
+							"host": [
+								"www",
+								"myntra",
+								"com"
+							],
+							"path": [
+								"gateway",
+								"v2",
+								"search",
+								"nike-shoes"
+							],
+							"query": [
+								{
+									"key": "p",
+									"value": "1"
+								},
+								{
+									"key": "plaEnabled",
+									"value": "false"
+								},
+								{
+									"key": "rows",
+									"value": "50"
+								},
+								{
+									"key": "o",
+									"value": "49"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://pritamecom.herokuapp.com/api/mongoclient?collection=productmyntra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"projection\": {\r\n        \"productId\": 1,\r\n        \"product\": 1,\r\n        \"searchImage\": 1,\r\n        \"brand\": 1,\r\n        \"rating\": 1,\r\n        \"price\": 1,\r\n        \"mrp\": 1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://pritamecom.herokuapp.com/api/mongoclient?collection=productmyntra",
+							"protocol": "https",
+							"host": [
+								"pritamecom",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"mongoclient"
+							],
+							"query": [
+								{
+									"key": "collection",
+									"value": "productmyntra"
+								}
 							]
 						}
 					},
