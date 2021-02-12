@@ -36,6 +36,7 @@ router.post("/", (req, res) => {
       try {
         db.collection(req.query.collection)
           .find(varsearch, varprojection)
+          .collation({ locale: "en", strength: 2 })
           .sort(varsort)
           .skip(varskip)
           .limit(varlimit)

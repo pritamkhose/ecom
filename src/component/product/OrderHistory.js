@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import "./ProductItem.css";
-import { Card, Spinner, Badge, Button } from "reactstrap";
+import { Card, Spinner, Button } from "reactstrap";
 import axios from "axios";
 
 import OrderItem from "./OrderItem";
@@ -47,7 +47,6 @@ const OrderHistory = (props) => {
 
   return (
     <div>
-      <Badge variant="primary">Order History</Badge>
       {isLoading ? (
         showLoading()
       ) : (

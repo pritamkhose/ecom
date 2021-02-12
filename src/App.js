@@ -19,7 +19,8 @@ import PostHome from "./component/post/PostHome";
 import CustomersHome from "./component/customers/Home";
 import CustomersEdit from "./component/customers/Edit";
 
-import Product from "./component/product/list";
+import ProductList from "./component/product/ProductList";
+import ProductFilters from "./component/product/ProductFilters";
 import ProductDetails from "./component/product/Detail";
 import Cart from "./component/product/Cart";
 import CartCount from "./component/product/CartCount";
@@ -31,7 +32,8 @@ import OrderConfirm from "./component/product/OrderConfirm";
 class App extends Component {
   state = {
     navExpanded: false,
-    minHight: "450px",
+    minHight: window.innerHeight - 160 + "px",
+    minHightFilter: window.innerHeight - 260 + "px",
     isLogin: localStorage.getItem("name") ? true : false,
     name: localStorage.getItem("name"),
     imageUrl: localStorage.getItem("imageUrl"),
@@ -86,6 +88,9 @@ class App extends Component {
                 <Link to={"/"} className="nav-link">
                   Home
                 </Link>
+                <Link to={"/products"} className="nav-link">
+                  Products
+                </Link>
                 <Link to={"/orders"} className="nav-link">
                   Orders
                 </Link>
@@ -135,7 +140,16 @@ class App extends Component {
               <Badge variant="primary">Home</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <Home />
-                <Product />
+              </div>
+            </Route>
+            <Route path="/products">
+              <div style={{ background: "#e5faf4" }}>
+                <Badge variant="success">Products Filters</Badge>
+                <ProductFilters />
+              </div>
+              <Badge variant="primary">Products</Badge>
+              <div style={{ minHeight: this.state.minHightFilter }}>
+                <ProductList />
               </div>
             </Route>
             <Route exact path="/pid/:id">
@@ -165,6 +179,7 @@ class App extends Component {
               </div>
             </Route>
             <Route exact path="/address">
+              <Badge variant="primary">Address</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <Address />
               </div>
@@ -175,6 +190,7 @@ class App extends Component {
               </div>
             </Route>
             <Route path="/orders">
+              <Badge variant="primary">Order History</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <OrderHistory />
               </div>
@@ -203,10 +219,16 @@ class App extends Component {
         </div>
         <footer className="border-top footer" bg="light" variant="light">
           <div className="footer-copyright text-center py-3">
-            © 2020 Copyright :{" "}
-            <Link to={"/"} className="nav-link">
-              Pritam Ecom
-            </Link>
+            <p style={{ margin: 0 }}>
+              © 2020-21 :{" "}
+              <Link
+                to={"/"}
+                className="nav-link"
+                style={{ display: "contents", padding: 0 }}
+              >
+                Pritam Ecom
+              </Link>
+            </p>
           </div>
         </footer>
       </Router>

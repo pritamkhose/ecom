@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import "./ProductItem.css";
-import { Card, Spinner, Badge } from "reactstrap";
+import { Card, Spinner } from "reactstrap";
 import axios from "axios";
 
 import addaddress from "../../image/addaddress.svg";
@@ -46,7 +46,6 @@ const Address = (props) => {
 
   return (
     <div>
-      <Badge variant="primary">Address</Badge>
       {isLoading ? (
         showLoading()
       ) : (

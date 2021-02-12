@@ -3,16 +3,21 @@ import ProductItem from "./ProductItem";
 import { Row, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
+import { withRouter } from "react-router-dom";
 
-export default class List extends Component {
+class ProductList extends Component {
   constructor(props) {
     super(props);
 
+    const query = new URLSearchParams(this.props.location.search);
     this.state = {
       curPage: 1,
       prevY: 0,
       aList: [],
       showLoadMore: true,
+      brand: query.get("brand"),
+      category: query.get("category"),
+      sort: query.get("sort"),
     };
   }
 
@@ -30,6 +35,27 @@ export default class List extends Component {
     this.observer.observe(this.loadingRef);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      const query = new URLSearchParams(this.props.location.search);
+      this.setState(
+        {
+          curPage: 1,
+          prevY: 0,
+          aList: [],
+          showLoadMore: true,
+          showNoContent: false,
+          brand: query.get("brand"),
+          category: query.get("category"),
+          sort: query.get("sort"),
+        },
+        () => {
+          this.getData();
+        }
+      );
+    }
+  }
+
   handleObserver(entities, observer) {
     const y = entities[0].boundingClientRect.y;
     if (this.state.prevY > y) {
@@ -43,6 +69,45 @@ export default class List extends Component {
       (process.env.REACT_APP_API_URL !== undefined
         ? process.env.REACT_APP_API_URL
         : "") + "/api/";
+
+    var searchObj = {};
+    if (this.state.brand !== null && this.state.category !== null) {
+      searchObj = {
+        brand: this.state.brand,
+        category: this.state.category,
+      };
+    } else if (this.state.brand !== null) {
+      searchObj = { brand: this.state.brand };
+    } else if (this.state.category !== null) {
+      searchObj = { category: this.state.category };
+    }
+
+    var sortObj = {};
+    switch (this.state.sort) {
+      case "price":
+        sortObj = { price: 1 };
+        break;
+      case "pricedesc":
+        sortObj = { price: -1 };
+        break;
+      case "rating":
+        sortObj = { rating: 1 };
+        break;
+      case "ratingdesc":
+        sortObj = { rating: -1 };
+        break;
+      case "name":
+        sortObj = { product: 1 };
+        break;
+      case "namedesc":
+        sortObj = { product: -1 };
+        break;
+      default:
+        // sortObj = { _id: 1 };
+        sortObj = { rating: -1 };
+        break;
+    }
+
     axios
       .post(baseURL + "mongoclient?collection=productmyntra", {
         projection: {
@@ -54,10 +119,8 @@ export default class List extends Component {
           price: 1,
           mrp: 1,
         },
-        sort: {
-          _id: 1,
-          // price : -1
-        },
+        search: searchObj,
+        sort: sortObj,
         limit: 12,
         skip: 12 * (this.state.curPage - 1),
       })
@@ -83,6 +146,7 @@ export default class List extends Component {
           } else if (response.status === 204) {
             this.setState({
               showLoadMore: false,
+              showNoContent: this.state.curPage === 1 ? true : false,
             });
           }
         },
@@ -107,6 +171,9 @@ export default class List extends Component {
         )}
         <div ref={(loadingRef) => (this.loadingRef = loadingRef)}>
           {this.state.showLoadMore ? this.showLoading() : null}
+          {this.state.showNoContent ? (
+            <h2 style={{ textAlign: "center", paddingTop: "150px" }}>No Result Found!</h2>
+          ) : null}
         </div>
         <ToastContainer />
       </>
@@ -123,3 +190,5 @@ export default class List extends Component {
     );
   }
 }
+
+export default withRouter(ProductList);

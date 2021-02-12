@@ -150,7 +150,7 @@ class AddressEdit extends Component {
   render() {
     return (
       <div>
-        <Badge variant="primary">
+        <Badge variant="primary" style={{background :"#007bff"}}>
           {this.state.addressID !== undefined && this.state.addressID === "new"
             ? "Add new address"
             : "Edit address"}

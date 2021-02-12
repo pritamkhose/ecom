@@ -51,7 +51,7 @@ const ProductItem = (props) => {
         </Badge>
         {props.value.rating === 0 ? null : (
           <Badge className="OverlapRating" variant="success">
-            {props.value.rating}
+            {Number(props.value.rating).toFixed(2)}
           </Badge>
         )}
 
