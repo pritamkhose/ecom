@@ -15,6 +15,8 @@ class ProductList extends Component {
       prevY: 0,
       aList: [],
       showLoadMore: true,
+      showNoContent: false,
+      continueIncrement: true,
       brand: query.get("brand"),
       category: query.get("category"),
       sort: query.get("sort"),
@@ -45,6 +47,7 @@ class ProductList extends Component {
           aList: [],
           showLoadMore: true,
           showNoContent: false,
+          continueIncrement: true,
           brand: query.get("brand"),
           category: query.get("category"),
           sort: query.get("sort"),
@@ -58,7 +61,7 @@ class ProductList extends Component {
 
   handleObserver(entities, observer) {
     const y = entities[0].boundingClientRect.y;
-    if (this.state.prevY > y) {
+    if (this.state.continueIncrement && this.state.prevY > y) {
       this.getData();
     }
     this.setState({ prevY: y });
@@ -131,6 +134,8 @@ class ProductList extends Component {
               this.setState({
                 aList: response.data,
                 curPage: this.state.curPage + 1,
+                continueIncrement: response.data.length < 12 ? false : true,
+                showLoadMore:  response.data.length < 12 ? false : true,
               });
             } else {
               this.setState(
@@ -147,6 +152,7 @@ class ProductList extends Component {
             this.setState({
               showLoadMore: false,
               showNoContent: this.state.curPage === 1 ? true : false,
+              continueIncrement: false,
             });
           }
         },
@@ -172,7 +178,9 @@ class ProductList extends Component {
         <div ref={(loadingRef) => (this.loadingRef = loadingRef)}>
           {this.state.showLoadMore ? this.showLoading() : null}
           {this.state.showNoContent ? (
-            <h2 style={{ textAlign: "center", paddingTop: "150px" }}>No Result Found!</h2>
+            <h2 style={{ textAlign: "center", paddingTop: "150px" }}>
+              No Result Found!
+            </h2>
           ) : null}
         </div>
         <ToastContainer />

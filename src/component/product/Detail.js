@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import {
-  Container,
-  Col,
-  Row,
-  Spinner,
-  Badge,
-  Carousel
-} from "react-bootstrap";
+import { Container, Col, Row, Spinner, Badge, Carousel } from "react-bootstrap";
 import "./ProductItem.css";
 import axios from "axios";
 import AddCartBtn from "./AddCartBtn";
@@ -75,14 +68,59 @@ class Details extends Component {
     return isMobile;
   }
 
+  getTitleHeading(aObj) {
+    return (
+      <>
+        <h3 style={{ marginLeft: "16px" }}>{aObj.product}</h3>
+        <hr />
+        <p style={{ marginLeft: "24px" }}>{aObj.additionalInfo}</p>
+      </>
+    );
+  }
+
+  showVarient(aList) {
+    return (
+      <>
+        {aList !== null && aList.length > 1 ? (
+          <tr key="varient">
+            <td>Varient</td>
+            <td colSpan="2">
+              <select
+                className="custom-select"
+                name="varient"
+                id="varient"
+                defaultValue=""
+              >
+                <option key="NA" value="">
+                  Not Selected
+                </option>
+                {aList.map((val) =>
+                  val.available ? (
+                    val.inventory < 6 ? (
+                      <option key={val.skuId} value={val.label}>
+                        {val.label} - {val.inventory} Left
+                      </option>
+                    ) : (
+                      <option key={val.skuId} value={val.label}>
+                        {val.label}
+                      </option>
+                    )
+                  ) : null
+                )}
+              </select>
+            </td>
+          </tr>
+        ) : null}
+      </>
+    );
+  }
+
   showData(aObj) {
     return (
       <>
         {this.isMobile() ? (
           <>
-            <h3>{aObj.product}</h3>
-            <hr />
-            <p>{aObj.additionalInfo}</p>
+            {this.getTitleHeading(aObj)}
             <table className="table table-stripe">
               <tbody>
                 <tr key="price">
@@ -94,20 +132,21 @@ class Details extends Component {
                     {aObj.discount} ₹ / <b>{aObj.discountDisplayLabel}</b>
                   </td>
                 </tr>
-                <tr key="images">
-                  <td colSpan="3">{this.showImages(aObj.images)}</td>
-                </tr>
-                <tr key="cart">
-                  <td colSpan="3">
-                    <AddCartBtn aObj={aObj} />
-                  </td>
-                </tr>
                 <tr key="rating">
                   <td>Rating</td>
                   <td>
                     <b> {aObj.rating}</b> / 5 🌟
                   </td>
                   <td>Total Rating: {aObj.ratingCount}</td>
+                </tr>
+                <tr key="images">
+                  <td colSpan="3">{this.showImages(aObj.images)}</td>
+                </tr>
+                {this.showVarient(aObj.inventoryInfo)}
+                <tr key="cart">
+                  <td colSpan="3">
+                    <AddCartBtn aObj={aObj} />
+                  </td>
                 </tr>
                 <tr key="brand">
                   <td>Brand</td>
@@ -132,11 +171,9 @@ class Details extends Component {
           </>
         ) : (
           <>
-            <h3>{aObj.product}</h3>
+            {this.getTitleHeading(aObj)}
             <hr />
-            <p>{aObj.additionalInfo}</p>
-            <hr />
-            <Row>
+            <Row style={{ margin: "0px" }}>
               <Col>{this.showImages(aObj.images)}</Col>
               <Col>
                 <table className="table table-stripe">
@@ -152,17 +189,18 @@ class Details extends Component {
                         {aObj.discount} ₹ / <b>{aObj.discountDisplayLabel}</b>
                       </td>
                     </tr>
+                    <tr key="rating">
+                      <td>Rating</td>
+                      <td>
+                        <b> {Number(aObj.rating).toFixed(2)}</b> / 5 🌟
+                      </td>
+                      <td>Total Rating: {aObj.ratingCount}</td>
+                    </tr>
+                    {this.showVarient(aObj.inventoryInfo)}
                     <tr key="cart">
                       <td colSpan="3">
                         <AddCartBtn aObj={aObj} />
                       </td>
-                    </tr>
-                    <tr key="rating">
-                      <td>Rating</td>
-                      <td>
-                        <b> {aObj.rating}</b> / 5 🌟
-                      </td>
-                      <td>Total Rating: {aObj.ratingCount}</td>
                     </tr>
                     <tr key="brand">
                       <td>Brand</td>
@@ -206,7 +244,6 @@ class Details extends Component {
                   src={x.src}
                 />
                 <Carousel.Caption>
-                  <h3>{x.view}</h3>
                   <p>
                     {i + 1} / {arr.length}
                   </p>
