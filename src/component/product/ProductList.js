@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+
+import notfound from "./../../image/notfound.svg";
+import "../home/notfound.css";
+
 import ProductItem from "./ProductItem";
 import { Row, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class ProductList extends Component {
   constructor(props) {
@@ -17,6 +21,7 @@ class ProductList extends Component {
       showLoadMore: true,
       showNoContent: false,
       continueIncrement: true,
+      search: query.get("search"),
       brand: query.get("brand"),
       category: query.get("category"),
       sort: query.get("sort"),
@@ -48,6 +53,7 @@ class ProductList extends Component {
           showLoadMore: true,
           showNoContent: false,
           continueIncrement: true,
+          search: query.get("search"),
           brand: query.get("brand"),
           category: query.get("category"),
           sort: query.get("sort"),
@@ -74,15 +80,25 @@ class ProductList extends Component {
         : "") + "/api/";
 
     var searchObj = {};
-    if (this.state.brand !== null && this.state.category !== null) {
+    if (this.state.search !== null) {
       searchObj = {
-        brand: this.state.brand,
-        category: this.state.category,
+        $or: [
+          { product: { $regex: this.state.search, $options: "i" } },
+          { additionalInfo: { $regex: this.state.search, $options: "i" } },
+          { brand: { $regex: this.state.search, $options: "i" } },
+          { category: { $regex: this.state.search, $options: "i" } },
+        ],
       };
-    } else if (this.state.brand !== null) {
-      searchObj = { brand: this.state.brand };
-    } else if (this.state.category !== null) {
-      searchObj = { category: this.state.category };
+    }
+    if (this.state.brand !== null && this.state.category !== null) {
+      searchObj.brand = this.state.brand;
+      searchObj.category = this.state.category;
+    }
+    if (this.state.brand !== null) {
+      searchObj.brand = this.state.brand;
+    }
+    if (this.state.category !== null) {
+      searchObj.category = this.state.category;
     }
 
     var sortObj = {};
@@ -105,8 +121,13 @@ class ProductList extends Component {
       case "namedesc":
         sortObj = { product: -1 };
         break;
+      case "id":
+        sortObj = { _id: -1 };
+        break;
+      case "iddesc":
+        sortObj = { _id: 1 };
+        break;
       default:
-        // sortObj = { _id: 1 };
         sortObj = { rating: -1 };
         break;
     }
@@ -135,7 +156,7 @@ class ProductList extends Component {
                 aList: response.data,
                 curPage: this.state.curPage + 1,
                 continueIncrement: response.data.length < 12 ? false : true,
-                showLoadMore:  response.data.length < 12 ? false : true,
+                showLoadMore: response.data.length < 12 ? false : true,
               });
             } else {
               this.setState(
@@ -178,9 +199,18 @@ class ProductList extends Component {
         <div ref={(loadingRef) => (this.loadingRef = loadingRef)}>
           {this.state.showLoadMore ? this.showLoading() : null}
           {this.state.showNoContent ? (
-            <h2 style={{ textAlign: "center", paddingTop: "150px" }}>
-              No Result Found!
-            </h2>
+            <div className="center">
+              <img
+                src={notfound}
+                alt={notfound}
+                height="300"
+                className="center"
+              ></img>
+              <br />
+              <Link to="/products" className="btn btn-primary">
+                Explore more with us!
+              </Link>
+            </div>
           ) : null}
         </div>
         <ToastContainer />

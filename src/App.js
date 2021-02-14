@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import logo from "./image/logo.svg";
-import { Navbar, Nav, Badge } from "react-bootstrap";
+import icsearch from "./image/search.svg";
+import { Navbar, Nav, Badge, Modal, Button } from "react-bootstrap";
 import "./App.css";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,6 +21,7 @@ import PostHome from "./component/post/PostHome";
 import CustomersHome from "./component/customers/Home";
 import CustomersEdit from "./component/customers/Edit";
 
+import ProductSearch from "./component/product/ProductSearch";
 import ProductList from "./component/product/ProductList";
 import ProductFilters from "./component/product/ProductFilters";
 import ProductDetails from "./component/product/Detail";
@@ -37,12 +40,20 @@ class App extends Component {
     isLogin: localStorage.getItem("name") ? true : false,
     name: localStorage.getItem("name"),
     imageUrl: localStorage.getItem("imageUrl"),
+    show: false,
   };
 
   constructor(props) {
     super(props);
     // Bind the this context to the handler function
     this.updateLogin = this.updateLogin.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
+  handleClose() {
+    this.setState((state) => ({
+      show: !state.show,
+    }));
   }
 
   updateLogin = () => {
@@ -98,6 +109,21 @@ class App extends Component {
                   About
                 </Link>
               </Nav>
+              <div
+                onClick={this.handleClose}
+                className="nav-link"
+                style={{ float: "end", color: "rgba(0,0,0,.5)" }}
+              >
+                <img src={icsearch} alt="Search" height="35"></img>
+              </div>
+              <Link
+                to={"/cart"}
+                onClick={this.setNavClose}
+                className="nav-link"
+                style={{ float: "end", color: "rgba(0,0,0,.5)" }}
+              >
+                <CartCount />
+              </Link>
               {this.state.isLogin ? (
                 <>
                   <Link
@@ -123,14 +149,6 @@ class App extends Component {
                   </i>
                 </Link>
               )}
-              <Link
-                to={"/cart"}
-                onClick={this.setNavClose}
-                className="nav-link"
-                style={{ float: "end", color: "rgba(0,0,0,.5)" }}
-              >
-                <CartCount />
-              </Link>
             </Navbar.Collapse>
           </span>
         </Navbar>
@@ -218,6 +236,7 @@ class App extends Component {
             <Redirect to="/notfound" />
           </Switch>
         </div>
+        {this.showSearch()}
         <footer className="border-top footer" bg="light" variant="light">
           <div className="footer-copyright text-center py-3">
             <p style={{ margin: 0 }}>
@@ -233,6 +252,24 @@ class App extends Component {
           </div>
         </footer>
       </Router>
+    );
+  }
+
+  showSearch() {
+    return (
+      <Modal
+        show={this.state.show}
+        onHide={this.handleClose}
+        style={{ maxWidth: "100%" }}
+      >
+        <div style={{ width: "100%", marginTop: "12px", paddingRight: "12px" }}>
+          <button onClick={this.handleClose} className="CloseBtn">
+            X
+          </button>
+          <br />
+          <ProductSearch handleClose={this.handleClose} />
+        </div>
+      </Modal>
     );
   }
 }

@@ -2,4 +2,50 @@
   text-align: center;
 }
 
-* { margin: 0; padding: 0; }
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.CloseBtn {
+  float: right;
+  font-weight: bold;
+  font-size: large;
+  text-align: end;
+  margin: auto;
+  border: none;
+  background: none;
+  color: #007bff;
+}
+
+form.searchinput input[type="text"] {
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #007bff;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+  text-align: center;
+}
+
+form.searchinput button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.searchinput button:hover {
+  background: #0b7dda;
+}
+
+form.searchinput::after {
+  content: "";
+  clear: both;
+  display: table;
+}

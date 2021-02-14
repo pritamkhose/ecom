@@ -10,11 +10,11 @@ const CartCount = (props) => {
   const [{ basket }] = useStateValue();
 
   return (
-    <Row>
+    <Row style={{margin: "0px"}}>
       <img src={cartcount} alt="Cart" height="35"></img>
       <p
         className="CartText"
-        style={{ margin: "0px", padding: "0px", paddingTop: "6px" }}
+        style={{ margin: "0px", padding: "0px", paddingTop: "3px" }}
       >
         {basket.length}
       </p>

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
+import { debounce } from "lodash";
 
 class ProductFilters extends Component {
   constructor(props) {
     super(props);
     const query = new URLSearchParams(this.props.location.search);
     this.state = {
+      search: query.get("search"),
       brand: query.get("brand"),
       category: query.get("category"),
       sort: query.get("sort"),
@@ -14,6 +16,7 @@ class ProductFilters extends Component {
       categoryList: JSON.parse(localStorage.getItem("categoryList")),
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSearchInputThrottled = debounce(this.handleChange, 1500);
     if (this.state.brandList == null) {
       this.getData("brand");
     }
@@ -30,6 +33,9 @@ class ProductFilters extends Component {
 
   redirectURL() {
     var url = window.location.pathname + "?";
+    if (this.state.search !== null && this.state.search !== "") {
+      url = url + "search=" + this.state.search;
+    }
     if (this.state.category !== null && this.state.category !== "") {
       url = url + "&category=" + this.state.category;
     }
@@ -72,7 +78,18 @@ class ProductFilters extends Component {
     return (
       <div className="container" style={{ paddingBottom: "8px" }}>
         <div className="row">
-          <div name="sort" className="col-4">
+          <div name="search" className="col-3">
+            <label>Search :</label>
+            <br />
+            <input
+              className="form-control"
+              name="search"
+              id="search"
+              defaultValue={this.state.search !== null ? this.state.search : ""}
+              onChange={this.handleSearchInputThrottled}
+            />
+          </div>
+          <div name="sort" className="col-3">
             <label>Sort :</label>
             <select
               className="custom-select"
@@ -91,7 +108,7 @@ class ProductFilters extends Component {
             </select>
           </div>
           {this.state.brandList !== null ? (
-            <div name="brand" className="col-4">
+            <div name="brand" className="col-3">
               <label>Brand :</label>
               <select
                 className="custom-select"
@@ -112,7 +129,7 @@ class ProductFilters extends Component {
             </div>
           ) : null}
           {this.state.categoryList !== null ? (
-            <div name="category" className="col-4">
+            <div name="category" className="col-3">
               <label>Category :</label>
               <select
                 className="custom-select"
