@@ -43,7 +43,7 @@
     "node": "14.x"
   },
   "scripts": {
-    "start": "npm-run-all --parallel watch:server",
+    "start": "nodemon --watch src/server src/server",
     "start:build": "npm-run-all --parallel watch:server build",
     "start:local": "npm-run-all --parallel watch:localserver start:web",
     "start:web": "set PORT=3001 && react-scripts start",
