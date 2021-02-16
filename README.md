@@ -1,4 +1,4 @@
-# Ecom app using  Mongo
+# Ecom app using MongoDB
 it's GraphQL Ecom app using Mangodb has interface via Rest & GraphQL APIs.
 
 ## Running App Locally
@@ -27,3 +27,10 @@ serve -s build
 Your React app running on [localhost:3000](http://localhost:3000/).
 Your GraphQL running on [localhost:3000/graphql](http://localhost:3000/graphql).
 Your Postman running on [localhost:3000/postman](http://localhost:3000/postman).
+
+## Steps to deploy App on heroku
+
+```sh
+npm run build
+npm start
+```
