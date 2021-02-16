@@ -208,7 +208,7 @@ class App extends Component {
                 <AddressEdit />
               </div>
             </Route>
-            <Route path="/orders">
+            <Route path="/"path={["/orders/:id", "/orders"]} >
               <Badge variant="primary">Order History</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <OrderHistory />
@@ -237,7 +237,7 @@ class App extends Component {
           </Switch>
         </div>
         {this.showSearch()}
-        <footer className="border-top footer" bg="light" variant="light">
+        <footer id="Footer" className="border-top footer" bg="light" variant="light">
           <div className="footer-copyright text-center py-3">
             <p style={{ margin: 0 }}>
               © 2020-21 :{" "}

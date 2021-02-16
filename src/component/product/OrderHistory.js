@@ -10,6 +10,7 @@ import CartEmpty from "./CartEmpty";
 const OrderHistory = (props) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [orderId, setOrderID] = useState(props.match.params.id);
 
   useEffect(() => {
     if (localStorage.getItem("uid")) {
@@ -18,11 +19,16 @@ const OrderHistory = (props) => {
           ? process.env.REACT_APP_API_URL
           : "") + "/api/";
       setLoading(true);
+      var searchObj = {
+        uid: localStorage.getItem("uid"),
+      };
+      if (orderId !== undefined && orderId !== null) {
+        searchObj.orderCreationId = orderId;
+      }
       axios
         .post(baseURL + "mongoclient?collection=orders", {
-          search: {
-            uid: localStorage.getItem("uid"),
-          },
+          search: searchObj,
+          sort: { _id: -1 },
         })
         .then(
           (response) => {
@@ -122,7 +128,11 @@ const OrderHistory = (props) => {
             <>
               <Card className="Card" key="empty">
                 <br />
-                <h5>We are looking forward to receive your order.</h5>
+                <h5>
+                  {orderId !== undefined && orderId !== null
+                    ? orderId.toUpperCase() + " is not vaild"
+                    : "We are looking forward to receive your order."}
+                </h5>
                 <br />
               </Card>
               <CartEmpty />

@@ -87,6 +87,35 @@ const OrderConfirm = (props) => {
     });
   }
 
+  const sendEmail = (email, username, orderId) => {
+    const mailbody =
+      '<!DOCTYPE html> <html lang="en"> <head> <meta charset="utf-8">   <meta name="viewport" content="width=device-width, initial-scale=1">   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  </head> <body>' +
+      ' <h4 class="text-center">Hi ' +
+      username +
+      ',</h4><br/> <p class="text-center">Thank you!,<br/> Your order id - ' +
+      orderId +
+      ' is successful put with us!</p><br/> <br/><span class="badge badge-primary">Order Items</span> <br/><br/>' +
+      // document.getElementById("ProductList").innerHTML +
+      // '<br/> <span class="badge badge-primary">Total Price</span> <br/>' +
+      // document.getElementById("TotalPrice").innerHTML +
+      // '<span class="badge badge-primary">Delivery Address</span> <br/>' +
+      // document.getElementById("AddressSelect").innerHTML +
+      // "<br/>" +
+      // document.getElementById("Footer").innerHTML +
+      "</body> </html>";
+    const mailObj = {
+      to: email,
+      subject: "Ecom Order - " + orderId,
+      html: mailbody,
+    };
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined
+        ? process.env.REACT_APP_API_URL
+        : "") + "/api/email/send";
+    console.log(mailObj);
+    axios.post(baseURL, mailObj);
+  };
+
   async function displayRazorpay() {
     var delAddr = address.find((element) => {
       return element.addrid === choiceAddress;
@@ -153,17 +182,31 @@ const OrderConfirm = (props) => {
           dispatch({
             type: "EMPTY_BASKET",
           });
-          toast("🚀 Your order " + result.data.orderId + " is successful put with us!", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            });
-            props.history.push("/orders");
-            alert("🚀 Your order " + result.data.orderId + " is successful put with us!");
+          toast(
+            "🚀 Your order " +
+              result.data.orderId +
+              " is successful put with us!",
+            {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            }
+          );
+          sendEmail(
+            localStorage.getItem("email"),
+            delAddr.firstName + " " + delAddr.lastName,
+            result.data.orderId
+          );
+          props.history.push("/orders/" + result.data.orderId);
+          alert(
+            "🚀 Your order " +
+              result.data.orderId +
+              " is successful put with us!"
+          );
         } else {
           alert(result.data.msg);
         }
@@ -188,9 +231,7 @@ const OrderConfirm = (props) => {
   }
 
   async function selectAddress(item) {
-    setChoiceAddress(item.addrid, () => {
-      showAddress();
-    });
+    setChoiceAddress(item.addrid);
   }
 
   function showAddress() {
@@ -208,27 +249,43 @@ const OrderConfirm = (props) => {
             }}
             onClick={() => selectAddress(item)}
           >
-            <h5 className="AddrLineText">
-              {item["firstName"] + " " + item["lastName"]}
-            </h5>
-            <p className="AddrLineText">
-              <b>Mobile No : </b>
-              {item["mobileno"]}
-            </p>
-            <p className="AddrLineText">
-              {item["atype"] !== undefined ? item["atype"] : null}
-            </p>
-            <p className="AddrLineText">{item["address"]}</p>
-            <p className="AddrLineText">
-              {item["landmark"] !== undefined ? item["landmark"] : null}
-            </p>
-            <p className="AddrLineText">{item["area"]}</p>
-            <p className="AddrLineText">
-              {item["city"] + " - " + item["pincode"]}
-            </p>
-            <p className="AddrLineText">
-              {item["state"] + ", " + item["country"]}
-            </p>
+            <div className="row">
+              <div
+                id={choiceAddress === item["addrid"] ? "AddressSelect" : i}
+                className="col-sm-11"
+              >
+                <h5 className="AddrLineText">
+                  {item["firstName"] + " " + item["lastName"]}
+                </h5>
+                <p className="AddrLineText">
+                  <b>Mobile No : </b>
+                  {item["mobileno"]}
+                </p>
+                <p className="AddrLineText">
+                  {item["atype"] !== undefined ? item["atype"] : null}
+                </p>
+                <p className="AddrLineText">{item["address"]}</p>
+                <p className="AddrLineText">
+                  {item["landmark"] !== undefined ? item["landmark"] : null}
+                </p>
+                <p className="AddrLineText">{item["area"]}</p>
+                <p className="AddrLineText">
+                  {item["city"] + " - " + item["pincode"]}
+                </p>
+                <p className="AddrLineText">
+                  {item["state"] + ", " + item["country"]}
+                </p>
+              </div>
+              <div className="col-sm-1">
+                <input
+                  type="radio"
+                  id={i}
+                  name="select"
+                  onChange={() => selectAddress(item)}
+                  checked={choiceAddress === item["addrid"] ? true : false}
+                ></input>
+              </div>
+            </div>
           </Card>
         ))}
       </div>
@@ -255,18 +312,20 @@ const OrderConfirm = (props) => {
             </>
           ) : (
             <>
-              {basket?.map((item) => (
-                <OrderItem value={item} key={item._id} />
-              ))}
+              <div id="ProductList">
+                {basket?.map((item) => (
+                  <OrderItem value={item} key={item._id} />
+                ))}
+              </div>
               {showAddress()}
               <Card className="Card" style={{ padding: "10px" }}>
                 <Row style={{ margin: "0px" }}>
-                  <Col>
+                  <Col id="TotalItems">
                     <h5 style={{ textAlign: "center" }}>
                       {basket.length} Items
                     </h5>
                   </Col>
-                  <Col>
+                  <Col id="TotalPrice">
                     <h5 style={{ textAlign: "center" }}>
                       {getBasketTotal(basket)} ₹{" "}
                     </h5>
