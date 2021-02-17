@@ -37,13 +37,33 @@ const ProductItem = (props) => {
     props.history.push("/pid/" + id);
   }
 
+  function getURL(url) {
+    var fname = url.substring(url.lastIndexOf("/") + 1);
+    return process.env.REACT_APP_ASSET_URL + fname + "?alt=media";
+  }
+
+  function getImage(url) {
+    var baseURL =
+      (process.env.REACT_APP_API_URL !== undefined
+        ? process.env.REACT_APP_API_URL
+        : "") +
+      "/api/storage/getImage?id=" +
+      url;
+    return baseURL;
+  }
+
   return (
     <Col>
       <Card className="Card">
         <img
           height="220rem"
           alt={props.value.product}
-          src={props.value.searchImage}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = props.value.searchImage;
+            // e.target.src = getImage(props.value.searchImage);
+          }}
+          src={getURL(props.value.searchImage)}
           onClick={() => openLink(props.value._id)}
         />
         <Badge className="Overlap" variant="primary">

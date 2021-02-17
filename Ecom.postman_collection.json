@@ -1214,6 +1214,63 @@
 			]
 		},
 		{
+			"name": "storage",
+			"item": [
+				{
+					"name": "Firebase storage upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Pritam/Downloads/banner/2.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/storage/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"storage",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload Script",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/storage/uploadScript",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"storage",
+								"uploadScript"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "all",
 			"request": {
 				"method": "POST",

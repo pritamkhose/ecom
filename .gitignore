@@ -142,6 +142,7 @@ packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
 packages/react-devtools-scheduling-profiler/dist
 
+/uploads
 /data
 local_env.txt
 prod_env.txt

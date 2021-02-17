@@ -85,3 +85,17 @@ https://sendgrid.com/docs/for-developers/sending-email/curl-examples/
 https://www.pluralsight.com/guides/how-to-implement-infinite-scrolling-with-reactjs
 
 -----------------------------------------------------------------------------------
+
+https://console.firebase.google.com/u/2/project/node-pritam/settings/serviceaccounts/adminsdk
+https://console.firebase.google.com/u/2/project/node-pritam/settings/serviceaccounts/databasesecrets
+https://firebase.google.com/docs/admin/setup
+
+Work for Realtime database Not Cloud Firestore
+https://console.firebase.google.com/u/2/project/node-pritam/database/node-pritam/data
+
+cloud storage - https://firebase.google.com/docs/database/admin/retrieve-data
+realtime database - https://firebase.google.com/docs/firestore/query-data/get-data
+
+https://medium.com/@impaachu/how-to-upload-data-to-firebase-firestore-cloud-database-63543d7b34c5
+
+-----------------------------------------------------------------------------------
