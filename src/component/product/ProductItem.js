@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactGA from "react-ga";
 
 const MAX_LENGTH = 36;
 
@@ -30,6 +31,11 @@ const ProductItem = (props) => {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
+    });
+
+    ReactGA.event({
+      category: "Add to Cart",
+      action: obj,
     });
   };
 

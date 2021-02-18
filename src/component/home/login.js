@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
 
+import ReactGA from "react-ga";
 import FacebookLogin from "react-facebook-login";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -32,6 +33,10 @@ class Login extends Component {
   }
 
   login(response) {
+    ReactGA.event({
+      category: "Sign Up",
+      action: "Google",
+    });
     if (response.accessToken) {
       this.setState((state) => ({
         isLogined: true,
@@ -100,6 +105,10 @@ class Login extends Component {
   }
 
   logout(response) {
+    ReactGA.event({
+      category: "Sign Out",
+      action: "logout",
+    });
     this.setState((state) => ({
       isLogined: false,
       accessToken: "",
@@ -127,6 +136,10 @@ class Login extends Component {
   }
 
   handleLoginFacebook(response) {
+    ReactGA.event({
+      category: "Sign Up",
+      action: "Facebook",
+    });
     if (response.accessToken) {
       this.setState({ isLogined: true, accessToken: response.accessToken });
       localStorage.clear();

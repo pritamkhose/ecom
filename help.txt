@@ -99,3 +99,13 @@ realtime database - https://firebase.google.com/docs/firestore/query-data/get-da
 https://medium.com/@impaachu/how-to-upload-data-to-firebase-firestore-cloud-database-63543d7b34c5
 
 -----------------------------------------------------------------------------------
+
+https://analytics.google.com/analytics/web/
+
+https://levelup.gitconnected.com/using-google-analytics-with-react-3d98d709399b
+
+https://stackoverflow.com/questions/52724447/how-to-use-google-analytics-with-react
+
+https://medium.com/javascript-in-plain-english/how-to-setup-and-add-google-analytics-to-your-react-app-fd361f47ac7b
+
+-----------------------------------------------------------------------------------

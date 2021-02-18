@@ -32,6 +32,16 @@ import AddressEdit from "./component/product/AddressEdit";
 import OrderHistory from "./component/product/OrderHistory";
 import OrderConfirm from "./component/product/OrderConfirm";
 
+import ReactGA from "react-ga";
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
+
+// Initialize google analytics page view tracking
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_MEASUREMENT_ID);
+history.listen((location) => {
+  ReactGA.pageview(location.pathname + location.search);
+});
+
 class App extends Component {
   state = {
     navExpanded: false,
@@ -48,6 +58,10 @@ class App extends Component {
     // Bind the this context to the handler function
     this.updateLogin = this.updateLogin.bind(this);
     this.handleClose = this.handleClose.bind(this);
+  }
+
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   handleClose() {
@@ -74,7 +88,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <Navbar
           bg="light"
           variant="light"
@@ -208,7 +222,7 @@ class App extends Component {
                 <AddressEdit />
               </div>
             </Route>
-            <Route path="/"path={["/orders/:id", "/orders"]} >
+            <Route path="/" path={["/orders/:id", "/orders"]}>
               <Badge variant="primary">Order History</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <OrderHistory />
@@ -237,7 +251,12 @@ class App extends Component {
           </Switch>
         </div>
         {this.showSearch()}
-        <footer id="Footer" className="border-top footer" bg="light" variant="light">
+        <footer
+          id="Footer"
+          className="border-top footer"
+          bg="light"
+          variant="light"
+        >
           <div className="footer-copyright text-center py-3">
             <p style={{ margin: 0 }}>
               © 2020-21 :{" "}
