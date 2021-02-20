@@ -115,6 +115,14 @@ https://www.optimizesmart.com/e-commerce-tracking-works-google-analytics-ultimat
 pwa
 https://dzone.com/articles/a-step-by-step-tutorial-for-developing-a-progressi
 
+https://github.com/supercycle91/desktop-pwas/blob/master/src/serviceWorker.js
+
 https://blog.bitsrc.io/how-to-build-a-react-progressive-web-application-pwa-b5b897df2f0a
 
+-----------------------------------------------------------------------------------
+Navigation Panel 
+
+https://stackoverflow.com/questions/48251513/bootstrap-4-menu-toggle-button-to-left-and-right-with-brand-in-center
+
+https://stackoverflow.com/questions/40178386/align-nav-items-to-right-side-in-bootstrap-4
 -----------------------------------------------------------------------------------

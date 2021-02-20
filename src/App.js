@@ -85,6 +85,7 @@ class App extends Component {
           bg="light"
           variant="light"
           expand="lg"
+          fixed="top"
           style={{ position: "sticky", top: 0, zIndex: 1 }}
           onToggle={this.setNavExpanded}
           expanded={this.state.navExpanded}
@@ -99,65 +100,81 @@ class App extends Component {
                 <img src={logo} alt={logo} height="30"></img> Pritam Ecom
               </Link>
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto" onClick={this.setNavClose}>
-                <Link to={"/"} className="nav-link">
-                  Home
-                </Link>
-                <Link to={"/products"} className="nav-link">
-                  Products
-                </Link>
-                {this.state.isLogin ? (
-                  <Link to={"/orders"} className="nav-link">
-                    Orders
+              <Nav onClick={this.setNavClose}>
+                <li className="nav-item active">
+                  <Link to={"/"} className="nav-link">
+                    Home
                   </Link>
+                </li>
+                <li className="nav-item active">
+                  <Link to={"/products"} className="nav-link">
+                    Products
+                  </Link>
+                </li>
+                {this.state.isLogin ? (
+                  <li className="nav-item active">
+                    <Link to={"/orders"} className="nav-link">
+                      Orders
+                    </Link>
+                  </li>
                 ) : null}
-                <Link to={"/about"} className="nav-link">
-                  About
-                </Link>
+                <li className="nav-item active">
+                  <Link to={"/about"} className="nav-link">
+                    About
+                  </Link>
+                </li>
               </Nav>
-              <div
+            </Navbar.Collapse>
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav onClick={this.setNavClose} className="ml-auto">
+                {this.state.isLogin ? (
+                  <li className="nav-item active">
+                    <Link
+                      to={"/profile"}
+                      onClick={this.setNavClose}
+                      className="nav-link"
+                      style={{ float: "end", color: "rgba(0,0,0,.5)" }}
+                    >
+                      <img src={this.state.imageUrl} alt="" height="30"></img>
+                      {" " + this.state.name}
+                    </Link>
+                  </li>
+                ) : (
+                  <li className="nav-item active">
+                    <Link
+                      to={"/login"}
+                      onClick={this.setNavClose}
+                      className="nav-link"
+                      style={{ float: "end" }}
+                    >
+                      <i className="fa fa-sign-in" aria-hidden="true">
+                        {" "}
+                        Login
+                      </i>
+                    </Link>
+                  </li>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+            <div className="navbar-link" onClick={this.setNavClose}>
+              <img
                 onClick={this.handleSearch}
-                className="nav-link"
-                style={{ float: "end", color: "rgba(0,0,0,.5)" }}
-              >
-                <img src={icsearch} alt="Search" height="35"></img>
-              </div>
+                src={icsearch}
+                alt="Search"
+                height="35"
+              ></img>
+            </div>
+            <div className="navbar-link">
               <Link
                 to={"/cart"}
                 onClick={this.setNavClose}
-                className="nav-link"
                 style={{ float: "end", color: "rgba(0,0,0,.5)" }}
               >
                 <CartCount />
               </Link>
-              {this.state.isLogin ? (
-                <>
-                  <Link
-                    to={"/profile"}
-                    onClick={this.setNavClose}
-                    className="nav-link"
-                    style={{ float: "end", color: "rgba(0,0,0,.5)" }}
-                  >
-                    <img src={this.state.imageUrl} alt="" height="30"></img>
-                    {" " + this.state.name}
-                  </Link>
-                </>
-              ) : (
-                <Link
-                  to={"/login"}
-                  onClick={this.setNavClose}
-                  className="nav-link"
-                  style={{ float: "end" }}
-                >
-                  <i className="fa fa-sign-in" aria-hidden="true">
-                    {" "}
-                    Login
-                  </i>
-                </Link>
-              )}
-            </Navbar.Collapse>
+            </div>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
           </span>
         </Navbar>
         <div>
