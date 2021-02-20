@@ -5,11 +5,24 @@ import { useStateValue } from "../../StateProvider";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactGA from "react-ga";
 
 const AddCartBtn = (props) => {
   const [{}, dispatch] = useStateValue();
 
   const addCart = (obj) => {
+    ReactGA.event({
+      category: "Add to Cart",
+      action: JSON.stringify(obj),
+    });
+    ReactGA.plugin.execute("ecommerce", "addItem", {
+      id: obj.productId,
+      name: obj.product,
+      price: obj.price.toString(),
+      category: obj.brand,
+      quantity: obj.qty.toString(),
+    });
+
     // dispatch the item into the data layer
     dispatch({
       type: "ADD_TO_BASKET",

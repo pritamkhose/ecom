@@ -33,11 +33,11 @@ class Login extends Component {
   }
 
   login(response) {
-    ReactGA.event({
-      category: "Sign Up",
-      action: "Google",
-    });
     if (response.accessToken) {
+      ReactGA.event({
+        category: "Google Login",
+        action: response.profileObj.email,
+      });
       this.setState((state) => ({
         isLogined: true,
         accessToken: response.accessToken,
@@ -54,6 +54,11 @@ class Login extends Component {
         response.profileObj.name,
         response
       );
+    } else {
+      ReactGA.event({
+        category: "Google Login Failed",
+        action: JSON.stringify(response),
+      });
     }
   }
 
@@ -129,19 +134,27 @@ class Login extends Component {
 
   handleLoginFailure(response) {
     alert("Google - Failed to log in");
+    ReactGA.event({
+      category: "Google Login Failure",
+      action: JSON.stringify(response),
+    });
   }
 
   handleLogoutFailure(response) {
     alert("Google - Failed to log out");
+    ReactGA.event({
+      category: "Google Logout Failure",
+      action: JSON.stringify(response),
+    });
   }
 
   handleLoginFacebook(response) {
-    ReactGA.event({
-      category: "Sign Up",
-      action: "Facebook",
-    });
     if (response.accessToken) {
       this.setState({ isLogined: true, accessToken: response.accessToken });
+      ReactGA.event({
+        category: "Facebook Login",
+        action: response.email,
+      });
       localStorage.clear();
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("email", response.email);
@@ -152,6 +165,10 @@ class Login extends Component {
       this.updateInfo(response.email, response.name, response);
     } else {
       alert("Facebook - Failed to log in");
+      ReactGA.event({
+        category: "Facebook Login Failure",
+        action: JSON.stringify(response),
+      });
     }
   }
 

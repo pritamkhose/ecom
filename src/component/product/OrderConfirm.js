@@ -6,7 +6,7 @@ import { getBasketTotal } from "../../Reducer";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import ReactGA from "react-ga";
 import axios from "axios";
 
 import { Button, Card, Spinner, Badge, Row, Col } from "react-bootstrap";
@@ -144,6 +144,11 @@ const OrderConfirm = (props) => {
       return;
     }
 
+    ReactGA.event({
+      category: "Payment initiated",
+      action: JSON.stringify(result.data.order),
+    });
+
     const { amount, id: order_id, currency, receipt } = result.data.order;
     const razorpayPaymentKey = result.data.razorpayPaymentKey;
     const serverdate = result.data.serverdate;
@@ -201,6 +206,10 @@ const OrderConfirm = (props) => {
             delAddr.firstName + " " + delAddr.lastName,
             result.data.orderId
           );
+          ReactGA.plugin.execute('ecommerce', 'addTransaction', {
+            id: result.data.orderId,
+            revenue: amount.toString()
+          });
           props.history.push("/orders/" + result.data.orderId);
           alert(
             "🚀 Your order " +

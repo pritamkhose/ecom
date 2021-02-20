@@ -35,7 +35,14 @@ const ProductItem = (props) => {
 
     ReactGA.event({
       category: "Add to Cart",
-      action: obj,
+      action: JSON.stringify(obj),
+    });
+    ReactGA.plugin.execute("ecommerce", "addItem", {
+      id: obj.productId,
+      name: obj.product,
+      price: obj.price.toString(),
+      category: obj.brand,
+      quantity: obj.qty.toString(),
     });
   };
 

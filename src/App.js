@@ -31,16 +31,11 @@ import Address from "./component/product/Address";
 import AddressEdit from "./component/product/AddressEdit";
 import OrderHistory from "./component/product/OrderHistory";
 import OrderConfirm from "./component/product/OrderConfirm";
+import AnalyticsManager from "./component/analytics/AnalyticsManager";
 
 import ReactGA from "react-ga";
-import { createBrowserHistory } from "history";
-const history = createBrowserHistory();
-
 // Initialize google analytics page view tracking
 ReactGA.initialize(process.env.REACT_APP_GOOGLE_MEASUREMENT_ID);
-history.listen((location) => {
-  ReactGA.pageview(location.pathname + location.search);
-});
 
 class App extends Component {
   state = {
@@ -57,16 +52,13 @@ class App extends Component {
     super(props);
     // Bind the this context to the handler function
     this.updateLogin = this.updateLogin.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
-  componentDidMount() {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }
-
-  handleClose() {
+  handleSearch() {
     this.setState((state) => ({
       show: !state.show,
+      navExpanded: false,
     }));
   }
 
@@ -88,7 +80,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router history={history}>
+      <Router>
         <Navbar
           bg="light"
           variant="light"
@@ -116,15 +108,17 @@ class App extends Component {
                 <Link to={"/products"} className="nav-link">
                   Products
                 </Link>
-                <Link to={"/orders"} className="nav-link">
-                  Orders
-                </Link>
+                {this.state.isLogin ? (
+                  <Link to={"/orders"} className="nav-link">
+                    Orders
+                  </Link>
+                ) : null}
                 <Link to={"/about"} className="nav-link">
                   About
                 </Link>
               </Nav>
               <div
-                onClick={this.handleClose}
+                onClick={this.handleSearch}
                 className="nav-link"
                 style={{ float: "end", color: "rgba(0,0,0,.5)" }}
               >
@@ -270,6 +264,7 @@ class App extends Component {
             </p>
           </div>
         </footer>
+        <AnalyticsManager />
       </Router>
     );
   }
@@ -278,15 +273,15 @@ class App extends Component {
     return (
       <Modal
         show={this.state.show}
-        onHide={this.handleClose}
+        onHide={this.handleSearch}
         style={{ maxWidth: "100%" }}
       >
         <div style={{ width: "100%", marginTop: "12px", paddingRight: "12px" }}>
-          <button onClick={this.handleClose} className="CloseBtn">
+          <button onClick={this.handleSearch} className="CloseBtn">
             X
           </button>
           <br />
-          <ProductSearch handleClose={this.handleClose} />
+          <ProductSearch handleSearch={this.handleSearch} />
         </div>
       </Modal>
     );
