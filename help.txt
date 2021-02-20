@@ -108,4 +108,13 @@ https://stackoverflow.com/questions/52724447/how-to-use-google-analytics-with-re
 
 https://medium.com/javascript-in-plain-english/how-to-setup-and-add-google-analytics-to-your-react-app-fd361f47ac7b
 
+https://github.com/react-ga/react-ga
+
+https://www.optimizesmart.com/e-commerce-tracking-works-google-analytics-ultimate-guide/
+-----------------------------------------------------------------------------------
+pwa
+https://dzone.com/articles/a-step-by-step-tutorial-for-developing-a-progressi
+
+https://blog.bitsrc.io/how-to-build-a-react-progressive-web-application-pwa-b5b897df2f0a
+
 -----------------------------------------------------------------------------------

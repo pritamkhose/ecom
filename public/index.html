@@ -5,24 +5,55 @@
     <link rel="icon" href="%PUBLIC_URL%/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" />
-    <meta
-      name="description"
-      content="Web site for ecom by Pritam Khose"
-    />
+    <meta name="description" content="Web site for ecom by Pritam Khose" />
+    <!-- Tell the browser it's a PWA -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <!-- Tell iOS it's a PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="canonical" href="https://pritamecom.herokuapp.com/" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Ecom App by Pritam Khose" />
-    <meta property="og:description" content="Ecom App by Pritam Khose by Pritam Khose" />
+    <meta
+      property="og:description"
+      content="Ecom App by Pritam Khose by Pritam Khose"
+    />
     <meta property="og:url" content="https://pritamecom.herokuapp.com/" />
     <meta property="og:site_name" content="Ecom App" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Ecom App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker
+            .register("worker.js")
+            .then(
+              function (registration) {
+                console.log(
+                  "Worker registration successful",
+                  registration.scope
+                );
+              },
+              function (err) {
+                console.log("Worker registration failed", err);
+              }
+            )
+            .catch(function (err) {
+              console.log(err);
+            });
+        });
+      } else {
+        console.log("Service Worker is not supported by browser.");
+      }
+    </script>
   </body>
 </html>

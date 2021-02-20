@@ -14,7 +14,7 @@ const ProductSearch = (props) => {
           className="searchinput"
           onSubmit={(e) => {
             e.preventDefault();
-            props.handleClose();
+            props.handleSearch();
             props.history.push("/products?search=" + e.target.search.value);
           }}
         >
