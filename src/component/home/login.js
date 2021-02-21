@@ -36,7 +36,7 @@ class Login extends Component {
     if (response.accessToken) {
       ReactGA.event({
         category: "Google Login",
-        action: response.profileObj.email,
+        action: response.profileObj.name,
       });
       this.setState((state) => ({
         isLogined: true,
@@ -153,7 +153,7 @@ class Login extends Component {
       this.setState({ isLogined: true, accessToken: response.accessToken });
       ReactGA.event({
         category: "Facebook Login",
-        action: response.email,
+        action: response.name,
       });
       localStorage.clear();
       localStorage.setItem("accessToken", response.accessToken);

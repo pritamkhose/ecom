@@ -148,6 +148,7 @@ const OrderConfirm = (props) => {
       category: "Payment initiated",
       action: JSON.stringify(result.data.order),
     });
+    ReactGA.plugin.execute("ecommerce", "addTransaction", result.data.order);
 
     const { amount, id: order_id, currency, receipt } = result.data.order;
     const razorpayPaymentKey = result.data.razorpayPaymentKey;
@@ -206,10 +207,17 @@ const OrderConfirm = (props) => {
             delAddr.firstName + " " + delAddr.lastName,
             result.data.orderId
           );
-          ReactGA.plugin.execute('ecommerce', 'addTransaction', {
+          var item = {
             id: result.data.orderId,
-            revenue: amount.toString()
+            revenue: amount.toString(),
+          };
+          ReactGA.event({
+            category: "Payment Done",
+            action: JSON.stringify(item),
           });
+          ReactGA.plugin.execute('ec', 'setAction', 'purchase', item);
+          ReactGA.plugin.execute("ecommerce", "send");
+          ReactGA.plugin.execute("ecommerce", "clear");
           props.history.push("/orders/" + result.data.orderId);
           alert(
             "🚀 Your order " +

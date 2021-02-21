@@ -11,17 +11,20 @@ const AddCartBtn = (props) => {
   const [{}, dispatch] = useStateValue();
 
   const addCart = (obj) => {
-    ReactGA.event({
-      category: "Add to Cart",
-      action: JSON.stringify(obj),
-    });
-    ReactGA.plugin.execute("ecommerce", "addItem", {
+    var item = {
       id: obj.productId,
       name: obj.product,
-      price: obj.price.toString(),
+      price: obj.price,
       category: obj.brand,
-      quantity: obj.qty.toString(),
+      quantity: obj.qty,
+    };
+    ReactGA.event({
+      category: "Add to Cart",
+      action: JSON.stringify(item),
     });
+    ReactGA.plugin.execute("ecommerce", "addItem", item);
+    ReactGA.plugin.execute("ecommerce", "send");
+    ReactGA.plugin.execute("ecommerce", "clear");
 
     // dispatch the item into the data layer
     dispatch({

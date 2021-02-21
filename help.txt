@@ -111,6 +111,10 @@ https://medium.com/javascript-in-plain-english/how-to-setup-and-add-google-analy
 https://github.com/react-ga/react-ga
 
 https://www.optimizesmart.com/e-commerce-tracking-works-google-analytics-ultimate-guide/
+
+https://stackoverflow.com/questions/42804001/ecommerce-tracking-data-not-being-sent-with-react-ga
+
+https://www.optimizesmart.com/implementing-enhanced-ecommerce-tracking-universal-analytics/#a13
 -----------------------------------------------------------------------------------
 pwa
 https://dzone.com/articles/a-step-by-step-tutorial-for-developing-a-progressi
