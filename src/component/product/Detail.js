@@ -5,7 +5,7 @@ import "./ProductItem.css";
 import axios from "axios";
 import AddCartBtn from "./AddCartBtn";
 
-class Details extends Component {
+class ProductDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,9 +37,7 @@ class Details extends Component {
   render() {
     return (
       <div>
-        <Badge variant="primary">
-          Product {this.state.isEdit ? "Deails" : "Add"}
-        </Badge>
+        <Badge variant="primary">Product Deails</Badge>
         {Object.keys(this.state.aObj).length === 0
           ? this.showLoading()
           : this.showData(this.state.aObj)}
@@ -257,4 +255,4 @@ class Details extends Component {
   }
 }
 
-export default withRouter(Details);
+export default withRouter(ProductDetails);

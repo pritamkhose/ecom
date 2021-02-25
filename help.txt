@@ -130,3 +130,13 @@ https://stackoverflow.com/questions/48251513/bootstrap-4-menu-toggle-button-to-l
 
 https://stackoverflow.com/questions/40178386/align-nav-items-to-right-side-in-bootstrap-4
 -----------------------------------------------------------------------------------
+React form
+
+https://medium.com/hackernoon/better-forms-with-react-reactive-form-431571e40a0f
+https://codesandbox.io/s/nw9wxw2nvl
+
+https://github.com/final-form/react-final-form
+https://www.npmjs.com/package/react-final-form
+
+https://www.npmjs.com/package/react-reactive-form
+-----------------------------------------------------------------------------------

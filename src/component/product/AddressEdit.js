@@ -10,6 +10,8 @@ import {
 } from "reactstrap";
 import { Form, Field } from "react-final-form";
 import axios from "axios";
+import FormFieldText from "./FormFieldText";
+import FormFieldNumber from "./FormFieldNumber";
 
 class AddressEdit extends Component {
   constructor(props) {
@@ -150,7 +152,7 @@ class AddressEdit extends Component {
   render() {
     return (
       <div>
-        <Badge variant="primary" style={{background :"#007bff"}}>
+        <Badge variant="primary" style={{ background: "#007bff" }}>
           {this.state.addressID !== undefined && this.state.addressID === "new"
             ? "Add new address"
             : "Edit address"}
@@ -215,253 +217,106 @@ class AddressEdit extends Component {
                   </FormGroup>
                 )}
               </Field>
-              <Field
+              <FormFieldText
                 name="firstName"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>First Name</Label>
-                    <Field
-                      required
-                      type="text"
-                      name="firstName"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter First Name"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].firstName
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="First Name"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].firstName
+                    : ""
+                }
+              />
+              <FormFieldText
                 name="lastName"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Last Name</Label>
-                    <Field
-                      required
-                      type="text"
-                      name="lastName"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter Last Name"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].lastName
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="Last Name"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].lastName
+                    : ""
+                }
+              />
+              <FormFieldNumber
                 name="mobileno"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Mobile number</Label>
-                    <Field
-                      required
-                      minLength="10"
-                      maxLength="10"
-                      min="999999999"
-                      max="9999999999"
-                      type={this.isMobile ? "number" : "text"}
-                      name="mobileno"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter Mobile number"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].mobileno
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="Mobile number"
+                minLength="10"
+                maxLength="10"
+                min="999999999"
+                max="9999999999"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].mobileno
+                    : ""
+                }
+              />
+              <FormFieldText
                 name="address"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Flat, House no., Building, Company, Apartment</Label>
-                    <Field
-                      required
-                      type="text"
-                      name="address"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter Address"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].address
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="Flat, House no., Building, Company, Apartment"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].address
+                    : ""
+                }
+              />
+              <FormFieldText
                 name="area"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Area, Colony, Street, Sector, Village</Label>
-                    <Field
-                      required
-                      type="text"
-                      name="area"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter Area"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].area
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field name="landmark">
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Landmark</Label>
-                    <Field
-                      type="text"
-                      name="landmark"
-                      className="form-control"
-                      component="input"
-                      placeholder="E.g. Near Flyover, Behind Cinema, etc."
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].landmark
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="Area, Colony, Street, Sector, Village"
+                placeholder="Enter Area"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].area
+                    : ""
+                }
+              />
+              <FormFieldText
+                name="landmark"
+                hint="Landmark"
+                placeholder="E.g. Near Flyover, Behind Cinema, etc."
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].landmark
+                    : ""
+                }
+              />
+              <FormFieldText
                 name="country"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Country</Label>
-                    <Field
-                      required
-                      type="text"
-                      name="country"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter country"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].country
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="Country"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].country
+                    : ""
+                }
+              />
+              <FormFieldNumber
                 name="pincode"
-                validate={this.composeValidators(
-                  this.required,
-                  this.mustBeNumber
-                )}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Pincode</Label>
-                    <Field
-                      required
-                      minLength="6"
-                      maxLength="6"
-                      min="99999"
-                      max="999999"
-                      type={this.isMobile ? "number" : "text"}
-                      name="pincode"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter Pincode"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].pincode
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="Pincode"
+                minLength="6"
+                maxLength="6"
+                min="99999"
+                max="999999"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].pincode
+                    : ""
+                }
+              />
+              <FormFieldText
                 name="state"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>Sate</Label>
-                    <Field
-                      required
-                      type="text"
-                      name="state"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter state"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].state
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
-              <Field
+                hint="State"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].state
+                    : ""
+                }
+              />
+              <FormFieldText
                 name="city"
-                validate={this.composeValidators(this.required)}
-              >
-                {({ input, meta }) => (
-                  <FormGroup>
-                    <Label>City</Label>
-                    <Field
-                      required
-                      type="text"
-                      name="city"
-                      className="form-control"
-                      component="input"
-                      placeholder="Enter city"
-                      defaultValue={
-                        this.state.address.length === 1
-                          ? this.state.address[0].city
-                          : ""
-                      }
-                    />
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
-                  </FormGroup>
-                )}
-              </Field>
+                hint="City"
+                value={
+                  this.state.address.length === 1
+                    ? this.state.address[0].city
+                    : ""
+                }
+              />
               <div className="buttons">
                 {this.state.addressID === "new" ? null : (
                   <>

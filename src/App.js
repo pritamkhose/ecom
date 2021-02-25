@@ -25,6 +25,7 @@ import ProductSearch from "./component/product/ProductSearch";
 import ProductList from "./component/product/ProductList";
 import ProductFilters from "./component/product/ProductFilters";
 import ProductDetails from "./component/product/Detail";
+import ProductEdit from "./component/product/ProductEdit";
 import Cart from "./component/product/Cart";
 import CartCount from "./component/product/CartCount";
 import Address from "./component/product/Address";
@@ -198,6 +199,9 @@ class App extends Component {
             </Route>
             <Route exact path="/pid/:id">
               <ProductDetails />
+            </Route>
+            <Route exact path="/prodedit/:id">
+              <ProductEdit />
             </Route>
             <Route exact path={["/login", "/profile"]}>
               <div style={{ minHeight: this.state.minHight }}>
