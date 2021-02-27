@@ -140,3 +140,10 @@ https://www.npmjs.com/package/react-final-form
 
 https://www.npmjs.com/package/react-reactive-form
 -----------------------------------------------------------------------------------
+Google Map
+https://stackoverflow.com/questions/34424845/adding-script-tag-to-react-jsx
+
+https://www.w3schools.com/whatis/whatis_google_maps.asp
+
+https://console.cloud.google.com/google/maps-apis/credentials?authuser=1&project=node-pritam&supportedpurview=project
+-----------------------------------------------------------------------------------
