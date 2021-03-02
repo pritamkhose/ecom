@@ -2,7 +2,7 @@ import React from "react";
 import { FormGroup, Label } from "reactstrap";
 import { Field } from "react-final-form";
 
-const FormFieldText = (props) => {
+const FormFieldCheckBox = (props) => {
   function required(value) {
     return value ? undefined : "";
   }
@@ -17,24 +17,19 @@ const FormFieldText = (props) => {
     <Field name={props.name} validate={composeValidators(required)}>
       {({ input, meta }) => (
         <FormGroup>
-          {props.label === false ? null : <Label>{props.hint}</Label>}
           <Field
             required
-            type="text"
+            type="checkbox"
             name={props.name}
-            className="form-control"
+            className=""
             component="input"
-            placeholder={
-              props.placeholder !== undefined
-                ? props.placeholder
-                : "Enter " + props.hint
-            }
             defaultValue={
               props.value !== undefined && props.value.length > 0
                 ? props.value
-                : ""
+                : false
             }
           />
+          {props.label === false ? null : <Label>{" "}{props.hint}</Label>}
           {meta.error && meta.touched && <span>{meta.error}</span>}
         </FormGroup>
       )}
@@ -42,4 +37,4 @@ const FormFieldText = (props) => {
   );
 };
 
-export default FormFieldText;
+export default FormFieldCheckBox;

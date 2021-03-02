@@ -28,7 +28,7 @@ const FormFieldNumber = (props) => {
     >
       {({ input, meta }) => (
         <FormGroup>
-          <Label>{props.hint}</Label>
+          {props.label === false ? null : <Label>{props.hint}</Label>}
           <Field
             required
             type="number"
