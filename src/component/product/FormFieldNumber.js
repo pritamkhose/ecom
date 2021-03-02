@@ -37,6 +37,7 @@ const FormFieldNumber = (props) => {
             min={props.min}
             max={props.max}
             name={props.name}
+            step={props.step}
             className="form-control"
             component="input"
             placeholder={

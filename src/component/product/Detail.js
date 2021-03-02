@@ -11,8 +11,7 @@ class ProductDetails extends Component {
     this.state = {
       id: props.match.params.id,
       aObj: {},
-      isEdit: props.match.params.id ? true : false,
-      isLogined: localStorage.getItem("name") ? true : false,
+      isLoading: true,
     };
     this.getData(props.match.params.id);
   }
@@ -26,10 +25,19 @@ class ProductDetails extends Component {
       .post(baseURL + "mongoclient/id?collection=productmyntra&id=" + id, {})
       .then(
         (response) => {
-          this.setState({ aObj: response.data });
+          if (response.status === 200) {
+            this.setState({ isLoading: false, aObj: response.data });
+          } else {
+            this.setState({ isLoading: false });
+            alert("Something went Wrong! Try again...");
+            this.props.history.push("/products");
+          }
         },
         (error) => {
           console.log(error);
+          this.setState({ isLoading: false });
+          alert("Invaild ID!");
+          this.props.history.push("/products");
         }
       );
   }
@@ -38,7 +46,7 @@ class ProductDetails extends Component {
     return (
       <div>
         <Badge variant="primary">Product Deails</Badge>
-        {Object.keys(this.state.aObj).length === 0
+        {this.state.isLoading
           ? this.showLoading()
           : this.showData(this.state.aObj)}
       </div>
@@ -79,7 +87,7 @@ class ProductDetails extends Component {
   showVarient(aList) {
     return (
       <>
-        {aList !== null && aList.length > 1 ? (
+        {aList !== undefined && aList !== null && aList.length > 1 ? (
           <tr key="varient">
             <td>Varient</td>
             <td colSpan="2">
@@ -232,23 +240,24 @@ class ProductDetails extends Component {
     return (
       <Container>
         <Carousel>
-          {arr.map(function (x, i) {
-            return x.src != null && x.src.length > 0 ? (
-              <Carousel.Item key={i} interval={2000}>
-                <img
-                  height="450rem"
-                  className="d-block w-100"
-                  alt={x.view}
-                  src={x.src}
-                />
-                <Carousel.Caption>
-                  <p>
-                    {i + 1} / {arr.length}
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-            ) : null;
-          })}
+          {arr !== undefined &&
+            arr.map(function (x, i) {
+              return x.src != null && x.src.length > 0 ? (
+                <Carousel.Item key={i} interval={2000}>
+                  <img
+                    height="450rem"
+                    className="d-block w-100"
+                    alt={x.view}
+                    src={x.src}
+                  />
+                  <Carousel.Caption>
+                    <p>
+                      {i + 1} / {arr.length}
+                    </p>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              ) : null;
+            })}
         </Carousel>
       </Container>
     );

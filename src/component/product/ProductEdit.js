@@ -18,17 +18,21 @@ class ProductEdit extends Component {
     this.state = {
       id: props.match.params.id,
       aObj: {},
-      isEdit: props.match.params.id ? true : false,
-      isLoading: props.match.params.id === "new" ? false : true,
       isLogined: localStorage.getItem("name") ? true : false,
     };
-    this.getData(props.match.params.id);
+  }
+
+  componentDidMount() {
+    if (this.state.id === "new") {
+      this.setState({ isLoading: false, isEdit: false });
+    } else {
+      this.setState({ isLoading: true, isEdit: true });
+      this.getData(this.state.id);
+    }
   }
 
   getData(id) {
     if (id === "new") {
-    } else if (id === undefined) {
-      this.props.history.push("/products");
     } else {
       var baseURL =
         (process.env.REACT_APP_API_URL !== undefined
@@ -38,12 +42,19 @@ class ProductEdit extends Component {
         .post(baseURL + "mongoclient/id?collection=productmyntra&id=" + id, {})
         .then(
           (response) => {
-            this.setState({ aObj: response.data });
+            if (response.status === 200) {
+              this.setState({ isLoading: false, aObj: response.data });
+            } else {
+              this.setState({ isLoading: false });
+              alert("Something went Wrong! Try again...");
+              this.props.history.push("/products");
+            }
           },
           (error) => {
             console.log(error);
             this.setState({ isLoading: false });
-            alert("Something went Wrong! Try again...");
+            alert("Invaild ID!");
+            this.props.history.push("/products");
           }
         );
     }
@@ -55,9 +66,7 @@ class ProductEdit extends Component {
         <Badge variant="primary">
           Product {this.state.isEdit ? "Edit" : "Add"}
         </Badge>
-        {this.state.aObj !== undefined && this.state.aObj !== null
-          ? this.showData()
-          : this.showLoading()}
+        {this.state.isLoading ? this.showLoading() : this.showData()}
       </div>
     );
   }
@@ -85,9 +94,18 @@ class ProductEdit extends Component {
             sizes: this.state.aObj.sizes,
             searchImage: this.state.aObj.searchImage,
             landingPageUrl: this.state.aObj.landingPageUrl,
-            images: this.state.aObj.images,
-            productVideos: this.state.aObj.productVideos,
-            inventoryInfo: this.state.aObj.inventoryInfo,
+            images:
+              this.state.aObj.images !== undefined
+                ? this.state.aObj.images
+                : [],
+            productVideos:
+              this.state.aObj.productVideos !== undefined
+                ? this.state.aObj.productVideos
+                : [],
+            inventoryInfo:
+              this.state.aObj.inventoryInfo !== undefined
+                ? this.state.aObj.inventoryInfo
+                : [],
           }}
           mutators={{
             ...arrayMutators,
@@ -158,11 +176,18 @@ class ProductEdit extends Component {
                   <FormFieldNumber
                     name="rating"
                     hint="Rating"
+                    min="0"
+                    max="5"
+                    minLength="1"
+                    maxLength="1"
+                    step="0.01"
                     value={this.state.aObj.rating}
                   />
                   <FormFieldNumber
                     name="ratingCount"
-                    hint="Rating Count"
+                    hint="Rating Total Count"
+                    min="0"
+                    minLength="1"
                     value={this.state.aObj.ratingCount}
                   />
                 </Card>
@@ -175,16 +200,22 @@ class ProductEdit extends Component {
                   <FormFieldNumber
                     name="discount"
                     hint="Discount"
+                    min="0"
+                    minLength="1"
                     value={this.state.aObj.discount}
                   />
                   <FormFieldNumber
                     name="mrp"
                     hint="MRP"
+                    min="0"
+                    minLength="1"
                     value={this.state.aObj.mrp}
                   />
                   <FormFieldNumber
                     name="price"
                     hint="Price"
+                    min="0"
+                    minLength="1"
                     value={this.state.aObj.price}
                   />
                 </Card>
@@ -343,6 +374,8 @@ class ProductEdit extends Component {
                               name={`${name}.skuId`}
                               hint="Sku Id"
                               label={false}
+                              min="0"
+                              minLength="1"
                               value={
                                 this.state.aObj.inventoryInfo !== undefined &&
                                 this.state.aObj.inventoryInfo[index] !==
@@ -371,6 +404,8 @@ class ProductEdit extends Component {
                               name={`${name}.inventory`}
                               hint="Inventory Count"
                               label={false}
+                              min="0"
+                              minLength="1"
                               value={
                                 this.state.aObj.inventoryInfo !== undefined &&
                                 this.state.aObj.inventoryInfo[index] !==
@@ -382,7 +417,7 @@ class ProductEdit extends Component {
                             />
                           </div>
                           <div className="col-sm-2">
-                          <FormFieldCheckBox
+                            <FormFieldCheckBox
                               name={`${name}.available`}
                               hint="Available"
                               value={
@@ -444,8 +479,8 @@ class ProductEdit extends Component {
                     Submit
                   </Button>
                 </div>
-                <pre>{JSON.stringify(values, 0, 2)}</pre>
-                <pre>{JSON.stringify(this.state.aObj, 0, 2)}</pre>
+                {/* <pre>{JSON.stringify(values, 0, 2)}</pre>
+                <pre>{JSON.stringify(this.state.aObj, 0, 2)}</pre> */}
               </form>
             );
           }}
@@ -459,10 +494,15 @@ class ProductEdit extends Component {
   }
 
   onFormSubmit(values) {
-    values.catalogDate = new Date();
+    values.catalogDate = new Date().getTime();
     values.date = new Date().toISOString();
-    values.ProductId = this.state.aObj.productId;
-  
+    if (this.state.id === "new") {
+      var min = 10000000;
+      var max = 99999999;
+      values.productId = Math.floor(min + Math.random() * max);
+    } else {
+      values.productId = this.state.aObj.productId;
+    }
     var baseURL =
       (process.env.REACT_APP_API_URL !== undefined
         ? process.env.REACT_APP_API_URL
@@ -478,24 +518,23 @@ class ProductEdit extends Component {
           "mongoclient/updateone" +
           "?collection=productmyntra&id=" +
           this.state.aObj._id;
-    console.log(values);
-    // axios.put(actionURL, values).then(
-    //   (response) => {
-    //     // console.log(response.data);
-    //     this.props.history.push("/products");
-    //   },
-    //   (error) => {
-    //     this.setState(
-    //       {
-    //         isLoading: false,
-    //       },
-    //       function () {
-    //         console.log(error);
-    //         alert("Something went Wrong! Try again...");
-    //       }
-    //     );
-    //   }
-    // );
+    axios.put(actionURL, values).then(
+      (response) => {
+        // console.log(response.data);
+        this.props.history.push("/products");
+      },
+      (error) => {
+        this.setState(
+          {
+            isLoading: false,
+          },
+          function () {
+            console.log(error);
+            alert("Something went Wrong! Try again...");
+          }
+        );
+      }
+    );
   }
 
   deleteData() {
