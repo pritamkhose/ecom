@@ -117,7 +117,16 @@ const ProductItem = (props) => {
               >
                 ₹ {props.value.mrp}
               </td>
-              <td style={{ margin: 0, padding: 0, border: "none" }}>
+              <td
+                style={{
+                  margin: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingRight: 10,
+                  border: "none",
+                  textAlign: "right",
+                }}
+              >
                 <img
                   src={logo}
                   alt={logo}

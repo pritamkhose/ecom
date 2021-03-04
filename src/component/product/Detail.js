@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Container, Col, Row, Spinner, Badge, Carousel } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Spinner,
+  Badge,
+  Carousel,
+  Button,
+} from "react-bootstrap";
 import "./ProductItem.css";
 import axios from "axios";
 import AddCartBtn from "./AddCartBtn";
@@ -12,6 +20,7 @@ class ProductDetails extends Component {
       id: props.match.params.id,
       aObj: {},
       isLoading: true,
+      isLogined: localStorage.getItem("name") ? true : false,
     };
     this.getData(props.match.params.id);
   }
@@ -80,6 +89,20 @@ class ProductDetails extends Component {
         <h3 style={{ marginLeft: "16px" }}>{aObj.product}</h3>
         <hr />
         <p style={{ marginLeft: "24px" }}>{aObj.additionalInfo}</p>
+        {this.state.isLogined ? (
+          <div>
+            <hr />
+            <Button
+              style={{ marginLeft: "24px" }}
+              className="btn btn-danger"
+              onClick={() =>
+                this.props.history.push("/prodedit/" + this.state.id)
+              }
+            >
+              Edit
+            </Button>
+          </div>
+        ) : null}
       </>
     );
   }

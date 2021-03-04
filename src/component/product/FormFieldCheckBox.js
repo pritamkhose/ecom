@@ -18,7 +18,6 @@ const FormFieldCheckBox = (props) => {
       {({ input, meta }) => (
         <FormGroup>
           <Field
-            required
             type="checkbox"
             name={props.name}
             className=""
