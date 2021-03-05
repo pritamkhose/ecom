@@ -101,6 +101,15 @@ class ProductDetails extends Component {
             >
               Edit
             </Button>
+            <Button
+              style={{ marginLeft: "24px" }}
+              className="btn btn-primary"
+              onClick={() =>
+                this.props.history.push("/prodedit/new")
+              }
+            >
+              New
+            </Button>
           </div>
         ) : null}
       </>

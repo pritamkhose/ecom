@@ -21,7 +21,12 @@ class AddressEdit extends Component {
       isLoading: props.match.params.id === "new" ? false : true,
       address: [],
     };
-    this.getData(this.state.addressID);
+
+    if (localStorage.getItem("uid")) {
+      this.getData(this.state.addressID);
+    } else {
+      this.props.history.push("/login");
+    }
   }
 
   getData(addressID) {
@@ -30,45 +35,41 @@ class AddressEdit extends Component {
     } else if (addressID === undefined) {
       this.props.history.push("/address");
     } else {
-      if (localStorage.getItem("uid")) {
-        var baseURL =
-          (process.env.REACT_APP_API_URL !== undefined
-            ? process.env.REACT_APP_API_URL
-            : "") + "/api/";
-        axios
-          .post(baseURL + "mongoclient?collection=address", {
-            search: {
-              uid: localStorage.getItem("uid"),
-              addrid: this.state.addressID,
-            },
-          })
-          .then(
-            (response) => {
-              this.setState(
-                {
-                  isLoading: false,
-                  address: response.data,
-                },
-                function () {
-                  if (
-                    this.state.address.length === 1 &&
-                    this.state.address[0]["addrid"] === this.state.addressID
-                  ) {
-                  } else {
-                    this.props.history.push("/address");
-                  }
+      var baseURL =
+        (process.env.REACT_APP_API_URL !== undefined
+          ? process.env.REACT_APP_API_URL
+          : "") + "/api/";
+      axios
+        .post(baseURL + "mongoclient?collection=address", {
+          search: {
+            uid: localStorage.getItem("uid"),
+            addrid: this.state.addressID,
+          },
+        })
+        .then(
+          (response) => {
+            this.setState(
+              {
+                isLoading: false,
+                address: response.data,
+              },
+              function () {
+                if (
+                  this.state.address.length === 1 &&
+                  this.state.address[0]["addrid"] === this.state.addressID
+                ) {
+                } else {
+                  this.props.history.push("/address");
                 }
-              );
-            },
-            (error) => {
-              console.log(error);
-              this.setState({ isLoading: false, address: [] });
-              alert("Something went Wrong! Try again...");
-            }
-          );
-      } else {
-        this.props.history.push("/login");
-      }
+              }
+            );
+          },
+          (error) => {
+            console.log(error);
+            this.setState({ isLoading: false, address: [] });
+            alert("Something went Wrong! Try again...");
+          }
+        );
     }
   }
 

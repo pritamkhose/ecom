@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.73449119.chunk.css",
-    "main.js": "/static/js/main.eedac3d1.chunk.js",
-    "main.js.map": "/static/js/main.eedac3d1.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.be032362.js",
-    "runtime-main.js.map": "/static/js/runtime-main.be032362.js.map",
+    "main.css": "/static/css/main.24e7e098.chunk.css",
+    "main.js": "/static/js/main.1f4ce15f.chunk.js",
+    "main.js.map": "/static/js/main.1f4ce15f.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.060b9d5d.js",
+    "runtime-main.js.map": "/static/js/runtime-main.060b9d5d.js.map",
     "static/css/2.b94f1ce1.chunk.css": "/static/css/2.b94f1ce1.chunk.css",
-    "static/js/2.915da1d7.chunk.js": "/static/js/2.915da1d7.chunk.js",
-    "static/js/2.915da1d7.chunk.js.map": "/static/js/2.915da1d7.chunk.js.map",
-    "static/js/3.f7b5f389.chunk.js": "/static/js/3.f7b5f389.chunk.js",
-    "static/js/3.f7b5f389.chunk.js.map": "/static/js/3.f7b5f389.chunk.js.map",
+    "static/js/2.bb7ecd70.chunk.js": "/static/js/2.bb7ecd70.chunk.js",
+    "static/js/2.bb7ecd70.chunk.js.map": "/static/js/2.bb7ecd70.chunk.js.map",
+    "static/js/3.feee088f.chunk.js": "/static/js/3.feee088f.chunk.js",
+    "static/js/3.feee088f.chunk.js.map": "/static/js/3.feee088f.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.b94f1ce1.chunk.css.map": "/static/css/2.b94f1ce1.chunk.css.map",
-    "static/css/main.73449119.chunk.css.map": "/static/css/main.73449119.chunk.css.map",
-    "static/js/2.915da1d7.chunk.js.LICENSE.txt": "/static/js/2.915da1d7.chunk.js.LICENSE.txt",
+    "static/css/main.24e7e098.chunk.css.map": "/static/css/main.24e7e098.chunk.css.map",
+    "static/js/2.bb7ecd70.chunk.js.LICENSE.txt": "/static/js/2.bb7ecd70.chunk.js.LICENSE.txt",
     "static/media/addaddress.641a1b89.svg": "/static/media/addaddress.641a1b89.svg",
     "static/media/cartcount.c5fc1bff.svg": "/static/media/cartcount.c5fc1bff.svg",
     "static/media/facebook.5aa9dd97.svg": "/static/media/facebook.5aa9dd97.svg",
@@ -25,10 +25,10 @@
     "static/media/youtube.e57613c9.svg": "/static/media/youtube.e57613c9.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.be032362.js",
+    "static/js/runtime-main.060b9d5d.js",
     "static/css/2.b94f1ce1.chunk.css",
-    "static/js/2.915da1d7.chunk.js",
-    "static/css/main.73449119.chunk.css",
-    "static/js/main.eedac3d1.chunk.js"
+    "static/js/2.bb7ecd70.chunk.js",
+    "static/css/main.24e7e098.chunk.css",
+    "static/js/main.1f4ce15f.chunk.js"
   ]
 }

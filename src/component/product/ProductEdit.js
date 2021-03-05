@@ -23,11 +23,15 @@ class ProductEdit extends Component {
   }
 
   componentDidMount() {
-    if (this.state.id === "new") {
-      this.setState({ isLoading: false, isEdit: false });
+    if (localStorage.getItem("uid")) {
+      if (this.state.id === "new") {
+        this.setState({ isLoading: false, isEdit: false });
+      } else {
+        this.setState({ isLoading: true, isEdit: true });
+        this.getData(this.state.id);
+      }
     } else {
-      this.setState({ isLoading: true, isEdit: true });
-      this.getData(this.state.id);
+      this.props.history.push("/login");
     }
   }
 
@@ -47,14 +51,14 @@ class ProductEdit extends Component {
             } else {
               this.setState({ isLoading: false });
               alert("Something went Wrong! Try again...");
-              this.props.history.push("/products");
+              this.openLink(true);
             }
           },
           (error) => {
             console.log(error);
             this.setState({ isLoading: false });
             alert("Invaild ID!");
-            this.props.history.push("/products");
+            this.openLink(true);
           }
         );
     }
@@ -458,7 +462,7 @@ class ProductEdit extends Component {
                   )}
                   <Button
                     className="btn btn-warning"
-                    onClick={() => this.openLink()}
+                    onClick={() => this.openLink(false)}
                   >
                     Cancel
                   </Button>
@@ -489,13 +493,18 @@ class ProductEdit extends Component {
     );
   }
 
-  openLink() {
-    this.props.history.push("/products");
+  openLink(isListOpen) {
+    if (isListOpen || this.state.id === "new") {
+      this.props.history.push("/products");
+    } else {
+      this.props.history.push("/pid/" + this.state.id);
+    }
   }
 
   onFormSubmit(values) {
     values.catalogDate = new Date().getTime();
     values.date = new Date().toISOString();
+    values.uid = localStorage.getItem("uid");
     if (this.state.id === "new") {
       var min = 10000000;
       var max = 99999999;
