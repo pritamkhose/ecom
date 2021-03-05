@@ -15,10 +15,14 @@ class Home extends Component {
   }
 
   getData() {
-    axios.get("https://node-pritam.firebaseio.com/ecom/hompage.json").then(
+    var baseURL =
+      (process.env.REACT_APP_API_URL !== undefined
+        ? process.env.REACT_APP_API_URL
+        : "") + "/api/";
+    axios.post(baseURL + "mongoclient?collection=homepage").then(
       (response) => {
         this.setState({
-          dataObj: response.data,
+          dataObj: response.data[0],
           showLoadMore: false,
         });
       },
@@ -37,14 +41,8 @@ class Home extends Component {
               <Container style={{ width: "100%" }}>
                 <Row style={{ margin: "0px" }}>
                   <Carousel name="banner">
-                    {this.state.dataObj.banner.map((val) =>
-                      this.showCarousel(
-                        val,
-                        this.state.dataObj.bannerURL,
-                        "220rem",
-                        3000,
-                        1
-                      )
+                    {this.shuffleArray(this.state.dataObj.banner).map((val) =>
+                      this.showCarousel(val, "220rem", 3000, 1)
                     )}
                   </Carousel>
                 </Row>
@@ -62,9 +60,7 @@ class Home extends Component {
                   style={{ margin: "0px" }}
                 >
                   {this.state.dataObj.category.map((val) =>
-                    val !== null && val.enable
-                      ? this.getCategory(val, this.state.dataObj.categoryURL)
-                      : null
+                    val !== null && val.enable ? this.getCategory(val) : null
                   )}
                 </Row>
               </>
@@ -73,14 +69,8 @@ class Home extends Component {
               <Container style={{ width: "100%" }}>
                 <Row style={{ margin: "0px" }}>
                   <Carousel name="offers">
-                    {this.state.dataObj.offers.map((val) =>
-                      this.showCarousel(
-                        val,
-                        this.state.dataObj.offersURL,
-                        "80rem",
-                        2000,
-                        0
-                      )
+                    {this.shuffleArray(this.state.dataObj.offers).map((val) =>
+                      this.showCarousel(val, "80rem", 2000, 0)
                     )}
                   </Carousel>
                 </Row>
@@ -109,7 +99,15 @@ class Home extends Component {
     );
   }
 
-  showCarousel(val, url, height, interval, control) {
+  shuffleArray(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  showCarousel(val, height, interval, control) {
     return (
       <Carousel.Item
         key={val}
@@ -117,25 +115,16 @@ class Home extends Component {
         indicators={control === 1 ? 1 : 0}
         controls={control ? 1 : 0}
       >
-        <img
-          width="100%"
-          height={height}
-          alt={val}
-          src={url + val + "?alt=media"}
-        />
+        <img width="100%" height={height} alt={val} src={val} />
       </Carousel.Item>
     );
   }
 
-  getCategory(val, url) {
+  getCategory(val) {
     return (
       <Link key={val.name} to={"/products?category=" + val.name}>
         <Card className="Card">
-          <img
-            height="220rem"
-            alt={val.name}
-            src={url + val.image + "?alt=media"}
-          />
+          <img height="220rem" alt={val.name} src={val.image} />
           <p style={{ textAlign: "center", margin: "0px" }}>
             <b>{val.name}</b>
           </p>
