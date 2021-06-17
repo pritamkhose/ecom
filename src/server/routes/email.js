@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios");
-
+// https://www.twilio.com/blog/sending-email-attachments-with-sendgrid
 // var nodemailer = require("nodemailer");
 // var transport = nodemailer.createTransport({
 //   service: process.env.MAIL_SERVICE,

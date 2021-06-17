@@ -34,9 +34,11 @@ import OrderHistory from "./component/product/OrderHistory";
 import OrderConfirm from "./component/product/OrderConfirm";
 import AnalyticsManager from "./component/analytics/AnalyticsManager";
 
+import LogRocket from 'logrocket';
 import ReactGA from "react-ga";
 // Initialize google analytics page view tracking
 ReactGA.initialize(process.env.REACT_APP_GOOGLE_MEASUREMENT_ID);
+LogRocket.init('clsfru/ecom');
 
 class App extends Component {
   state = {
