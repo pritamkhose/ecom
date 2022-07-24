@@ -146,3 +146,4 @@ packages/react-devtools-scheduling-profiler/dist
 /data
 local_env.txt
 prod_env.txt
+.env

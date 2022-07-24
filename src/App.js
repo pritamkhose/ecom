@@ -239,7 +239,7 @@ class App extends Component {
                 <AddressEdit />
               </div>
             </Route>
-            <Route path="/" path={["/orders/:id", "/orders"]}>
+            <Route path={["/orders/:id", "/orders"]}>
               <Badge variant="primary">Order History</Badge>
               <div style={{ minHeight: this.state.minHight }}>
                 <OrderHistory />
