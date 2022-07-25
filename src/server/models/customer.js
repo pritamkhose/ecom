@@ -1,22 +1,25 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const customerSchema = new Schema({
-   name: {
+const customerSchema = new Schema(
+  {
+    name: {
       type: String,
       required: true
-   },
-   rating: {
+    },
+    rating: {
       type: Number,
       required: true
-   },
-   producer: {
+    },
+    producer: {
       type: String,
       required: true
-   }
-}, {
-   timestamps: true
-});
+    }
+  },
+  {
+    timestamps: true
+  }
+);
 
-var Customers = mongoose.model('Customer', customerSchema);
+const Customers = mongoose.model('Customer', customerSchema);
 module.exports = { Customers, customerSchema };

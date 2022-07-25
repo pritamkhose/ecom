@@ -4,90 +4,90 @@
 }
 
 input {
-  width: "50%";
-  height: "30px";
-  padding: "12px 20px 10px 10px";
-  margin: "8px 0 10px 10px";
-  display: "inline - block";
-  border: "1px solid #ccc";
-  border-radius: "4px";
-  box-sizing: "border-box";
+  width: '50%';
+  height: '30px';
+  padding: '12px 20px 10px 10px';
+  margin: '8px 0 10px 10px';
+  display: 'inline - block';
+  border: '1px solid #ccc';
+  border-radius: '4px';
+  box-sizing: 'border-box';
 }
 
 .genderContainer {
-  display: "table";
-  width: "100%";
+  display: 'table';
+  width: '100%';
 }
 
 .genderText {
-  display: "table-cell";
-  width: "32%";
-  vertical-align: "middle";
-  text-align: "right";
+  display: 'table-cell';
+  width: '32%';
+  vertical-align: 'middle';
+  text-align: 'right';
 }
 
 .radioContainer {
-  display: "table-cell";
-  width: "68%";
-  text-align: "left";
-  paddingleft: "10px";
+  display: 'table-cell';
+  width: '68%';
+  text-align: 'left';
+  paddingleft: '10px';
 }
 
 .textAreaContainer {
-  display: "table-cell";
-  width: "68%";
-  text-align: "left";
+  display: 'table-cell';
+  width: '68%';
+  text-align: 'left';
 }
 
 .textAreaStyles {
-  width: "74%";
-  height: "30px";
-  padding: "12px 20px 10px 10px";
-  margin: "8px 0 10px 10px";
-  display: "inline - block";
-  border: "1px solid #ccc";
-  border-radius: "4px";
-  box-sizing: "border-box";
+  width: '74%';
+  height: '30px';
+  padding: '12px 20px 10px 10px';
+  margin: '8px 0 10px 10px';
+  display: 'inline - block';
+  border: '1px solid #ccc';
+  border-radius: '4px';
+  box-sizing: 'border-box';
 }
 
 .button {
-  background-color: "#4CAF50";
-  border: "none";
-  color: "white";
-  padding: "10px";
-  text-align: "center";
-  text-decoration: "none";
-  display: "inline-block";
-  font-size: "16px";
-  margin: "4px 2px";
-  cursor: "pointer";
-  border-radius: "8px";
+  background-color: '#4CAF50';
+  border: 'none';
+  color: 'white';
+  padding: '10px';
+  text-align: 'center';
+  text-decoration: 'none';
+  display: 'inline-block';
+  font-size: '16px';
+  margin: '4px 2px';
+  cursor: 'pointer';
+  border-radius: '8px';
 }
 
 .buttonDanger {
-  background-color: "red";
-  border: "none";
-  color: "white";
-  padding: "10px";
-  text-align: "center";
-  text-decoration: "none";
-  display: "inline-block";
-  font-size: "16px";
-  margin: "4px 2px";
-  cursor: "pointer";
-  border-radius: "8px";
+  background-color: 'red';
+  border: 'none';
+  color: 'white';
+  padding: '10px';
+  text-align: 'center';
+  text-decoration: 'none';
+  display: 'inline-block';
+  font-size: '16px';
+  margin: '4px 2px';
+  cursor: 'pointer';
+  border-radius: '8px';
 }
 
 .main {
-  font-family: "sans-serif";
-  text-align: "center";
+  font-family: 'sans-serif';
+  text-align: 'center';
 }
 
 .error {
-  color: "red";
-  font-size: "14px";
+  color: 'red';
+  font-size: '14px';
 }
 
 .addressText {
-  margin-right: "50%";
+  margin-right: '50%';
 }

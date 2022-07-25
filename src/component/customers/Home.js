@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "../../App.css";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import '../../App.css';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 const GET_CUSTOMERS = gql`
   {
@@ -20,7 +20,7 @@ class Home extends Component {
     return (
       <Query query={GET_CUSTOMERS}>
         {({ loading, error, data }) => {
-          if (loading) return "Loading...";
+          if (loading) return 'Loading...';
           if (error) return `Error! ${error.message}`;
 
           return (
@@ -46,9 +46,7 @@ class Home extends Component {
                       {data.customers.map((customer, index) => (
                         <tr key={index}>
                           <td>
-                            <Link to={`${"/customer/edit"}/${customer.id}`}>
-                              {customer.name}
-                            </Link>
+                            <Link to={`${'/customer/edit'}/${customer.id}`}>{customer.name}</Link>
                           </td>
                           <td>{customer.producer}</td>
                           <td>{customer.rating}</td>

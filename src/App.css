@@ -18,7 +18,7 @@
   color: #007bff;
 }
 
-form.searchinput input[type="text"] {
+form.searchinput input[type='text'] {
   padding: 10px;
   font-size: 18px;
   border: 1px solid #007bff;
@@ -45,7 +45,7 @@ form.searchinput button:hover {
 }
 
 form.searchinput::after {
-  content: "";
+  content: '';
   clear: both;
   display: table;
 }

@@ -1,17 +1,9 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import {
-  Container,
-  Col,
-  Row,
-  Spinner,
-  Badge,
-  Carousel,
-  Button,
-} from "react-bootstrap";
-import "./ProductItem.css";
-import axios from "axios";
-import AddCartBtn from "./AddCartBtn";
+import React, { Component } from 'react';
+
+import { Container, Col, Row, Spinner, Badge, Carousel, Button } from 'react-bootstrap';
+import './ProductItem.css';
+import axios from 'axios';
+import AddCartBtn from './AddCartBtn';
 
 class ProductDetails extends Component {
   constructor(props) {
@@ -20,44 +12,38 @@ class ProductDetails extends Component {
       id: props.match.params.id,
       aObj: {},
       isLoading: true,
-      isLogined: localStorage.getItem("name") ? true : false,
+      isLogined: !!localStorage.getItem('name')
     };
     this.getData(props.match.params.id);
   }
 
   getData(id) {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
-    axios
-      .post(baseURL + "mongoclient/id?collection=productmyntra&id=" + id, {})
-      .then(
-        (response) => {
-          if (response.status === 200) {
-            this.setState({ isLoading: false, aObj: response.data });
-          } else {
-            this.setState({ isLoading: false });
-            alert("Something went Wrong! Try again...");
-            this.props.history.push("/products");
-          }
-        },
-        (error) => {
-          console.log(error);
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
+    axios.post(baseURL + 'mongoclient/id?collection=productmyntra&id=' + id, {}).then(
+      (response) => {
+        if (response.status === 200) {
+          this.setState({ isLoading: false, aObj: response.data });
+        } else {
           this.setState({ isLoading: false });
-          alert("Invaild ID!");
-          this.props.history.push("/products");
+          alert('Something went Wrong! Try again...');
+          this.props.history.push('/products');
         }
-      );
+      },
+      (error) => {
+        console.log(error);
+        this.setState({ isLoading: false });
+        alert('Invaild ID!');
+        this.props.history.push('/products');
+      }
+    );
   }
 
   render() {
     return (
       <div>
         <Badge variant="primary">Product Deails</Badge>
-        {this.state.isLoading
-          ? this.showLoading()
-          : this.showData(this.state.aObj)}
+        {this.state.isLoading ? this.showLoading() : this.showData(this.state.aObj)}
       </div>
     );
   }
@@ -75,7 +61,7 @@ class ProductDetails extends Component {
   isMobile() {
     // if we want a more complete list use this: http://detectmobilebrowsers.com/
     // str.test() is more efficent than str.match() remember str.test is case sensitive
-    var isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
+    const isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
       navigator.userAgent.toLowerCase()
     );
     // console.log(navigator.userAgent.toLowerCase());
@@ -86,28 +72,22 @@ class ProductDetails extends Component {
   getTitleHeading(aObj) {
     return (
       <>
-        <h3 style={{ marginLeft: "16px" }}>{aObj.product}</h3>
+        <h3 style={{ marginLeft: '16px' }}>{aObj.product}</h3>
         <hr />
-        <p style={{ marginLeft: "24px" }}>{aObj.additionalInfo}</p>
+        <p style={{ marginLeft: '24px' }}>{aObj.additionalInfo}</p>
         {this.state.isLogined ? (
           <div>
             <hr />
             <Button
-              style={{ marginLeft: "24px" }}
+              style={{ marginLeft: '24px' }}
               className="btn btn-danger"
-              onClick={() =>
-                this.props.history.push("/prodedit/" + this.state.id)
-              }
-            >
+              onClick={() => this.props.history.push('/prodedit/' + this.state.id)}>
               Edit
             </Button>
             <Button
-              style={{ marginLeft: "24px" }}
+              style={{ marginLeft: '24px' }}
               className="btn btn-primary"
-              onClick={() =>
-                this.props.history.push("/prodedit/new")
-              }
-            >
+              onClick={() => this.props.history.push('/prodedit/new')}>
               New
             </Button>
           </div>
@@ -123,12 +103,7 @@ class ProductDetails extends Component {
           <tr key="varient">
             <td>Varient</td>
             <td colSpan="2">
-              <select
-                className="custom-select"
-                name="varient"
-                id="varient"
-                defaultValue=""
-              >
+              <select className="custom-select" name="varient" id="varient" defaultValue="">
                 <option key="NA" value="">
                   Not Selected
                 </option>
@@ -211,19 +186,19 @@ class ProductDetails extends Component {
           <>
             {this.getTitleHeading(aObj)}
             <hr />
-            <Row style={{ margin: "0px" }}>
+            <Row style={{ margin: '0px' }}>
               <Col>{this.showImages(aObj.images)}</Col>
               <Col>
                 <table className="table table-stripe">
                   <tbody>
                     <tr key="price">
-                      <td className="Price" style={{ borderTop: "0px" }}>
+                      <td className="Price" style={{ borderTop: '0px' }}>
                         <b>Price : {aObj.price} ₹</b>
                       </td>
-                      <td className="PriceCancel" style={{ borderTop: "0px" }}>
+                      <td className="PriceCancel" style={{ borderTop: '0px' }}>
                         MRP : {aObj.mrp} ₹
                       </td>
-                      <td style={{ borderTop: "0px" }}>
+                      <td style={{ borderTop: '0px' }}>
                         {aObj.discount} ₹ / <b>{aObj.discountDisplayLabel}</b>
                       </td>
                     </tr>
@@ -276,12 +251,7 @@ class ProductDetails extends Component {
             arr.map(function (x, i) {
               return x.src != null && x.src.length > 0 ? (
                 <Carousel.Item key={i} interval={2000}>
-                  <img
-                    height="450rem"
-                    className="d-block w-100"
-                    alt={x.view}
-                    src={x.src}
-                  />
+                  <img height="450rem" className="d-block w-100" alt={x.view} src={x.src} />
                   <Carousel.Caption>
                     <p>
                       {i + 1} / {arr.length}
@@ -296,4 +266,4 @@ class ProductDetails extends Component {
   }
 }
 
-export default withRouter(ProductDetails);
+export default ProductDetails;

@@ -1,42 +1,40 @@
-const router = require("express").Router();
-var mongodb = require("mongodb");
-var MongoClient = mongodb.MongoClient;
+const router = require('express').Router();
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
   if (!req.query.collection) {
-    return res
-      .status(422)
-      .json({ error: "Collection name is missing in Request parameter" });
+    return res.status(422).json({ error: 'Collection name is missing in Request parameter' });
   }
 
-  var varlimit = 25;
+  let varlimit = 25;
   if (req.body.limit !== undefined) {
     varlimit = req.body.limit;
   }
-  var varskip = 0;
+  let varskip = 0;
   if (req.body.skip !== undefined) {
     varskip = req.body.skip;
   }
-  var varprojection = {};
+  let varprojection = {};
   if (req.body.projection !== undefined) {
     varprojection = { projection: req.body.projection };
   }
-  var varsort = {};
+  let varsort = {};
   if (req.body.sort !== undefined) {
     varsort = req.body.sort;
   }
-  var varsearch = {};
+  let varsearch = {};
   if (req.body.search !== undefined) {
     varsearch = req.body.search;
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
     if (!err) {
-      var db = client.db(process.env.mongoDB);
+      const db = client.db(process.env.mongoDB);
       try {
         db.collection(req.query.collection)
           .find(varsearch, varprojection)
-          .collation({ locale: "en", strength: 2 })
+          .collation({ locale: 'en', strength: 2 })
           .sort(varsort)
           .skip(varskip)
           .limit(varlimit)
@@ -49,8 +47,8 @@ router.post("/", (req, res) => {
               }
             } else {
               res.status(500).json({
-                error: "Collection Error",
-                error_message: findErr,
+                error: 'Collection Error',
+                error_message: findErr
               });
             }
             client.close();
@@ -58,35 +56,31 @@ router.post("/", (req, res) => {
       } catch (error) {
         client.close();
         res.status(500).json({
-          error: "Collection Connection Error",
-          error_message: error,
+          error: 'Collection Connection Error',
+          error_message: error
         });
       }
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: err,
+        error: 'Database Connection Error',
+        error_message: err
       });
     }
   });
 });
 
-router.post("/id", (req, res) => {
+router.post('/id', (req, res) => {
   if (!req.query.collection) {
-    return res
-      .status(422)
-      .json({ error: "Collection name is missing in Request parameter" });
+    return res.status(422).json({ error: 'Collection name is missing in Request parameter' });
   }
 
   if (!req.query.id) {
-    return res
-      .status(422)
-      .json({ error: "ID is missing in Request parameter" });
+    return res.status(422).json({ error: 'ID is missing in Request parameter' });
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
     if (!err) {
-      var db = client.db(process.env.mongoDB);
+      const db = client.db(process.env.mongoDB);
       try {
         db.collection(req.query.collection)
           .find({ _id: new mongodb.ObjectID(req.query.id) })
@@ -99,8 +93,8 @@ router.post("/id", (req, res) => {
               }
             } else {
               res.status(500).json({
-                error: "Collection Error",
-                error_message: findErr,
+                error: 'Collection Error',
+                error_message: findErr
               });
             }
             client.close();
@@ -108,135 +102,119 @@ router.post("/id", (req, res) => {
       } catch (error) {
         client.close();
         res.status(500).json({
-          error: "Collection Connection Error",
-          error_message: error,
+          error: 'Collection Connection Error',
+          error_message: error
         });
       }
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: err,
+        error: 'Database Connection Error',
+        error_message: err
       });
     }
   });
 });
 
 // all distinct values of field
-router.post("/distinct", (req, res) => {
+router.post('/distinct', (req, res) => {
   if (!req.query.collection) {
-    return res
-      .status(422)
-      .json({ error: "Collection name is missing in Request parameter" });
+    return res.status(422).json({ error: 'Collection name is missing in Request parameter' });
   }
 
   if (!req.query.id) {
-    return res
-      .status(422)
-      .json({ error: "ID is missing in Request parameter" });
+    return res.status(422).json({ error: 'ID is missing in Request parameter' });
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
     if (!err) {
-      var db = client.db(process.env.mongoDB);
+      const db = client.db(process.env.mongoDB);
       try {
-        db.collection(req.query.collection).distinct(
-          req.query.id,
-          {},
-          function (findErr, result) {
-            if (!findErr) {
-              if (result === undefined || result.length === 0) {
-                res.status(204).json(result);
-              } else {
-                res.status(200).json(result);
-              }
+        db.collection(req.query.collection).distinct(req.query.id, {}, function (findErr, result) {
+          if (!findErr) {
+            if (result === undefined || result.length === 0) {
+              res.status(204).json(result);
             } else {
-              res.status(500).json({
-                error: "Collection Error",
-                error_message: findErr,
-              });
+              res.status(200).json(result);
             }
+          } else {
+            res.status(500).json({
+              error: 'Collection Error',
+              error_message: findErr
+            });
           }
-        );
+        });
         client.close();
       } catch (error) {
         client.close();
         res.status(500).json({
-          error: "Collection Connection Error",
-          error_message: error,
+          error: 'Collection Connection Error',
+          error_message: error
         });
       }
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: err,
+        error: 'Database Connection Error',
+        error_message: err
       });
     }
   });
 });
 
 // update one
-router.put("/updateone", (req, res) => {
+router.put('/updateone', (req, res) => {
   if (!req.query.collection) {
-    return res
-      .status(422)
-      .json({ error: "Collection name is missing in Request parameter" });
+    return res.status(422).json({ error: 'Collection name is missing in Request parameter' });
   }
 
   if (!req.query.id) {
-    return res
-      .status(422)
-      .json({ error: "ID is missing in Request parameter" });
+    return res.status(422).json({ error: 'ID is missing in Request parameter' });
   }
 
   if (!req.body) {
-    return res.status(422).json({ error: "Request body is missingr" });
+    return res.status(422).json({ error: 'Request body is missingr' });
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
     if (!err) {
-      var db = client.db(process.env.mongoDB);
-      var myquery = { _id: new mongodb.ObjectID(req.query.id) };
-      var newvalues = { $set: req.body };
-      db.collection(req.query.collection).updateOne(
-        myquery,
-        newvalues,
-        function (findErr, result) {
-          if (!findErr) {
-            if (result.modifiedCount === 0) {
-              createObjByID(req, res, db, req.query.collection, client);
-            } else {
-              res.status(200).json(result);
-            }
+      const db = client.db(process.env.mongoDB);
+      const myquery = { _id: new mongodb.ObjectID(req.query.id) };
+      const newvalues = { $set: req.body };
+      db.collection(req.query.collection).updateOne(myquery, newvalues, function (findErr, result) {
+        if (!findErr) {
+          if (result.modifiedCount === 0) {
+            createObjByID(req, res, db, req.query.collection, client);
           } else {
-            res.status(500).json({
-              error: "Collection Error",
-              error_message: findErr,
-            });
+            res.status(200).json(result);
           }
-          client.close();
+        } else {
+          res.status(500).json({
+            error: 'Collection Error',
+            error_message: findErr
+          });
         }
-      );
+        client.close();
+      });
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: err,
+        error: 'Database Connection Error',
+        error_message: err
       });
     }
   });
 });
 
-var createObjByID = function (req, res, db, collectionname, client) {
-  var reqbody = {
+const createObjByID = function (req, res, db, collectionname, client) {
+  const reqbody = {
     _id: new mongodb.ObjectID(req.query.id),
-    data: req.body.data,
+    data: req.body.data
   };
   db.collection(collectionname).insert(reqbody, function (findErr, result) {
     if (!findErr) {
       res.status(200).json(result);
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: findErr,
+        error: 'Database Connection Error',
+        error_message: findErr
       });
     }
     client.close();
@@ -244,117 +222,103 @@ var createObjByID = function (req, res, db, collectionname, client) {
 };
 
 // insert one
-router.put("/insert", (req, res) => {
+router.put('/insert', (req, res) => {
   if (!req.query.collection) {
-    return res
-      .status(422)
-      .json({ error: "Collection name is missing in Request parameter" });
+    return res.status(422).json({ error: 'Collection name is missing in Request parameter' });
   }
 
   if (!req.body) {
-    return res.status(422).json({ error: "Request body is missingr" });
+    return res.status(422).json({ error: 'Request body is missingr' });
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
     if (!err) {
-      var db = client.db(process.env.mongoDB);
-      db.collection(req.query.collection).insertOne(
-        req.body,
-        function (findErr, result) {
-          if (!findErr) {
-            if (result.modifiedCount=== 0) {
-              res.status(201).json(result);
-            } else {
-              res.status(200).json(result);
-            }
+      const db = client.db(process.env.mongoDB);
+      db.collection(req.query.collection).insertOne(req.body, function (findErr, result) {
+        if (!findErr) {
+          if (result.modifiedCount === 0) {
+            res.status(201).json(result);
           } else {
-            res.status(500).json({
-              error: "Collection Error",
-              error_message: findErr,
-            });
+            res.status(200).json(result);
           }
-          client.close();
+        } else {
+          res.status(500).json({
+            error: 'Collection Error',
+            error_message: findErr
+          });
         }
-      );
+        client.close();
+      });
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: err,
+        error: 'Database Connection Error',
+        error_message: err
       });
     }
   });
 });
 
 // insert one
-router.put("/insertmany", (req, res) => {
+router.put('/insertmany', (req, res) => {
   if (!req.query.collection) {
-    return res
-      .status(422)
-      .json({ error: "Collection name is missing in Request parameter" });
+    return res.status(422).json({ error: 'Collection name is missing in Request parameter' });
   }
 
   if (!req.body) {
-    return res.status(422).json({ error: "Request body is missingr" });
+    return res.status(422).json({ error: 'Request body is missingr' });
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
     if (!err) {
-      var db = client.db(process.env.mongoDB);
-      db.collection(req.query.collection).insertMany(
-        req.body,
-        function (findErr, result) {
-          if (!findErr) {
-            if (result.modifiedCount === 0) {
-              res.status(201).json(result);
-            } else {
-              res.status(200).json(result);
-            }
+      const db = client.db(process.env.mongoDB);
+      db.collection(req.query.collection).insertMany(req.body, function (findErr, result) {
+        if (!findErr) {
+          if (result.modifiedCount === 0) {
+            res.status(201).json(result);
           } else {
-            res.status(500).json({
-              error: "Collection Error",
-              error_message: findErr,
-            });
+            res.status(200).json(result);
           }
-          client.close();
+        } else {
+          res.status(500).json({
+            error: 'Collection Error',
+            error_message: findErr
+          });
         }
-      );
+        client.close();
+      });
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: err,
+        error: 'Database Connection Error',
+        error_message: err
       });
     }
   });
 });
 
 // delete one
-router.delete("/delete", (req, res) => {
+router.delete('/delete', (req, res) => {
   if (!req.query.collection) {
-    return res
-      .status(422)
-      .json({ error: "Collection name is missing in Request parameter" });
+    return res.status(422).json({ error: 'Collection name is missing in Request parameter' });
   }
 
   if (!req.query.id) {
-    return res
-      .status(422)
-      .json({ error: "ID is missing in Request parameter" });
+    return res.status(422).json({ error: 'ID is missing in Request parameter' });
   }
 
   MongoClient.connect(process.env.mongoURL, function (err, client) {
     if (!err) {
-      var db = client.db(process.env.mongoDB);
+      const db = client.db(process.env.mongoDB);
       db.collection(req.query.collection).deleteOne(
         {
-          _id: new mongodb.ObjectID(req.query.id),
+          _id: new mongodb.ObjectID(req.query.id)
         },
         function (findErr, result) {
           if (!findErr) {
             res.status(200).json(result);
           } else {
             res.status(500).json({
-              error: "Collection Error",
-              error_message: findErr,
+              error: 'Collection Error',
+              error_message: findErr
             });
           }
           client.close();
@@ -362,8 +326,8 @@ router.delete("/delete", (req, res) => {
       );
     } else {
       res.status(500).json({
-        error: "Database Connection Error",
-        error_message: err,
+        error: 'Database Connection Error',
+        error_message: err
       });
     }
   });

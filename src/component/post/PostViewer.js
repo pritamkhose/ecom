@@ -1,7 +1,7 @@
-import React from "react";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import { Table } from "react-bootstrap";
+import React from 'react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import { Table } from 'react-bootstrap';
 
 export const GET_POSTS = gql`
   query GetPosts {
@@ -13,7 +13,7 @@ export const GET_POSTS = gql`
   }
 `;
 
-export default () => (
+const PostViewer = () => (
   <div>
     <Query query={GET_POSTS}>
       {({ loading, data }) =>
@@ -44,3 +44,5 @@ export default () => (
     <p>API_URL = {process.env.REACT_APP_API_URL} </p>
   </div>
 );
+
+export default PostViewer;

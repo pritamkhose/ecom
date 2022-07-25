@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-import { Spinner, Badge } from "react-bootstrap";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Spinner, Badge } from 'react-bootstrap';
 
-import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
+import gql from 'graphql-tag';
+import { Query, Mutation } from 'react-apollo';
 
 const GET_CUSTOMER = gql`
   query customer($id: ID!) {
@@ -17,12 +17,7 @@ const GET_CUSTOMER = gql`
 `;
 
 const UPDATE_CUSTOMER = gql`
-  mutation updateCustomer(
-    $id: ID!
-    $name: String!
-    $producer: String!
-    $rating: Float!
-  ) {
+  mutation updateCustomer($id: ID!, $name: String!, $producer: String!, $rating: Float!) {
     updateCustomer(id: $id, name: $name, producer: $producer, rating: $rating) {
       id
       name
@@ -56,16 +51,14 @@ class Edit extends Component {
     super(props);
     this.state = {
       id: props.match.params.id,
-      isEdit: props.match.params.id ? true : false,
+      isEdit: !!props.match.params.id
     };
   }
 
   render() {
     return (
       <div>
-        <Badge variant="primary">
-          Customer {this.state.isEdit ? "Edit" : "Add"}
-        </Badge>
+        <Badge variant="primary">Customer {this.state.isEdit ? 'Edit' : 'Add'}</Badge>
         <h4>
           <Link to="/customers" className="btn btn-primary">
             Customer List
@@ -82,8 +75,7 @@ class Edit extends Component {
                 <>
                   <Mutation
                     mutation={UPDATE_CUSTOMER}
-                    onCompleted={() => this.props.history.push("/customers")}
-                  >
+                    onCompleted={() => this.props.history.push('/customers')}>
                     {(updateCustomer, { loading, error }) =>
                       this.showForm(updateCustomer, loading, error, data)
                     }
@@ -91,23 +83,21 @@ class Edit extends Component {
                   <Mutation
                     mutation={DELETE_CUSTOMER}
                     key={data.customer.id}
-                    onCompleted={() => this.props.history.push("/customers")}
-                  >
+                    onCompleted={() => this.props.history.push('/customers')}>
                     {(deleteCustomer, { loading, error }) => (
                       <div>
                         <form
                           onSubmit={(e) => {
                             e.preventDefault();
                             deleteCustomer({
-                              variables: { id: data.customer.id },
+                              variables: { id: data.customer.id }
                             });
-                          }}
-                        >
+                          }}>
                           <div className="container panel-body">
-                           <p></p>
-                          <button type="submit" className="btn btn-danger">
-                            Delete
-                          </button>
+                            <p></p>
+                            <button type="submit" className="btn btn-danger">
+                              Delete
+                            </button>
                           </div>
                         </form>
                         {loading && this.showLoading()}
@@ -123,14 +113,9 @@ class Edit extends Component {
           <Mutation
             mutation={ADD_CUSTOMER}
             onCompleted={(customer) => {
-              this.props.history.push(
-                `${"/customer/edit"}/${customer.addCustomer.id}`
-              );
-            }}
-          >
-            {(addCustomer, { loading, error }) =>
-              this.showForm(addCustomer, loading, error, null)
-            }
+              this.props.history.push(`${'/customer/edit'}/${customer.addCustomer.id}`);
+            }}>
+            {(addCustomer, { loading, error }) => this.showForm(addCustomer, loading, error, null)}
           </Mutation>
         )}
       </div>
@@ -156,21 +141,20 @@ class Edit extends Component {
                         id: this.state.id,
                         name: name.value,
                         producer: producer.value,
-                        rating: parseInt(rating.value),
-                      },
+                        rating: parseInt(rating.value)
+                      }
                     })
                   : action({
                       variables: {
                         name: name.value,
                         producer: producer.value,
-                        rating: parseInt(rating.value), // parseFloat(rating.value).toFixed(2),
-                      },
+                        rating: parseInt(rating.value) // parseFloat(rating.value).toFixed(2),
+                      }
                     });
                 // name.value = "";
                 // producer.value = "";
                 // rating.value = 0;
-              }}
-            >
+              }}>
               <div className="form-group">
                 <label htmlFor="name">Name:</label>
                 <input
@@ -181,7 +165,7 @@ class Edit extends Component {
                     name = node;
                   }}
                   placeholder="Name"
-                  defaultValue={data ? data.customer.name : ""}
+                  defaultValue={data ? data.customer.name : ''}
                 />
               </div>
               <div className="form-group">
@@ -194,7 +178,7 @@ class Edit extends Component {
                     producer = node;
                   }}
                   placeholder="Producer"
-                  defaultValue={data ? data.customer.producer : ""}
+                  defaultValue={data ? data.customer.producer : ''}
                 />
               </div>
               <div className="form-group">
@@ -208,7 +192,7 @@ class Edit extends Component {
                     rating = node;
                   }}
                   placeholder="Rating"
-                  defaultValue={data ? data.customer.rating : ""}
+                  defaultValue={data ? data.customer.rating : ''}
                 />
               </div>
               <button type="submit" className="btn btn-success">
@@ -234,4 +218,4 @@ class Edit extends Component {
   }
 }
 
-export default withRouter(Edit);
+export default Edit;

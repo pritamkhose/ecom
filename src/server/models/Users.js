@@ -22,7 +22,7 @@ UsersSchema.methods.setSocialPassword = function (password, req) {
   this.resetcode = 0;
   this.resetTime = null;
   this.isActive = true;
-  this.loginHistory = [{"date": new Date(), "requestDetails" : req.headers}]
+  this.loginHistory = [{ date: new Date(), requestDetails: req.headers }];
 };
 
 UsersSchema.methods.generateJWT = function () {
@@ -31,20 +31,23 @@ UsersSchema.methods.generateJWT = function () {
   expirationDate.setDate(today.getDate() + 60);
   // console.log(parseInt(expirationDate.getTime() / 1000, 10));
 
-  return jwt.sign({
-    email: this.email,
-    username: this.username,
-    id: this._id,
-    exp: parseInt(expirationDate.getTime() / 1000, 10),
-  }, 'secret');
-}
+  return jwt.sign(
+    {
+      email: this.email,
+      username: this.username,
+      id: this._id,
+      exp: parseInt(expirationDate.getTime() / 1000, 10)
+    },
+    'secret'
+  );
+};
 
 UsersSchema.methods.toAuthJSON = function () {
   return {
     id: this._id,
     email: this.email,
     username: this.username,
-    token: this.generateJWT(),
+    token: this.generateJWT()
     // expirationDateTime: expirationDate.toString(),
   };
 };

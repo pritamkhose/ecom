@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const initialState = {
   basket:
-    localStorage.getItem("cart") !== undefined && localStorage.getItem("cart") !== null 
-      ? JSON.parse(localStorage.getItem("cart")) 
+    localStorage.getItem('cart') !== undefined && localStorage.getItem('cart') !== null
+      ? JSON.parse(localStorage.getItem('cart'))
       : [],
-  user: null,
+  user: null
 };
 
 // Selector
@@ -16,20 +16,18 @@ export const getCart = () => initialState.basket;
 
 const Reducer = (state, action) => {
   switch (action.type) {
-    case "GET_BASKET":
+    case 'GET_BASKET':
       return {
         ...state,
-        basket: [...state.basket],
+        basket: [...state.basket]
       };
 
-    case "ADD_TO_BASKET":
-      const indexAdd = state.basket.findIndex(
-        (basketItem) => basketItem._id === action.item._id
-      );
-      var temp = [];
+    case 'ADD_TO_BASKET': {
+      const indexAdd = state.basket.findIndex((basketItem) => basketItem._id === action.item._id);
+      let temp = [];
       if (indexAdd >= 0) {
         temp = [...state.basket];
-        var tempObj = temp[indexAdd];
+        const tempObj = temp[indexAdd];
         if (tempObj.qty < 10) {
           tempObj.qty = tempObj.qty + 1;
         } else {
@@ -37,92 +35,88 @@ const Reducer = (state, action) => {
         }
         temp[indexAdd] = tempObj;
       } else {
-        var tempobj = action.item;
+        const tempobj = action.item;
         tempobj.qty = 1;
         temp = [...state.basket, tempobj];
       }
-      localStorage.setItem("cart", JSON.stringify(temp));
+      localStorage.setItem('cart', JSON.stringify(temp));
       updateCart(temp);
       return {
         ...state,
-        basket: temp,
+        basket: temp
       };
+    }
 
-    case "UPDATE_FROM_BASKET":
+    case 'UPDATE_FROM_BASKET': {
       const indexUpdate = state.basket.findIndex(
         (basketItem) => basketItem._id === action.item._id
       );
-      var tempUpdate = [...state.basket];
+      const tempUpdate = [...state.basket];
       tempUpdate[indexUpdate] = action.item;
-      localStorage.setItem("cart", JSON.stringify(tempUpdate));
+      localStorage.setItem('cart', JSON.stringify(tempUpdate));
       updateCart(tempUpdate);
       return {
         ...state,
-        basket: tempUpdate,
+        basket: tempUpdate
       };
+    }
 
-    case "EMPTY_BASKET":
-      localStorage.setItem("cart", JSON.stringify([]));
-      updateCart([])
+    case 'EMPTY_BASKET': {
+      localStorage.setItem('cart', JSON.stringify([]));
+      updateCart([]);
       return {
         ...state,
-        basket: [],
+        basket: []
       };
+    }
 
-    case "REMOVE_FROM_BASKET":
-      const index = state.basket.findIndex(
-        (basketItem) => basketItem._id === action._id
-      );
-      let newBasket = [...state.basket];
+    case 'REMOVE_FROM_BASKET': {
+      const index = state.basket.findIndex((basketItem) => basketItem._id === action._id);
+      const newBasket = [...state.basket];
 
       if (index >= 0) {
         newBasket.splice(index, 1);
       } else {
-        console.warn(
-          `Cant remove product (id: ${action._id}) as its not in basket!`
-        );
+        console.warn(`Cant remove product (id: ${action._id}) as its not in basket!`);
       }
-      localStorage.setItem("cart", JSON.stringify(newBasket));
+      localStorage.setItem('cart', JSON.stringify(newBasket));
       updateCart(newBasket);
       return {
         ...state,
-        basket: newBasket,
+        basket: newBasket
       };
+    }
 
-    case "SET_USER":
+    case 'SET_USER': {
       return {
         ...state,
-        user: action.user,
+        user: action.user
       };
+    }
 
     default:
       return state;
   }
 
   function updateCart(obj) {
-    if (localStorage.getItem("uid")) {
-      var baseURL =
-        (process.env.REACT_APP_API_URL !== undefined
-          ? process.env.REACT_APP_API_URL
-          : "") + "/api/";
+    if (localStorage.getItem('uid')) {
+      const baseURL =
+        (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
+        '/api/';
       axios
-        .put(
-          baseURL +
-            "mongoclient/updateone?collection=cart&id=" +
-            localStorage.getItem("uid"),
-          { data: obj }
-        )
+        .put(baseURL + 'mongoclient/updateone?collection=cart&id=' + localStorage.getItem('uid'), {
+          data: obj
+        })
         .then(
           (response) => {
             // console.log(response.data);
           },
           (error) => {
-            // console.log(error);
+            console.log(error);
           }
         );
     }
   }
-    
 };
 
 export default Reducer;

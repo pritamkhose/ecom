@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Badge, Card, Row, Container, Carousel } from "react-bootstrap";
-import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
+import React, { Component } from 'react';
+import { Badge, Card, Row, Container, Carousel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 class Home extends Component {
   constructor(props) {
@@ -9,21 +9,19 @@ class Home extends Component {
 
     this.state = {
       dataObj: {},
-      showLoadMore: true,
+      showLoadMore: true
     };
     this.getData();
   }
 
   getData() {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
-    axios.post(baseURL + "mongoclient?collection=homepage").then(
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
+    axios.post(baseURL + 'mongoclient?collection=homepage').then(
       (response) => {
         this.setState({
           dataObj: response.data[0],
-          showLoadMore: false,
+          showLoadMore: false
         });
       },
       (error) => {
@@ -38,11 +36,11 @@ class Home extends Component {
         {this.state.showLoadMore ? null : (
           <>
             {this.state.dataObj.banner !== undefined ? (
-              <Container style={{ width: "100%" }}>
-                <Row style={{ margin: "0px" }}>
+              <Container style={{ width: '100%' }}>
+                <Row style={{ margin: '0px' }}>
                   <Carousel name="banner">
                     {this.shuffleArray(this.state.dataObj.banner).map((val) =>
-                      this.showCarousel(val, "220rem", 3000, 1)
+                      this.showCarousel(val, '220rem', 3000, 1)
                     )}
                   </Carousel>
                 </Row>
@@ -51,14 +49,7 @@ class Home extends Component {
             {this.state.dataObj.category !== undefined ? (
               <>
                 <Badge variant="danger">Category</Badge>
-                <Row
-                  xs="2"
-                  sm="2"
-                  md="4"
-                  lg="6"
-                  xl="8"
-                  style={{ margin: "0px" }}
-                >
+                <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
                   {this.state.dataObj.category.map((val) =>
                     val !== null && val.enable ? this.getCategory(val) : null
                   )}
@@ -66,11 +57,11 @@ class Home extends Component {
               </>
             ) : null}
             {this.state.dataObj.offers !== undefined ? (
-              <Container style={{ width: "100%" }}>
-                <Row style={{ margin: "0px" }}>
+              <Container style={{ width: '100%' }}>
+                <Row style={{ margin: '0px' }}>
                   <Carousel name="offers">
                     {this.shuffleArray(this.state.dataObj.offers).map((val) =>
-                      this.showCarousel(val, "80rem", 2000, 0)
+                      this.showCarousel(val, '80rem', 2000, 0)
                     )}
                   </Carousel>
                 </Row>
@@ -79,17 +70,8 @@ class Home extends Component {
             {this.state.dataObj.brand !== undefined ? (
               <>
                 <Badge variant="danger">Brand</Badge>
-                <Row
-                  xs="2"
-                  sm="2"
-                  md="4"
-                  lg="6"
-                  xl="8"
-                  style={{ margin: "0px" }}
-                >
-                  {this.state.dataObj.brand.map((val) =>
-                    val != null ? this.getBrand(val) : null
-                  )}
+                <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
+                  {this.state.dataObj.brand.map((val) => (val != null ? this.getBrand(val) : null))}
                 </Row>
               </>
             ) : null}
@@ -113,8 +95,7 @@ class Home extends Component {
         key={val}
         interval={interval}
         indicators={control === 1 ? 1 : 0}
-        controls={control ? 1 : 0}
-      >
+        controls={control ? 1 : 0}>
         <img width="100%" height={height} alt={val} src={val} />
       </Carousel.Item>
     );
@@ -122,10 +103,10 @@ class Home extends Component {
 
   getCategory(val) {
     return (
-      <Link key={val.name} to={"/products?category=" + val.name}>
+      <Link key={val.name} to={'/products?category=' + val.name}>
         <Card className="Card">
           <img height="220rem" alt={val.name} src={val.image} />
-          <p style={{ textAlign: "center", margin: "0px" }}>
+          <p style={{ textAlign: 'center', margin: '0px' }}>
             <b>{val.name}</b>
           </p>
         </Card>
@@ -135,9 +116,9 @@ class Home extends Component {
 
   getBrand(val) {
     return (
-      <Link key={val} to={"/products?brand=" + val}>
+      <Link key={val} to={'/products?brand=' + val}>
         <Card className="Card">
-          <p style={{ textAlign: "center", margin: "4px" }}>
+          <p style={{ textAlign: 'center', margin: '4px' }}>
             <b>{val}</b>
           </p>
         </Card>
@@ -146,4 +127,4 @@ class Home extends Component {
   }
 }
 
-export default withRouter(Home);
+export default Home;

@@ -1,14 +1,13 @@
-import React from "react";
-import { useStateValue } from "../../StateProvider";
+import React from 'react';
+import { useStateValue } from '../../StateProvider';
 
-import { Card, Badge, Table, Col } from "react-bootstrap";
-import "./ProductItem.css";
-import logo from "../../image/logo.svg";
-import { withRouter } from "react-router-dom";
+import { Card, Badge, Table, Col } from 'react-bootstrap';
+import './ProductItem.css';
+import logo from '../../image/logo.svg';
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ReactGA from "react-ga";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ReactGA from 'react-ga';
 
 const MAX_LENGTH = 36;
 
@@ -20,50 +19,48 @@ const ProductItem = (props) => {
   const addCart = (obj) => {
     // dispatch the item into the data layer
     dispatch({
-      type: "ADD_TO_BASKET",
-      item: obj,
+      type: 'ADD_TO_BASKET',
+      item: obj
     });
-    toast.success("🛒 " + obj.product, {
-      position: "bottom-right",
+    toast.success('🛒 ' + obj.product, {
+      position: 'bottom-right',
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
+      progress: undefined
     });
 
-    var item = {
+    const item = {
       id: obj.productId,
       name: obj.product,
       price: obj.price,
       category: obj.brand,
-      quantity: obj.qty,
+      quantity: obj.qty
     };
     ReactGA.event({
-      category: "Add to Cart",
-      action: JSON.stringify(item),
+      category: 'Add to Cart',
+      action: JSON.stringify(item)
     });
-    ReactGA.plugin.execute("ecommerce", "addItem", item);
-    ReactGA.plugin.execute("ecommerce", "send");
-    ReactGA.plugin.execute("ecommerce", "clear");
+    ReactGA.plugin.execute('ecommerce', 'addItem', item);
+    ReactGA.plugin.execute('ecommerce', 'send');
+    ReactGA.plugin.execute('ecommerce', 'clear');
   };
 
   function openLink(id) {
-    props.history.push("/pid/" + id);
+    props.history.push('/pid/' + id);
   }
 
   function getURL(url) {
-    var fname = url.substring(url.lastIndexOf("/") + 1);
-    return process.env.REACT_APP_ASSET_URL + fname + "?alt=media";
+    const fname = url.substring(url.lastIndexOf('/') + 1);
+    return process.env.REACT_APP_ASSET_URL + fname + '?alt=media';
   }
 
   function getImage(url) {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") +
-      "/api/storage/getImage?id=" +
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
+      '/api/storage/getImage?id=' +
       url;
     return baseURL;
   }
@@ -98,23 +95,18 @@ const ProductItem = (props) => {
                 style={{ margin: 0, padding: 0 }}
                 colSpan="3"
                 className="Title"
-                onClick={() => openLink(props.value._id)}
-              >
+                onClick={() => openLink(props.value._id)}>
                 {props.value.product.substring(0, MAX_LENGTH)}
               </td>
             </tr>
             <tr>
               <td
-                style={{ margin: 0, padding: 0, border: "none" }}
+                style={{ margin: 0, padding: 0, border: 'none' }}
                 className="Price"
-                onClick={() => openLink(props.value._id)}
-              >
+                onClick={() => openLink(props.value._id)}>
                 ₹ {props.value.price}
               </td>
-              <td
-                style={{ margin: 0, padding: 0, border: "none" }}
-                className="PriceCancel"
-              >
+              <td style={{ margin: 0, padding: 0, border: 'none' }} className="PriceCancel">
                 ₹ {props.value.mrp}
               </td>
               <td
@@ -123,16 +115,10 @@ const ProductItem = (props) => {
                   paddingTop: 0,
                   paddingBottom: 0,
                   paddingRight: 10,
-                  border: "none",
-                  textAlign: "right",
-                }}
-              >
-                <img
-                  src={logo}
-                  alt={logo}
-                  height="30"
-                  onClick={() => addCart(props.value)}
-                ></img>
+                  border: 'none',
+                  textAlign: 'right'
+                }}>
+                <img src={logo} alt={logo} height="30" onClick={() => addCart(props.value)}></img>
               </td>
             </tr>
           </tbody>
@@ -142,4 +128,4 @@ const ProductItem = (props) => {
   );
 };
 
-export default withRouter(ProductItem);
+export default ProductItem;

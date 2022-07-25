@@ -1,0 +1,11 @@
+# Ignore artifacts: 
+build 
+public 
+coverage
+
+# Ignore all HTML files:
+*.html 
+
+# JSON files:
+Ecom.postman_collection.json
+ecom_schema.json

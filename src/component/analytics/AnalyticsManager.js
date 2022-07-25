@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import ReactGA from "react-ga";
+import React, { Component } from 'react';
+
+import ReactGA from 'react-ga';
 
 class AnalyticsManager extends Component {
   componentDidMount() {
@@ -9,9 +9,7 @@ class AnalyticsManager extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
-      ReactGA.pageview(
-        this.props.location.pathname + this.props.location.search
-      );
+      ReactGA.pageview(this.props.location.pathname + this.props.location.search);
     }
   }
 
@@ -20,4 +18,4 @@ class AnalyticsManager extends Component {
   }
 }
 
-export default withRouter(AnalyticsManager);
+export default AnalyticsManager;

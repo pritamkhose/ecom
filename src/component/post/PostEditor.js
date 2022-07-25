@@ -8,7 +8,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
+  ModalFooter
 } from 'reactstrap';
 import { Form as FinalForm, Field } from 'react-final-form';
 
@@ -31,7 +31,7 @@ const PostEditor = ({ post, onClose }) => (
       await client.mutate({
         variables: { input },
         mutation: SUBMIT_POST,
-        refetchQueries: () => [{ query: GET_POSTS }],
+        refetchQueries: () => [{ query: GET_POSTS }]
       });
 
       onClose();
@@ -40,32 +40,24 @@ const PostEditor = ({ post, onClose }) => (
     render={({ handleSubmit, pristine, invalid }) => (
       <Modal isOpen toggle={onClose}>
         <Form onSubmit={handleSubmit}>
-          <ModalHeader toggle={onClose}>
-            {post.id ? 'Edit Post' : 'New Post'}
-          </ModalHeader>
+          <ModalHeader toggle={onClose}>{post.id ? 'Edit Post' : 'New Post'}</ModalHeader>
           <ModalBody>
             <FormGroup>
               <Label>Author</Label>
-              <Field
-                required
-                name="author"
-                className="form-control"
-                component="input"
-              />
+              <Field required name="author" className="form-control" component="input" />
             </FormGroup>
             <FormGroup>
               <Label>Body</Label>
-              <Field
-                required
-                name="body"
-                className="form-control"
-                component="input"
-              />
+              <Field required name="body" className="form-control" component="input" />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" disabled={pristine} color="primary">Save</Button>
-            <Button color="secondary" onClick={onClose}>Cancel</Button>
+            <Button type="submit" disabled={pristine} color="primary">
+              Save
+            </Button>
+            <Button color="secondary" onClick={onClose}>
+              Cancel
+            </Button>
           </ModalFooter>
         </Form>
       </Modal>

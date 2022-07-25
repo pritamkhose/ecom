@@ -1,27 +1,27 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { debounce } from "lodash";
+import React, { Component } from 'react';
+
+import axios from 'axios';
+import { debounce } from 'lodash';
 
 class ProductFilters extends Component {
   constructor(props) {
     super(props);
     const query = new URLSearchParams(this.props.location.search);
     this.state = {
-      search: query.get("search"),
-      brand: query.get("brand"),
-      category: query.get("category"),
-      sort: query.get("sort"),
-      brandList: JSON.parse(localStorage.getItem("brandList")),
-      categoryList: JSON.parse(localStorage.getItem("categoryList")),
+      search: query.get('search'),
+      brand: query.get('brand'),
+      category: query.get('category'),
+      sort: query.get('sort'),
+      brandList: JSON.parse(localStorage.getItem('brandList')),
+      categoryList: JSON.parse(localStorage.getItem('categoryList'))
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSearchInputThrottled = debounce(this.handleChange, 1500);
     if (this.state.brandList == null) {
-      this.getData("brand");
+      this.getData('brand');
     }
     if (this.state.categoryList == null) {
-      this.getData("category");
+      this.getData('category');
     }
   }
 
@@ -32,51 +32,44 @@ class ProductFilters extends Component {
   }
 
   redirectURL() {
-    var url = window.location.pathname + "?";
-    if (this.state.search !== null && this.state.search !== "") {
-      url = url + "search=" + this.state.search;
+    let url = window.location.pathname + '?';
+    if (this.state.search !== null && this.state.search !== '') {
+      url = url + 'search=' + this.state.search;
     }
-    if (this.state.category !== null && this.state.category !== "") {
-      url = url + "&category=" + this.state.category;
+    if (this.state.category !== null && this.state.category !== '') {
+      url = url + '&category=' + this.state.category;
     }
-    if (this.state.brand !== null && this.state.brand !== "") {
-      url = url + "&brand=" + this.state.brand;
+    if (this.state.brand !== null && this.state.brand !== '') {
+      url = url + '&brand=' + this.state.brand;
     }
-    if (this.state.sort !== null && this.state.sort !== "") {
-      url = url + "&sort=" + this.state.sort;
+    if (this.state.sort !== null && this.state.sort !== '') {
+      url = url + '&sort=' + this.state.sort;
     }
     this.props.history.push(url);
   }
 
   getData(type) {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
-    axios
-      .post(
-        baseURL + "mongoclient/distinct?collection=productmyntra&id=" + type,
-        {}
-      )
-      .then(
-        (response) => {
-          if (type === "brand") {
-            localStorage.setItem("brandList", JSON.stringify(response.data));
-            this.setState({ brandList: response.data });
-          } else if (type === "category") {
-            localStorage.setItem("categoryList", JSON.stringify(response.data));
-            this.setState({ categoryList: response.data });
-          }
-        },
-        (error) => {
-          console.log(error);
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
+    axios.post(baseURL + 'mongoclient/distinct?collection=productmyntra&id=' + type, {}).then(
+      (response) => {
+        if (type === 'brand') {
+          localStorage.setItem('brandList', JSON.stringify(response.data));
+          this.setState({ brandList: response.data });
+        } else if (type === 'category') {
+          localStorage.setItem('categoryList', JSON.stringify(response.data));
+          this.setState({ categoryList: response.data });
         }
-      );
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   render() {
     return (
-      <div className="container" style={{ paddingBottom: "8px" }}>
+      <div className="container" style={{ paddingBottom: '8px' }}>
         <div className="row">
           <div name="search" className="col-3">
             <label>Search :</label>
@@ -85,7 +78,7 @@ class ProductFilters extends Component {
               className="form-control"
               name="search"
               id="search"
-              defaultValue={this.state.search !== null ? this.state.search : ""}
+              defaultValue={this.state.search !== null ? this.state.search : ''}
               onChange={this.handleSearchInputThrottled}
             />
           </div>
@@ -95,9 +88,8 @@ class ProductFilters extends Component {
               className="custom-select"
               name="sort"
               id="sort"
-              value={this.state.sort !== null ? this.state.sort : ""}
-              onChange={this.handleChange}
-            >
+              value={this.state.sort !== null ? this.state.sort : ''}
+              onChange={this.handleChange}>
               <option value="">All</option>
               <option value="price">Price ↑</option>
               <option value="pricedesc">Price ↓</option>
@@ -114,9 +106,8 @@ class ProductFilters extends Component {
                 className="custom-select"
                 name="brand"
                 id="brand"
-                defaultValue={this.state.brand !== null ? this.state.brand : ""}
-                onChange={this.handleChange}
-              >
+                defaultValue={this.state.brand !== null ? this.state.brand : ''}
+                onChange={this.handleChange}>
                 <option key="NA" value="">
                   All
                 </option>
@@ -136,8 +127,7 @@ class ProductFilters extends Component {
                 name="category"
                 id="category"
                 defaultValue={this.state.category}
-                onChange={this.handleChange}
-              >
+                onChange={this.handleChange}>
                 <option key="NA" value="">
                   All
                 </option>
@@ -155,4 +145,4 @@ class ProductFilters extends Component {
   }
 }
 
-export default withRouter(ProductFilters);
+export default ProductFilters;

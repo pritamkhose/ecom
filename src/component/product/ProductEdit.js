@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import { Container, Spinner, Badge, Button, Card, Row } from "react-bootstrap";
-import { Label } from "reactstrap";
-import { Form } from "react-final-form";
-import arrayMutators from "final-form-arrays";
-import { FieldArray } from "react-final-form-arrays";
-import axios from "axios";
+import React, { Component } from 'react';
 
-import FormFieldText from "./FormFieldText";
-import FormFieldNumber from "./FormFieldNumber";
-import FormFieldCheckBox from "./FormFieldCheckBox";
-import "./ProductEdit.css";
+import { Container, Spinner, Badge, Button, Card, Row } from 'react-bootstrap';
+import { Label } from 'reactstrap';
+import { Form } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
+import { FieldArray } from 'react-final-form-arrays';
+import axios from 'axios';
+
+import FormFieldText from './FormFieldText';
+import FormFieldNumber from './FormFieldNumber';
+import FormFieldCheckBox from './FormFieldCheckBox';
+import './ProductEdit.css';
 
 class ProductEdit extends Component {
   constructor(props) {
@@ -18,58 +18,54 @@ class ProductEdit extends Component {
     this.state = {
       id: props.match.params.id,
       aObj: {},
-      isLogined: localStorage.getItem("name") ? true : false,
+      isLogined: !!localStorage.getItem('name')
     };
   }
 
   componentDidMount() {
-    if (localStorage.getItem("uid")) {
-      if (this.state.id === "new") {
+    if (localStorage.getItem('uid')) {
+      if (this.state.id === 'new') {
         this.setState({ isLoading: false, isEdit: false });
       } else {
         this.setState({ isLoading: true, isEdit: true });
         this.getData(this.state.id);
       }
     } else {
-      this.props.history.push("/login");
+      this.props.history.push('/login');
     }
   }
 
   getData(id) {
-    if (id === "new") {
+    if (id === 'new') {
+      console.log('-->', 'new id');
     } else {
-      var baseURL =
-        (process.env.REACT_APP_API_URL !== undefined
-          ? process.env.REACT_APP_API_URL
-          : "") + "/api/";
-      axios
-        .post(baseURL + "mongoclient/id?collection=productmyntra&id=" + id, {})
-        .then(
-          (response) => {
-            if (response.status === 200) {
-              this.setState({ isLoading: false, aObj: response.data });
-            } else {
-              this.setState({ isLoading: false });
-              alert("Something went Wrong! Try again...");
-              this.openLink(true);
-            }
-          },
-          (error) => {
-            console.log(error);
+      const baseURL =
+        (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
+        '/api/';
+      axios.post(baseURL + 'mongoclient/id?collection=productmyntra&id=' + id, {}).then(
+        (response) => {
+          if (response.status === 200) {
+            this.setState({ isLoading: false, aObj: response.data });
+          } else {
             this.setState({ isLoading: false });
-            alert("Invaild ID!");
+            alert('Something went Wrong! Try again...');
             this.openLink(true);
           }
-        );
+        },
+        (error) => {
+          console.log(error);
+          this.setState({ isLoading: false });
+          alert('Invaild ID!');
+          this.openLink(true);
+        }
+      );
     }
   }
 
   render() {
     return (
       <div>
-        <Badge variant="primary">
-          Product {this.state.isEdit ? "Edit" : "Add"}
-        </Badge>
+        <Badge variant="primary">Product {this.state.isEdit ? 'Edit' : 'Add'}</Badge>
         {this.state.isLoading ? this.showLoading() : this.showData()}
       </div>
     );
@@ -98,31 +94,24 @@ class ProductEdit extends Component {
             sizes: this.state.aObj.sizes,
             searchImage: this.state.aObj.searchImage,
             landingPageUrl: this.state.aObj.landingPageUrl,
-            images:
-              this.state.aObj.images !== undefined
-                ? this.state.aObj.images
-                : [],
+            images: this.state.aObj.images !== undefined ? this.state.aObj.images : [],
             productVideos:
-              this.state.aObj.productVideos !== undefined
-                ? this.state.aObj.productVideos
-                : [],
+              this.state.aObj.productVideos !== undefined ? this.state.aObj.productVideos : [],
             inventoryInfo:
-              this.state.aObj.inventoryInfo !== undefined
-                ? this.state.aObj.inventoryInfo
-                : [],
+              this.state.aObj.inventoryInfo !== undefined ? this.state.aObj.inventoryInfo : []
           }}
           mutators={{
-            ...arrayMutators,
+            ...arrayMutators
           }}
           render={({
             handleSubmit,
             form: {
-              mutators: { push, pop },
+              mutators: { push, pop }
             }, // injected from final-form-arrays above
             pristine,
             form,
             submitting,
-            values,
+            values
           }) => {
             return (
               <form onSubmit={handleSubmit}>
@@ -131,23 +120,11 @@ class ProductEdit extends Component {
                   <p>Date: {this.state.aObj.catalogDate}</p>
                 </Card>
                 <Card>
-                  <FormFieldText
-                    name="category"
-                    hint="Category"
-                    value={this.state.aObj.category}
-                  />
-                  <FormFieldText
-                    name="brand"
-                    hint="Brand"
-                    value={this.state.aObj.brand}
-                  />
+                  <FormFieldText name="category" hint="Category" value={this.state.aObj.category} />
+                  <FormFieldText name="brand" hint="Brand" value={this.state.aObj.brand} />
                 </Card>
                 <Card>
-                  <FormFieldText
-                    name="product"
-                    hint="Product"
-                    value={this.state.aObj.product}
-                  />
+                  <FormFieldText name="product" hint="Product" value={this.state.aObj.product} />
                   <FormFieldText
                     name="productName"
                     hint="Product Name"
@@ -160,21 +137,13 @@ class ProductEdit extends Component {
                   />
                 </Card>
                 <Card>
-                  <FormFieldText
-                    name="gender"
-                    hint="Gender"
-                    value={this.state.aObj.gender}
-                  />
+                  <FormFieldText name="gender" hint="Gender" value={this.state.aObj.gender} />
                   <FormFieldText
                     name="primaryColour"
                     hint="Colour"
                     value={this.state.aObj.primaryColour}
                   />
-                  <FormFieldText
-                    name="season"
-                    hint="Season"
-                    value={this.state.aObj.season}
-                  />
+                  <FormFieldText name="season" hint="Season" value={this.state.aObj.season} />
                 </Card>
                 <Card>
                   <FormFieldNumber
@@ -236,12 +205,9 @@ class ProductEdit extends Component {
                   />
                 </Card>
                 <Card>
-                  <Container className="row" style={{ paddingStart: "25px" }}>
+                  <Container className="row" style={{ paddingStart: '25px' }}>
                     <Label>Images&nbsp;&nbsp;&nbsp;</Label>
-                    <span
-                      onClick={() => push("images", undefined)}
-                      style={{ cursor: "pointer" }}
-                    >
+                    <span onClick={() => push('images', undefined)} style={{ cursor: 'pointer' }}>
                       ➕
                     </span>
                   </Container>
@@ -261,7 +227,7 @@ class ProductEdit extends Component {
                                 this.state.aObj.images !== undefined &&
                                 this.state.aObj.images[index] !== undefined
                                   ? this.state.aObj.images[index].view
-                                  : ""
+                                  : ''
                               }
                             />
                           </div>
@@ -274,15 +240,14 @@ class ProductEdit extends Component {
                                 this.state.aObj.images !== undefined &&
                                 this.state.aObj.images[index] !== undefined
                                   ? this.state.aObj.images[index].src
-                                  : ""
+                                  : ''
                               }
                             />
                           </div>
                           <div className="col-sm-1">
                             <span
                               onClick={() => fields.remove(index)}
-                              style={{ cursor: "pointer" }}
-                            >
+                              style={{ cursor: 'pointer' }}>
                               ❌
                             </span>
                           </div>
@@ -292,12 +257,11 @@ class ProductEdit extends Component {
                   </FieldArray>
                 </Card>
                 <Card>
-                  <Container className="row" style={{ paddingStart: "25px" }}>
+                  <Container className="row" style={{ paddingStart: '25px' }}>
                     <Label>Videos&nbsp;&nbsp;&nbsp;</Label>
                     <span
-                      onClick={() => push("productVideos", undefined)}
-                      style={{ cursor: "pointer" }}
-                    >
+                      onClick={() => push('productVideos', undefined)}
+                      style={{ cursor: 'pointer' }}>
                       ➕
                     </span>
                   </Container>
@@ -315,10 +279,9 @@ class ProductEdit extends Component {
                               label={false}
                               value={
                                 this.state.aObj.productVideos !== undefined &&
-                                this.state.aObj.productVideos[index] !==
-                                  undefined
+                                this.state.aObj.productVideos[index] !== undefined
                                   ? this.state.aObj.productVideos[index].view
-                                  : ""
+                                  : ''
                               }
                             />
                           </div>
@@ -329,18 +292,16 @@ class ProductEdit extends Component {
                               label={false}
                               value={
                                 this.state.aObj.productVideos !== undefined &&
-                                this.state.aObj.productVideos[index] !==
-                                  undefined
+                                this.state.aObj.productVideos[index] !== undefined
                                   ? this.state.aObj.productVideos[index].src
-                                  : ""
+                                  : ''
                               }
                             />
                           </div>
                           <div className="col-sm-1">
                             <span
                               onClick={() => fields.remove(index)}
-                              style={{ cursor: "pointer" }}
-                            >
+                              style={{ cursor: 'pointer' }}>
                               ❌
                             </span>
                           </div>
@@ -350,19 +311,14 @@ class ProductEdit extends Component {
                   </FieldArray>
                 </Card>
                 <Card>
-                  <FormFieldText
-                    name="sizes"
-                    hint="Sizes"
-                    value={this.state.aObj.sizes}
-                  />
+                  <FormFieldText name="sizes" hint="Sizes" value={this.state.aObj.sizes} />
                 </Card>
                 <Card>
-                  <Container className="row" style={{ paddingStart: "25px" }}>
+                  <Container className="row" style={{ paddingStart: '25px' }}>
                     <Label>Inventory Info&nbsp;&nbsp;&nbsp;</Label>
                     <span
-                      onClick={() => push("inventoryInfo", undefined)}
-                      style={{ cursor: "pointer" }}
-                    >
+                      onClick={() => push('inventoryInfo', undefined)}
+                      style={{ cursor: 'pointer' }}>
                       ➕
                     </span>
                   </Container>
@@ -382,10 +338,9 @@ class ProductEdit extends Component {
                               minLength="1"
                               value={
                                 this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !==
-                                  undefined
+                                this.state.aObj.inventoryInfo[index] !== undefined
                                   ? this.state.aObj.inventoryInfo[index].skuId
-                                  : ""
+                                  : ''
                               }
                             />
                           </div>
@@ -396,10 +351,9 @@ class ProductEdit extends Component {
                               label={false}
                               value={
                                 this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !==
-                                  undefined
+                                this.state.aObj.inventoryInfo[index] !== undefined
                                   ? this.state.aObj.inventoryInfo[index].label
-                                  : ""
+                                  : ''
                               }
                             />
                           </div>
@@ -412,11 +366,9 @@ class ProductEdit extends Component {
                               minLength="1"
                               value={
                                 this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !==
-                                  undefined
-                                  ? this.state.aObj.inventoryInfo[index]
-                                      .inventory
-                                  : ""
+                                this.state.aObj.inventoryInfo[index] !== undefined
+                                  ? this.state.aObj.inventoryInfo[index].inventory
+                                  : ''
                               }
                             />
                           </div>
@@ -426,10 +378,8 @@ class ProductEdit extends Component {
                               hint="Available"
                               value={
                                 this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !==
-                                  undefined
-                                  ? this.state.aObj.inventoryInfo[index]
-                                      .available
+                                this.state.aObj.inventoryInfo[index] !== undefined
+                                  ? this.state.aObj.inventoryInfo[index].available
                                   : false
                               }
                             />
@@ -437,8 +387,7 @@ class ProductEdit extends Component {
                           <div className="col-sm-1">
                             <span
                               onClick={() => fields.remove(index)}
-                              style={{ cursor: "pointer" }}
-                            >
+                              style={{ cursor: 'pointer' }}>
                               ❌
                             </span>
                           </div>
@@ -449,37 +398,29 @@ class ProductEdit extends Component {
                 </Card>
                 <div className="buttons">
                   <br />
-                  {this.state.id === "new" ? null : (
+                  {this.state.id === 'new' ? null : (
                     <>
-                      <Button
-                        className="btn btn-danger"
-                        onClick={() => this.deleteData()}
-                      >
+                      <Button className="btn btn-danger" onClick={() => this.deleteData()}>
                         Delete
                       </Button>
                       &nbsp;&nbsp;&nbsp;
                     </>
                   )}
-                  <Button
-                    className="btn btn-warning"
-                    onClick={() => this.openLink(false)}
-                  >
+                  <Button className="btn btn-warning" onClick={() => this.openLink(false)}>
                     Cancel
                   </Button>
                   &nbsp;&nbsp;&nbsp;
                   <Button
                     className="btn btn-primary"
                     onClick={form.reset}
-                    disabled={submitting || pristine}
-                  >
+                    disabled={submitting || pristine}>
                     Reset
                   </Button>
                   &nbsp;&nbsp;&nbsp;
                   <Button
                     className="btn btn-success"
                     type="submit"
-                    disabled={submitting || pristine}
-                  >
+                    disabled={submitting || pristine}>
                     Submit
                   </Button>
                 </div>
@@ -494,52 +435,47 @@ class ProductEdit extends Component {
   }
 
   openLink(isListOpen) {
-    if (isListOpen || this.state.id === "new") {
-      this.props.history.push("/products");
+    if (isListOpen || this.state.id === 'new') {
+      this.props.history.push('/products');
     } else {
-      this.props.history.push("/pid/" + this.state.id);
+      this.props.history.push('/pid/' + this.state.id);
     }
   }
 
   onFormSubmit(values) {
     values.catalogDate = new Date().getTime();
     values.date = new Date().toISOString();
-    values.uid = localStorage.getItem("uid");
-    if (this.state.id === "new") {
-      var min = 10000000;
-      var max = 99999999;
+    values.uid = localStorage.getItem('uid');
+    if (this.state.id === 'new') {
+      const min = 10000000;
+      const max = 99999999;
       values.productId = Math.floor(min + Math.random() * max);
     } else {
       values.productId = this.state.aObj.productId;
     }
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
     this.setState({
-      isLoading: true,
+      isLoading: true
     });
-    var actionURL =
-      this.state.id === "new"
-        ? baseURL + "mongoclient/insert" + "?collection=productmyntra"
-        : baseURL +
-          "mongoclient/updateone" +
-          "?collection=productmyntra&id=" +
-          this.state.aObj._id;
+    const actionURL =
+      this.state.id === 'new'
+        ? baseURL + 'mongoclient/insert' + '?collection=productmyntra'
+        : baseURL + 'mongoclient/updateone' + '?collection=productmyntra&id=' + this.state.aObj._id;
     axios.put(actionURL, values).then(
       (response) => {
         // console.log(response.data);
-        this.props.history.push("/products");
+        this.props.history.push('/products');
       },
       (error) => {
         this.setState(
           {
-            isLoading: false,
+            isLoading: false
           },
           function () {
             console.log(error);
-            alert("Something went Wrong! Try again...");
+            alert('Something went Wrong! Try again...');
           }
         );
       }
@@ -547,34 +483,27 @@ class ProductEdit extends Component {
   }
 
   deleteData() {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
     this.setState({
-      isLoading: true,
+      isLoading: true
     });
     axios
-      .delete(
-        baseURL +
-          "mongoclient/delete?collection=productmyntra&id=" +
-          this.state.aObj._id,
-        {}
-      )
+      .delete(baseURL + 'mongoclient/delete?collection=productmyntra&id=' + this.state.aObj._id, {})
       .then(
         (response) => {
           // console.log(response.data);
-          this.props.history.push("/products");
+          this.props.history.push('/products');
         },
         (error) => {
           this.setState(
             {
-              isLoading: false,
+              isLoading: false
             },
             function () {
               console.log(error);
-              alert("Something went Wrong! Try again...");
+              alert('Something went Wrong! Try again...');
             }
           );
         }
@@ -594,7 +523,7 @@ class ProductEdit extends Component {
   isMobile() {
     // if we want a more complete list use this: http://detectmobilebrowsers.com/
     // str.test() is more efficent than str.match() remember str.test is case sensitive
-    var isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
+    const isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
       navigator.userAgent.toLowerCase()
     );
     // console.log(navigator.userAgent.toLowerCase());
@@ -603,4 +532,4 @@ class ProductEdit extends Component {
   }
 }
 
-export default withRouter(ProductEdit);
+export default ProductEdit;

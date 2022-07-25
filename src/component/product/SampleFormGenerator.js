@@ -1,16 +1,6 @@
-import React, { Component } from "react";
-import { Button } from "reactstrap";
-import {
-  FormBuilder,
-  AbstractControl,
-  Validators,
-  FormGenerator,
-  FormGroup,
-  FormArray,
-  FieldGroup,
-  FieldControl,
-  FieldArray,
-} from "react-reactive-form";
+import React, { Component } from 'react';
+import { FormBuilder, FormGenerator, Validators } from 'react-reactive-form';
+import { Button } from 'reactstrap';
 
 // Input component
 const TextInput = ({ handler, touched, hasError, meta }) => (
@@ -22,16 +12,14 @@ const TextInput = ({ handler, touched, hasError, meta }) => (
       placeholder={`Enter ${meta.label}`}
       {...handler()}
     />
-    <span>
-      {touched && hasError("required") && `${meta.label} is required`}
-    </span>
+    <span>{touched && hasError('required') && `${meta.label} is required`}</span>
   </div>
 );
 
 // Checkbox component
 const CheckBox = ({ handler }) => (
   <div className="form-group">
-    <input {...handler("checkbox")} />
+    <input {...handler('checkbox')} />
     <label>&nbsp;&nbsp;I agree to the terms and condition.</label>
   </div>
 );
@@ -44,15 +32,15 @@ const RadioSelect = ({ handler }) => (
     </div>
     <div className="radioContainer">
       <div>
-        <input {...handler("radio", "male")} />
+        <input {...handler('radio', 'male')} />
         <label>Male</label>
       </div>
       <div>
-        <input {...handler("radio", "female")} />
+        <input {...handler('radio', 'female')} />
         <label>Female</label>
       </div>
       <div>
-        <input {...handler("radio", "other")} />
+        <input {...handler('radio', 'other')} />
         <label>Other</label>
       </div>
     </div>
@@ -95,41 +83,41 @@ const SelectBox = ({ handler }) => (
 //   itemsControl.push(this.createItem());
 // };
 
-  // Removes an item
-  const removeItem = (index) => {
-    const itemsControl = this.productForm.get("items"); // as FormArray;
-    itemsControl.removeAt(index);
-  }
+// Removes an item
+const removeItem = (index) => {
+  const itemsControl = this.productForm.get('items'); // as FormArray;
+  itemsControl.removeAt(index);
+};
 
-  const createItem = () => {
-    const control = FormBuilder.group({
-      name: "",
-      description: "",
-      price: "",
-    });
-    // Adding key
-    control.meta = {
-      key: this.getKey(),
-    };
-    return control;
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    // alert(`You submitted \n ${JSON.stringify(this.productForm.value, 0, 2)}`);
-    console.log("Form values", this.productForm.value);
-  }
-
-  function handleReset() {
-    this.productForm.reset();
-  }
-
-  const setForm = (form) => {
-    this.productForm = form;
-    this.productForm.meta = {
-      handleReset: this.handleReset,
-    };
+const createItem = () => {
+  const control = FormBuilder.group({
+    name: '',
+    description: '',
+    price: ''
+  });
+  // Adding key
+  control.meta = {
+    key: this.getKey()
   };
+  return control;
+};
+
+function handleSubmit(e) {
+  e.preventDefault();
+  // alert(`You submitted \n ${JSON.stringify(this.productForm.value, 0, 2)}`);
+  console.log('Form values', this.productForm.value);
+}
+
+function handleReset() {
+  this.productForm.reset();
+}
+
+const setForm = (form) => {
+  this.productForm = form;
+  this.productForm.meta = {
+    handleReset: this.handleReset
+  };
+};
 
 // const ListItems = ({ handler }) => (
 //   <div>
@@ -200,40 +188,40 @@ const fieldConfig = {
   controls: {
     username: {
       options: {
-        validators: Validators.required,
+        validators: Validators.required
       },
       render: TextInput,
-      meta: { label: "Username" },
+      meta: { label: 'Username' }
     },
     password: {
       render: TextInput,
       meta: {
-        label: "Password",
-        type: "password",
+        label: 'Password',
+        type: 'password'
       },
       options: {
-        validators: Validators.required,
-      },
+        validators: Validators.required
+      }
     },
     number: {
       options: {
-        validators: Validators.required,
+        validators: Validators.required
       },
       render: TextInput,
-      meta: { label: "Number", type: "number" },
+      meta: { label: 'Number', type: 'number' }
     },
     gender: {
-      formState: "male",
-      render: RadioSelect,
+      formState: 'male',
+      render: RadioSelect
     },
     nationality: {
-      render: SelectBox,
+      render: SelectBox
     },
     notes: {
-      render: TextArea,
+      render: TextArea
     },
     rememberMe: {
-      render: CheckBox,
+      render: CheckBox
     },
     // items: {
     //   render: ListItems,
@@ -242,11 +230,7 @@ const fieldConfig = {
       isStatic: false,
       render: ({ invalid, meta: { handleReset } }) => (
         <div>
-          <Button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleReset}
-          >
+          <Button type="button" className="btn btn-primary" onClick={handleReset}>
             Reset
           </Button>
           &nbsp;&nbsp;&nbsp;
@@ -254,25 +238,28 @@ const fieldConfig = {
             Submit
           </Button>
         </div>
-      ),
-    },
-  },
+      )
+    }
+  }
 };
 
 export default class SampleFormGenerator extends Component {
   handleReset = () => {
     this.loginForm.reset();
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form values", this.loginForm.value);
+    console.log('Form values', this.loginForm.value);
   };
+
   setForm = (form) => {
     this.loginForm = form;
     this.loginForm.meta = {
-      handleReset: this.handleReset,
+      handleReset: this.handleReset
     };
   };
+
   render() {
     return (
       <form onSubmit={this.handleSubmit}>

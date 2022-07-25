@@ -1,43 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 
-import { useStateValue } from "../../StateProvider";
-import { getBasketTotal } from "../../Reducer";
+import { useStateValue } from '../../StateProvider';
+import { getBasketTotal } from '../../Reducer';
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ReactGA from "react-ga";
-import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ReactGA from 'react-ga';
+import axios from 'axios';
 
-import { Button, Card, Spinner, Badge, Row, Col } from "react-bootstrap";
-import OrderItem from "./OrderItem";
-import CartEmpty from "./CartEmpty";
-import logo from "./../../image/logo.svg";
+import { Button, Card, Spinner, Badge, Row, Col } from 'react-bootstrap';
+import OrderItem from './OrderItem';
+import CartEmpty from './CartEmpty';
+import logo from './../../image/logo.svg';
 
 const OrderConfirm = (props) => {
   const [{ basket }, dispatch] = useStateValue();
   const [cart, setCart] = useState([]);
 
   const [address, setAddress] = useState([]);
-  const [choiceAddress, setChoiceAddress] = useState("");
+  const [choiceAddress, setChoiceAddress] = useState('');
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("uid")) {
-      var baseURL =
-        (process.env.REACT_APP_API_URL !== undefined
-          ? process.env.REACT_APP_API_URL
-          : "") + "/api/";
+    if (localStorage.getItem('uid')) {
+      const baseURL =
+        (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
+        '/api/';
       axios
-        .post(
-          baseURL +
-            "mongoclient/id?collection=cart&id=" +
-            localStorage.getItem("uid"),
-          {}
-        )
+        .post(baseURL + 'mongoclient/id?collection=cart&id=' + localStorage.getItem('uid'), {})
         .then(
           (response) => {
-            localStorage.setItem("cart", JSON.stringify(response.data.data));
+            localStorage.setItem('cart', JSON.stringify(response.data.data));
             setCart(response.data.data);
           },
           (error) => {
@@ -47,35 +40,32 @@ const OrderConfirm = (props) => {
         );
       setLoading(true);
       axios
-        .post(baseURL + "mongoclient?collection=address", {
+        .post(baseURL + 'mongoclient?collection=address', {
           search: {
-            uid: localStorage.getItem("uid"),
-          },
+            uid: localStorage.getItem('uid')
+          }
         })
         .then(
           (response) => {
             setLoading(false);
-            if (
-              response.data !== undefined &&
-              response.data !== null &&
-              response.data !== ""
-            ) {
+            if (response.data !== undefined && response.data !== null && response.data !== '') {
               setAddress(response.data);
             }
           },
           (error) => {
+            console.error('-->', JSON.stringify(error));
             setLoading(false);
             setAddress([]);
           }
         );
     } else {
-      props.history.push("/login");
+      props.history.push('/login');
     }
   }, []);
 
   function loadScript(src) {
     return new Promise((resolve) => {
-      const script = document.createElement("script");
+      const script = document.createElement('script');
       script.src = src;
       script.onload = () => {
         resolve(true);
@@ -102,53 +92,49 @@ const OrderConfirm = (props) => {
       // document.getElementById("AddressSelect").innerHTML +
       // "<br/>" +
       // document.getElementById("Footer").innerHTML +
-      "</body> </html>";
+      '</body> </html>';
     const mailObj = {
       to: email,
-      subject: "Ecom Order - " + orderId,
-      html: mailbody,
+      subject: 'Ecom Order - ' + orderId,
+      html: mailbody
     };
     const baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/email/send";
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
+      '/api/email/send';
     console.log(mailObj);
     axios.post(baseURL, mailObj);
   };
 
   async function displayRazorpay() {
-    var delAddr = address.find((element) => {
+    const delAddr = address.find((element) => {
       return element.addrid === choiceAddress;
     });
 
     const baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/razorpay/";
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
+      '/api/razorpay/';
 
-    const res = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
+    const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
 
     if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
+      alert('Razorpay SDK failed to load. Are you online?');
       return;
     }
 
-    const result = await axios.post(baseURL + "payment/orders", {
-      amount: getBasketTotal(basket),
+    const result = await axios.post(baseURL + 'payment/orders', {
+      amount: getBasketTotal(basket)
     });
 
     if (!result) {
-      alert("Server error. Are you online?");
+      alert('Server error. Are you online?');
       return;
     }
 
     ReactGA.event({
-      category: "Payment initiated",
-      action: JSON.stringify(result.data.order),
+      category: 'Payment initiated',
+      action: JSON.stringify(result.data.order)
     });
-    ReactGA.plugin.execute("ecommerce", "addTransaction", result.data.order);
+    ReactGA.plugin.execute('ecommerce', 'addTransaction', result.data.order);
 
     const { amount, id: order_id, currency, receipt } = result.data.order;
     const razorpayPaymentKey = result.data.razorpayPaymentKey;
@@ -157,90 +143,81 @@ const OrderConfirm = (props) => {
     const options = {
       key: razorpayPaymentKey, // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
-      currency: currency,
-      name: "Pritam Ecom",
-      description: "Pay-" + serverdate,
+      currency,
+      name: 'Pritam Ecom',
+      description: 'Pay-' + serverdate,
       image: { logo },
-      order_id: order_id,
+      order_id,
       handler: async function (response) {
         const data = {
           orderCreationId: order_id,
           razorpayPaymentId: response.razorpay_payment_id,
           razorpayOrderId: response.razorpay_order_id,
           razorpaySignature: response.razorpay_signature,
-          receipt: receipt,
+          receipt,
           amount: amount.toString(),
-          currency: currency,
+          currency,
           serverdate,
           userdate: new Date().toISOString(),
-          uid: localStorage.getItem("uid"),
-          name: delAddr.firstName + " " + delAddr.lastName,
-          email: localStorage.getItem("email"),
+          uid: localStorage.getItem('uid'),
+          name: delAddr.firstName + ' ' + delAddr.lastName,
+          email: localStorage.getItem('email'),
           contact: delAddr.mobileno,
           address: delAddr,
-          product: cart,
+          product: cart
         };
 
-        const result = await axios.post(baseURL + "payment/success", data);
+        const result = await axios.post(baseURL + 'payment/success', data);
 
-        if (result.data.msg === "success") {
+        if (result.data.msg === 'success') {
           setCart([]);
           dispatch({
-            type: "EMPTY_BASKET",
+            type: 'EMPTY_BASKET'
           });
-          toast(
-            "🚀 Your order " +
-              result.data.orderId +
-              " is successful put with us!",
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
-          );
+          toast('🚀 Your order ' + result.data.orderId + ' is successful put with us!', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
           sendEmail(
-            localStorage.getItem("email"),
-            delAddr.firstName + " " + delAddr.lastName,
+            localStorage.getItem('email'),
+            delAddr.firstName + ' ' + delAddr.lastName,
             result.data.orderId
           );
-          var item = {
+          const item = {
             id: result.data.orderId,
-            revenue: amount.toString(),
+            revenue: amount.toString()
           };
           ReactGA.event({
-            category: "Payment Done",
-            action: JSON.stringify(item),
+            category: 'Payment Done',
+            action: JSON.stringify(item)
           });
           ReactGA.plugin.execute('ec', 'setAction', 'purchase', item);
-          ReactGA.plugin.execute("ecommerce", "send");
-          ReactGA.plugin.execute("ecommerce", "clear");
-          props.history.push("/orders/" + result.data.orderId);
-          alert(
-            "🚀 Your order " +
-              result.data.orderId +
-              " is successful put with us!"
-          );
+          ReactGA.plugin.execute('ecommerce', 'send');
+          ReactGA.plugin.execute('ecommerce', 'clear');
+          props.history.push('/orders/' + result.data.orderId);
+          alert('🚀 Your order ' + result.data.orderId + ' is successful put with us!');
         } else {
           alert(result.data.msg);
         }
       },
       prefill: {
-        name: delAddr.firstName + " " + delAddr.lastName,
-        email: localStorage.getItem("email"),
-        contact: delAddr.mobileno,
+        name: delAddr.firstName + ' ' + delAddr.lastName,
+        email: localStorage.getItem('email'),
+        contact: delAddr.mobileno
       },
       notes: {
-        order_id: order_id,
-        receipt: receipt,
-        uid: localStorage.getItem("uid"),
+        order_id,
+        receipt,
+        uid: localStorage.getItem('uid')
       },
       theme: {
-        color: "#61dafb",
-      },
+        color: '#61dafb'
+      }
     };
 
     const paymentObject = new window.Razorpay(options);
@@ -254,44 +231,28 @@ const OrderConfirm = (props) => {
   function showAddress() {
     return (
       <div>
-        {address.length !== 0 ? (
-          <Badge variant="success">Select a delivery address</Badge>
-        ) : null}
+        {address.length !== 0 ? <Badge variant="success">Select a delivery address</Badge> : null}
         {address?.map((item, i) => (
           <Card
             className="CardAddress"
             key={i}
             style={{
-              background: choiceAddress === item["addrid"] ? "#8bf1de" : "none",
+              background: choiceAddress === item.addrid ? '#8bf1de' : 'none'
             }}
-            onClick={() => selectAddress(item)}
-          >
+            onClick={() => selectAddress(item)}>
             <div className="row">
-              <div
-                id={choiceAddress === item["addrid"] ? "AddressSelect" : i}
-                className="col-sm-11"
-              >
-                <h5 className="AddrLineText">
-                  {item["firstName"] + " " + item["lastName"]}
-                </h5>
+              <div id={choiceAddress === item.addrid ? 'AddressSelect' : i} className="col-sm-11">
+                <h5 className="AddrLineText">{item.firstName + ' ' + item.lastName}</h5>
                 <p className="AddrLineText">
                   <b>Mobile No : </b>
-                  {item["mobileno"]}
+                  {item.mobileno}
                 </p>
-                <p className="AddrLineText">
-                  {item["atype"] !== undefined ? item["atype"] : null}
-                </p>
-                <p className="AddrLineText">{item["address"]}</p>
-                <p className="AddrLineText">
-                  {item["landmark"] !== undefined ? item["landmark"] : null}
-                </p>
-                <p className="AddrLineText">{item["area"]}</p>
-                <p className="AddrLineText">
-                  {item["city"] + " - " + item["pincode"]}
-                </p>
-                <p className="AddrLineText">
-                  {item["state"] + ", " + item["country"]}
-                </p>
+                <p className="AddrLineText">{item.atype !== undefined ? item.atype : null}</p>
+                <p className="AddrLineText">{item.address}</p>
+                <p className="AddrLineText">{item.landmark !== undefined ? item.landmark : null}</p>
+                <p className="AddrLineText">{item.area}</p>
+                <p className="AddrLineText">{item.city + ' - ' + item.pincode}</p>
+                <p className="AddrLineText">{item.state + ', ' + item.country}</p>
               </div>
               <div className="col-sm-1">
                 <input
@@ -299,8 +260,7 @@ const OrderConfirm = (props) => {
                   id={i}
                   name="select"
                   onChange={() => selectAddress(item)}
-                  checked={choiceAddress === item["addrid"] ? true : false}
-                ></input>
+                  checked={choiceAddress === item.addrid}></input>
               </div>
             </div>
           </Card>
@@ -320,7 +280,7 @@ const OrderConfirm = (props) => {
             <>
               <Card className="Card" key="empty">
                 <br />
-                <h5 style={{ textAlign: "center" }}>
+                <h5 style={{ textAlign: 'center' }}>
                   We are looking forward to receive your order.
                 </h5>
                 <br />
@@ -335,46 +295,36 @@ const OrderConfirm = (props) => {
                 ))}
               </div>
               {showAddress()}
-              <Card className="Card" style={{ padding: "10px" }}>
-                <Row style={{ margin: "0px" }}>
+              <Card className="Card" style={{ padding: '10px' }}>
+                <Row style={{ margin: '0px' }}>
                   <Col id="TotalItems">
-                    <h5 style={{ textAlign: "center" }}>
-                      {basket.length} Items
-                    </h5>
+                    <h5 style={{ textAlign: 'center' }}>{basket.length} Items</h5>
                   </Col>
                   <Col id="TotalPrice">
-                    <h5 style={{ textAlign: "center" }}>
-                      {getBasketTotal(basket)} ₹{" "}
-                    </h5>
+                    <h5 style={{ textAlign: 'center' }}>{getBasketTotal(basket)} ₹ </h5>
                   </Col>
                   <Col>
                     {address.length === 0 ? (
                       <Button
                         style={{
-                          width: "100%",
-                          background: "#dc3545",
-                          border: "#dc3545",
+                          width: '100%',
+                          background: '#dc3545',
+                          border: '#dc3545'
                         }}
-                        onClick={() => props.history.push("/address")}
-                      >
+                        onClick={() => props.history.push('/address')}>
                         Add Delivery Address
                       </Button>
-                    ) : choiceAddress !== undefined &&
-                      choiceAddress.length > 2 ? (
-                      <Button
-                        style={{ width: "100%" }}
-                        onClick={displayRazorpay}
-                      >
+                    ) : choiceAddress !== undefined && choiceAddress.length > 2 ? (
+                      <Button style={{ width: '100%' }} onClick={displayRazorpay}>
                         Pay with RAZORPAY
                       </Button>
                     ) : (
                       <Button
                         style={{
-                          width: "100%",
-                          background: "#28a745",
-                          border: "#28a745",
-                        }}
-                      >
+                          width: '100%',
+                          background: '#28a745',
+                          border: '#28a745'
+                        }}>
                         Select a delivery address
                       </Button>
                     )}
@@ -398,4 +348,4 @@ const showLoading = () => {
   );
 };
 
-export default withRouter(OrderConfirm);
+export default OrderConfirm;

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import notfound from "./../../image/notfound.svg";
-import "../home/notfound.css";
+import notfound from './../../image/notfound.svg';
+import '../home/notfound.css';
 
-import ProductItem from "./ProductItem";
-import { Row, Spinner } from "react-bootstrap";
-import axios from "axios";
-import { ToastContainer } from "react-toastify";
-import { Link, withRouter } from "react-router-dom";
+import ProductItem from './ProductItem';
+import { Row, Spinner } from 'react-bootstrap';
+import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 class ProductList extends Component {
   constructor(props) {
@@ -21,24 +21,21 @@ class ProductList extends Component {
       showLoadMore: true,
       showNoContent: false,
       continueIncrement: true,
-      search: query.get("search"),
-      brand: query.get("brand"),
-      category: query.get("category"),
-      sort: query.get("sort"),
+      search: query.get('search'),
+      brand: query.get('brand'),
+      category: query.get('category'),
+      sort: query.get('sort')
     };
   }
 
   componentDidMount() {
     this.getData();
-    var options = {
+    const options = {
       root: null,
-      rootMargin: "0px",
-      threshold: 1.0,
+      rootMargin: '0px',
+      threshold: 1.0
     };
-    this.observer = new IntersectionObserver(
-      this.handleObserver.bind(this),
-      options
-    );
+    this.observer = new IntersectionObserver(this.handleObserver.bind(this), options);
     this.observer.observe(this.loadingRef);
   }
 
@@ -53,10 +50,10 @@ class ProductList extends Component {
           showLoadMore: true,
           showNoContent: false,
           continueIncrement: true,
-          search: query.get("search"),
-          brand: query.get("brand"),
-          category: query.get("category"),
-          sort: query.get("sort"),
+          search: query.get('search'),
+          brand: query.get('brand'),
+          category: query.get('category'),
+          sort: query.get('sort')
         },
         () => {
           this.getData();
@@ -74,20 +71,18 @@ class ProductList extends Component {
   }
 
   getData() {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
-    var searchObj = {};
+    let searchObj = {};
     if (this.state.search !== null) {
       searchObj = {
         $or: [
-          { product: { $regex: this.state.search, $options: "i" } },
-          { additionalInfo: { $regex: this.state.search, $options: "i" } },
-          { brand: { $regex: this.state.search, $options: "i" } },
-          { category: { $regex: this.state.search, $options: "i" } },
-        ],
+          { product: { $regex: this.state.search, $options: 'i' } },
+          { additionalInfo: { $regex: this.state.search, $options: 'i' } },
+          { brand: { $regex: this.state.search, $options: 'i' } },
+          { category: { $regex: this.state.search, $options: 'i' } }
+        ]
       };
     }
     if (this.state.brand !== null && this.state.category !== null) {
@@ -101,30 +96,30 @@ class ProductList extends Component {
       searchObj.category = this.state.category;
     }
 
-    var sortObj = {};
+    let sortObj = {};
     switch (this.state.sort) {
-      case "price":
+      case 'price':
         sortObj = { price: 1 };
         break;
-      case "pricedesc":
+      case 'pricedesc':
         sortObj = { price: -1 };
         break;
-      case "rating":
+      case 'rating':
         sortObj = { rating: 1 };
         break;
-      case "ratingdesc":
+      case 'ratingdesc':
         sortObj = { rating: -1 };
         break;
-      case "name":
+      case 'name':
         sortObj = { product: 1 };
         break;
-      case "namedesc":
+      case 'namedesc':
         sortObj = { product: -1 };
         break;
-      case "id":
+      case 'id':
         sortObj = { _id: -1 };
         break;
-      case "iddesc":
+      case 'iddesc':
         sortObj = { _id: 1 };
         break;
       default:
@@ -133,7 +128,7 @@ class ProductList extends Component {
     }
 
     axios
-      .post(baseURL + "mongoclient?collection=productmyntra", {
+      .post(baseURL + 'mongoclient?collection=productmyntra', {
         projection: {
           productId: 1,
           product: 1,
@@ -141,12 +136,12 @@ class ProductList extends Component {
           brand: 1,
           rating: 1,
           price: 1,
-          mrp: 1,
+          mrp: 1
         },
         search: searchObj,
         sort: sortObj,
         limit: 12,
-        skip: 12 * (this.state.curPage - 1),
+        skip: 12 * (this.state.curPage - 1)
       })
       .then(
         (response) => {
@@ -155,14 +150,14 @@ class ProductList extends Component {
               this.setState({
                 aList: response.data,
                 curPage: this.state.curPage + 1,
-                continueIncrement: response.data.length < 12 ? false : true,
-                showLoadMore: response.data.length < 12 ? false : true,
+                continueIncrement: !(response.data.length < 12),
+                showLoadMore: !(response.data.length < 12)
               });
             } else {
               this.setState(
                 {
                   aList: [...this.state.aList, ...response.data],
-                  curPage: this.state.curPage + 1,
+                  curPage: this.state.curPage + 1
                 },
                 () => {
                   // console.log(this.state.aList);
@@ -172,8 +167,8 @@ class ProductList extends Component {
           } else if (response.status === 204) {
             this.setState({
               showLoadMore: false,
-              showNoContent: this.state.curPage === 1 ? true : false,
-              continueIncrement: false,
+              showNoContent: this.state.curPage === 1,
+              continueIncrement: false
             });
           }
         },
@@ -192,7 +187,7 @@ class ProductList extends Component {
     return (
       <>
         {this.state.aList.length === 0 ? null : (
-          <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: "0px" }}>
+          <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
             {items}
           </Row>
         )}
@@ -200,12 +195,7 @@ class ProductList extends Component {
           {this.state.showLoadMore ? this.showLoading() : null}
           {this.state.showNoContent ? (
             <div className="center">
-              <img
-                src={notfound}
-                alt={notfound}
-                height="300"
-                className="center"
-              ></img>
+              <img src={notfound} alt={notfound} height="300" className="center"></img>
               <br />
               <Link to="/products" className="btn btn-primary">
                 Explore more with us!
@@ -229,4 +219,4 @@ class ProductList extends Component {
   }
 }
 
-export default withRouter(ProductList);
+export default ProductList;

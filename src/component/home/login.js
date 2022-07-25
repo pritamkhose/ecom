@@ -1,28 +1,28 @@
-import React, { Component } from "react";
-import { Table, Container } from "react-bootstrap";
-import { Link, withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { Table, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import axios from "axios";
+import axios from 'axios';
 
-import ReactGA from "react-ga";
-import FacebookLogin from "react-facebook-login";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import ReactGA from 'react-ga';
+import FacebookLogin from 'react-facebook-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 class Login extends Component {
   constructor(props) {
     super(props);
 
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === 'development') {
       console.log(process.env);
     }
 
     this.state = {
-      isLogined: localStorage.getItem("name") ? true : false,
-      accessToken: "",
+      isLogined: !!localStorage.getItem('name'),
+      accessToken: ''
     };
 
     this.login = this.login.bind(this);
@@ -35,116 +35,108 @@ class Login extends Component {
   login(response) {
     if (response.accessToken) {
       ReactGA.event({
-        category: "Google Login",
-        action: response.profileObj.name,
+        category: 'Google Login',
+        action: response.profileObj.name
       });
       this.setState((state) => ({
         isLogined: true,
-        accessToken: response.accessToken,
+        accessToken: response.accessToken
       }));
       localStorage.clear();
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("email", response.profileObj.email);
-      localStorage.setItem("name", response.profileObj.name);
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('email', response.profileObj.email);
+      localStorage.setItem('name', response.profileObj.name);
       // localStorage.setItem("googleId", response.profileObj.googleId);
-      localStorage.setItem("imageUrl", response.profileObj.imageUrl);
-      localStorage.setItem("loginTime", new Date().toISOString());
-      this.updateInfo(
-        response.profileObj.email,
-        response.profileObj.name,
-        response
-      );
+      localStorage.setItem('imageUrl', response.profileObj.imageUrl);
+      localStorage.setItem('loginTime', new Date().toISOString());
+      this.updateInfo(response.profileObj.email, response.profileObj.name, response);
     } else {
       ReactGA.event({
-        category: "Google Login Failed",
-        action: JSON.stringify(response),
+        category: 'Google Login Failed',
+        action: JSON.stringify(response)
       });
     }
   }
 
   updateInfo(email, name, info) {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
     axios
-      .post(baseURL + "auth/social", {
+      .post(baseURL + 'auth/social', {
         email,
         name,
         date: Date.now(),
-        info,
+        info
       })
       .then(
         (response) => {
-          localStorage.setItem("token", response.data.user.token);
-          localStorage.setItem("uid", response.data.user.id);
+          localStorage.setItem('token', response.data.user.token);
+          localStorage.setItem('uid', response.data.user.id);
           this.updateCart(response.data.user.id);
         },
         (error) => {
           console.log(error);
           localStorage.clear();
-          alert("Something went Wrong! Try again...");
+          alert('Something went Wrong! Try again...');
         }
       );
   }
 
   updateCart(uid) {
-    var baseURL =
-      (process.env.REACT_APP_API_URL !== undefined
-        ? process.env.REACT_APP_API_URL
-        : "") + "/api/";
-    axios.post(baseURL + "mongoclient/id?collection=cart&id=" + uid, {}).then(
+    const baseURL =
+      (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
+    axios.post(baseURL + 'mongoclient/id?collection=cart&id=' + uid, {}).then(
       (response) => {
-        var data = response.data.data;
+        const data = response.data.data;
         data !== undefined && data !== null
-          ? localStorage.setItem("cart", JSON.stringify(response.data.data))
-          : localStorage.setItem("cart", []);
+          ? localStorage.setItem('cart', JSON.stringify(response.data.data))
+          : localStorage.setItem('cart', []);
         this.props.updateLogin();
-        this.props.history.push("/");
+        this.props.history.push('/');
       },
       (error) => {
         console.log(error);
-        localStorage.setItem("cart", []);
+        localStorage.setItem('cart', []);
       }
     );
   }
 
   logout(response) {
     ReactGA.event({
-      category: "Sign Out",
-      action: "logout",
+      category: 'Sign Out',
+      action: 'logout'
     });
     this.setState((state) => ({
       isLogined: false,
-      accessToken: "",
+      accessToken: ''
     }));
     localStorage.clear();
-    toast.warn("Logout", {
-      position: "bottom-right",
+    toast.warn('Logout', {
+      position: 'bottom-right',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
+      progress: undefined
     });
     this.props.updateLogin();
-    this.props.history.push("/");
+    this.props.history.push('/');
   }
 
   handleLoginFailure(response) {
-    alert("Google - Failed to log in");
+    alert('Google - Failed to log in');
     ReactGA.event({
-      category: "Google Login Failure",
-      action: JSON.stringify(response),
+      category: 'Google Login Failure',
+      action: JSON.stringify(response)
     });
   }
 
   handleLogoutFailure(response) {
-    alert("Google - Failed to log out");
+    alert('Google - Failed to log out');
     ReactGA.event({
-      category: "Google Logout Failure",
-      action: JSON.stringify(response),
+      category: 'Google Logout Failure',
+      action: JSON.stringify(response)
     });
   }
 
@@ -152,22 +144,22 @@ class Login extends Component {
     if (response.accessToken) {
       this.setState({ isLogined: true, accessToken: response.accessToken });
       ReactGA.event({
-        category: "Facebook Login",
-        action: response.name,
+        category: 'Facebook Login',
+        action: response.name
       });
       localStorage.clear();
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("email", response.email);
-      localStorage.setItem("name", response.name);
-      localStorage.setItem("facebookId", response.userID);
-      localStorage.setItem("imageUrl", response.picture.data.url);
-      localStorage.setItem("loginTime", new Date().toISOString());
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('email', response.email);
+      localStorage.setItem('name', response.name);
+      localStorage.setItem('facebookId', response.userID);
+      localStorage.setItem('imageUrl', response.picture.data.url);
+      localStorage.setItem('loginTime', new Date().toISOString());
       this.updateInfo(response.email, response.name, response);
     } else {
-      alert("Facebook - Failed to log in");
+      alert('Facebook - Failed to log in');
       ReactGA.event({
-        category: "Facebook Login Failure",
-        action: JSON.stringify(response),
+        category: 'Facebook Login Failure',
+        action: JSON.stringify(response)
       });
     }
   }
@@ -178,26 +170,21 @@ class Login extends Component {
         <tbody>
           <tr>
             <td colSpan="2">
-              <img
-                src={localStorage.getItem("imageUrl")}
-                alt=""
-                height="150"
-                width="150"
-              ></img>
+              <img src={localStorage.getItem('imageUrl')} alt="" height="150" width="150"></img>
             </td>
           </tr>
           <tr>
             <td colSpan="2">
-              <h3>{localStorage.getItem("name")}</h3>
+              <h3>{localStorage.getItem('name')}</h3>
             </td>
           </tr>
           <tr>
             <td>Email</td>
-            <td>{localStorage.getItem("email")}</td>
+            <td>{localStorage.getItem('email')}</td>
           </tr>
           <tr>
             <td>Last Login Time</td>
-            <td>{localStorage.getItem("loginTime")}</td>
+            <td>{localStorage.getItem('loginTime')}</td>
           </tr>
           <tr>
             <td>
@@ -230,8 +217,7 @@ class Login extends Component {
                 clientId={GOOGLE_CLIENT_ID}
                 buttonText="Logout"
                 onLogoutSuccess={this.logout}
-                onFailure={this.handleLogoutFailure}
-              ></GoogleLogout>
+                onFailure={this.handleLogoutFailure}></GoogleLogout>
               <ToastContainer />
             </>
           ) : (
@@ -241,7 +227,7 @@ class Login extends Component {
                 buttonText="Sign in with Google"
                 onSuccess={this.login}
                 onFailure={this.handleLoginFailure}
-                cookiePolicy={"single_host_origin"}
+                cookiePolicy={'single_host_origin'}
                 responseType="code,token"
               />
               <br />
@@ -263,4 +249,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default Login;

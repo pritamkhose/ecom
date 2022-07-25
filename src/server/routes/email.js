@@ -1,5 +1,5 @@
-const router = require("express").Router();
-const axios = require("axios");
+const router = require('express').Router();
+const axios = require('axios');
 // https://www.twilio.com/blog/sending-email-attachments-with-sendgrid
 // var nodemailer = require("nodemailer");
 // var transport = nodemailer.createTransport({
@@ -15,76 +15,68 @@ const axios = require("axios");
 // const sgMail = require("@sendgrid/mail");
 // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-router.post("/send", async (req, res) => {
+router.post('/send', async (req, res) => {
   if (!req.body.to) {
-    return res
-      .status(422)
-      .json({ error: "email to is missing in Request body" });
+    return res.status(422).json({ error: 'email to is missing in Request body' });
   }
 
   if (!req.body.subject) {
-    return res
-      .status(422)
-      .json({ error: "email subject is missing in Request body" });
+    return res.status(422).json({ error: 'email subject is missing in Request body' });
   }
 
-  var emailbody = {};
+  let emailbody = {};
   if (!req.body.text && !req.body.html) {
-    return res
-      .status(422)
-      .json({ error: "email text or html is missing in Request body" });
+    return res.status(422).json({ error: 'email text or html is missing in Request body' });
   }
 
   if (req.body.text) {
     emailbody = {
-      type: "text/plain",
-      value: req.body.text,
+      type: 'text/plain',
+      value: req.body.text
     };
   }
 
   if (req.body.html) {
     emailbody = {
-      type: "text/html",
-      value: req.body.html,
+      type: 'text/html',
+      value: req.body.html
     };
   }
 
-  var data = {
+  const data = {
     personalizations: [
       {
         to: [
           {
-            email: req.body.to,
-          },
-        ],
-      },
+            email: req.body.to
+          }
+        ]
+      }
     ],
     from: {
-      email: process.env.MAIL_ID,
+      email: process.env.MAIL_ID
     },
     subject: req.body.subject,
-    content: [emailbody],
+    content: [emailbody]
   };
 
   const headers = {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + process.env.SENDGRID_API_KEY,
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + process.env.SENDGRID_API_KEY
   };
 
   axios
-    .post("https://api.sendgrid.com/v3/mail/send", data, {
-      headers: headers,
+    .post('https://api.sendgrid.com/v3/mail/send', data, {
+      headers
     })
     .then(
       () => {
         res.status(200).json({
-          msg: "success",
+          msg: 'success'
         });
       },
       (err) => {
-        res
-          .status(500)
-          .json({ error: "Mail Transport Error", error_message: err });
+        res.status(500).json({ error: 'Mail Transport Error', error_message: err });
       }
     );
 
