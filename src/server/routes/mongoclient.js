@@ -202,8 +202,7 @@ router.put("/updateone", (req, res) => {
         newvalues,
         function (findErr, result) {
           if (!findErr) {
-            if (result.result.nModified === 0) {
-              // res.status(201).json(result.result.nModified);
+            if (result.modifiedCount === 0) {
               createObjByID(req, res, db, req.query.collection, client);
             } else {
               res.status(200).json(result);
@@ -263,7 +262,7 @@ router.put("/insert", (req, res) => {
         req.body,
         function (findErr, result) {
           if (!findErr) {
-            if (result.result.nModified === 0) {
+            if (result.modifiedCount=== 0) {
               res.status(201).json(result);
             } else {
               res.status(200).json(result);
@@ -305,7 +304,7 @@ router.put("/insertmany", (req, res) => {
         req.body,
         function (findErr, result) {
           if (!findErr) {
-            if (result.result.nModified === 0) {
+            if (result.modifiedCount === 0) {
               res.status(201).json(result);
             } else {
               res.status(200).json(result);
