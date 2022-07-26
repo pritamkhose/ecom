@@ -1,54 +1,45 @@
-import React, { Component } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { Container, Col, Row, Spinner, Badge, Carousel, Button } from 'react-bootstrap';
 import './ProductItem.css';
 import axios from 'axios';
 import AddCartBtn from './AddCartBtn';
+import { useNavigate, useParams } from 'react-router-dom';
 
-class ProductDetails extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: props.match.params.id,
-      aObj: {},
-      isLoading: true,
-      isLogined: !!localStorage.getItem('name')
-    };
-    this.getData(props.match.params.id);
-  }
+const ProductDetails = (props) => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [obj, setObj] = useState({});
+  const [isLoading, setLoading] = useState(false);
+  const [isLogined, setLogined] = useState(!!localStorage.getItem('name'));
 
-  getData(id) {
+  useEffect(() => {
+    getData(id);
+  }, [id]);
+
+  const getData = (id) => {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
     axios.post(baseURL + 'mongoclient/id?collection=productmyntra&id=' + id, {}).then(
       (response) => {
         if (response.status === 200) {
-          this.setState({ isLoading: false, aObj: response.data });
+          setLoading(false);
+          setObj(response.data);
         } else {
-          this.setState({ isLoading: false });
+          setLoading(false);
           alert('Something went Wrong! Try again...');
-          this.props.history.push('/products');
+          navigate('/products');
         }
       },
       (error) => {
         console.log(error);
-        this.setState({ isLoading: false });
+        setLoading(false);
         alert('Invaild ID!');
-        this.props.history.push('/products');
+        navigate('/products');
       }
     );
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <Badge variant="primary">Product Deails</Badge>
-        {this.state.isLoading ? this.showLoading() : this.showData(this.state.aObj)}
-      </div>
-    );
-  }
-
-  showLoading() {
+  const showLoading = () => {
     return (
       <div className="text-center py-3">
         <Spinner animation="border" role="status" variant="info">
@@ -56,9 +47,9 @@ class ProductDetails extends Component {
         </Spinner>
       </div>
     );
-  }
+  };
 
-  isMobile() {
+  const isMobile = () => {
     // if we want a more complete list use this: http://detectmobilebrowsers.com/
     // str.test() is more efficent than str.match() remember str.test is case sensitive
     const isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
@@ -67,36 +58,36 @@ class ProductDetails extends Component {
     // console.log(navigator.userAgent.toLowerCase());
     // console.log(isMobile);
     return isMobile;
-  }
+  };
 
-  getTitleHeading(aObj) {
+  const getTitleHeading = (aObj) => {
     return (
       <>
         <h3 style={{ marginLeft: '16px' }}>{aObj.product}</h3>
         <hr />
         <p style={{ marginLeft: '24px' }}>{aObj.additionalInfo}</p>
-        {this.state.isLogined ? (
+        {isLogined ? (
           <div>
             <hr />
             <Button
               style={{ marginLeft: '24px' }}
               className="btn btn-danger"
-              onClick={() => this.props.history.push('/prodedit/' + this.state.id)}>
+              onClick={() => navigate('/prodedit/' + id)}>
               Edit
             </Button>
             <Button
               style={{ marginLeft: '24px' }}
               className="btn btn-primary"
-              onClick={() => this.props.history.push('/prodedit/new')}>
+              onClick={() => navigate('/prodedit/new')}>
               New
             </Button>
           </div>
         ) : null}
       </>
     );
-  }
+  };
 
-  showVarient(aList) {
+  const showVarient = (aList) => {
     return (
       <>
         {aList !== undefined && aList !== null && aList.length > 1 ? (
@@ -126,14 +117,14 @@ class ProductDetails extends Component {
         ) : null}
       </>
     );
-  }
+  };
 
-  showData(aObj) {
+  const showData = (aObj) => {
     return (
       <>
-        {this.isMobile() ? (
+        {isMobile() ? (
           <>
-            {this.getTitleHeading(aObj)}
+            {getTitleHeading(aObj)}
             <table className="table table-stripe">
               <tbody>
                 <tr key="price">
@@ -153,9 +144,9 @@ class ProductDetails extends Component {
                   <td>Total Rating: {aObj.ratingCount}</td>
                 </tr>
                 <tr key="images">
-                  <td colSpan="3">{this.showImages(aObj.images)}</td>
+                  <td colSpan="3">{showImages(aObj.images)}</td>
                 </tr>
-                {this.showVarient(aObj.inventoryInfo)}
+                {showVarient(aObj.inventoryInfo)}
                 <tr key="cart">
                   <td colSpan="3">
                     <AddCartBtn aObj={aObj} />
@@ -184,10 +175,10 @@ class ProductDetails extends Component {
           </>
         ) : (
           <>
-            {this.getTitleHeading(aObj)}
+            {getTitleHeading(aObj)}
             <hr />
             <Row style={{ margin: '0px' }}>
-              <Col>{this.showImages(aObj.images)}</Col>
+              <Col>{showImages(aObj.images)}</Col>
               <Col>
                 <table className="table table-stripe">
                   <tbody>
@@ -209,7 +200,7 @@ class ProductDetails extends Component {
                       </td>
                       <td>Total Rating: {aObj.ratingCount}</td>
                     </tr>
-                    {this.showVarient(aObj.inventoryInfo)}
+                    {showVarient(aObj.inventoryInfo)}
                     <tr key="cart">
                       <td colSpan="3">
                         <AddCartBtn aObj={aObj} />
@@ -241,9 +232,9 @@ class ProductDetails extends Component {
         )}
       </>
     );
-  }
+  };
 
-  showImages(arr) {
+  const showImages = (arr) => {
     return (
       <Container>
         <Carousel>
@@ -263,7 +254,14 @@ class ProductDetails extends Component {
         </Carousel>
       </Container>
     );
-  }
-}
+  };
+
+  return (
+    <div>
+      <Badge variant="primary">Product Deails</Badge>
+      {isLoading ? showLoading() : showData(obj)}
+    </div>
+  );
+};
 
 export default ProductDetails;

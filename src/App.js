@@ -163,7 +163,7 @@ class App extends Component {
         </Navbar>
         <div>
           <Routes>
-            {/*  <Route
+            {/* <Route
               exact
               path="/"
               element={
@@ -174,33 +174,53 @@ class App extends Component {
                 </div>
               }
             />
-           <Route path="/products">
-              <div style={{ background: "#e5faf4" }}>
-                <Badge variant="success">Products Filters</Badge>
-                <ProductFilters />
-              </div>
-              <Badge variant="primary">Products</Badge>
-              <div style={{ minHeight: this.state.minHightFilter }}>
-                <ProductList />
-              </div>
-            </Route>
-            <Route exact path="/pid/:id">
-              <ProductDetails />
-            </Route>
-            <Route exact path="/prodedit/:id">
-              <ProductEdit />
-            </Route>
-            <Route exact path={["/login", "/profile"]}>
-              <div style={{ minHeight: this.state.minHight }}>
-                <Login updateLogin={this.updateLogin} />
-              </div>
-            </Route>
-            <Route exact path="/post">
-              <Badge variant="primary">Posts</Badge>
-              <div style={{ minHeight: this.state.minHight }}>
-                <PostHome />
-              </div>
-            </Route>  */}
+            <Route
+              path="/products"
+              element={
+                <>
+                  <div style={{ background: '#e5faf4' }}>
+                    <Badge variant="success">Products Filters</Badge>
+                    <ProductFilters />
+                  </div>
+                  <Badge variant="primary">Products</Badge>
+                  <div style={{ minHeight: this.state.minHightFilter }}>
+                    <ProductList />
+                  </div>
+                </>
+              }
+            /> */}
+            <Route exact path="/pid/:id" element={<ProductDetails />} />
+            <Route exact path="/prodedit/:id" element={<ProductEdit />} />
+            <Route
+              exact
+              path="/login"
+              element={
+                <div style={{ minHeight: this.state.minHight }}>
+                  <Login updateLogin={this.updateLogin} />
+                </div>
+              }
+            />
+            <Route
+              exact
+              path="/profile"
+              element={
+                <div style={{ minHeight: this.state.minHight }}>
+                  <Login updateLogin={this.updateLogin} />
+                </div>
+              }
+            />
+            <Route
+              exact
+              path="/post"
+              element={
+                <>
+                  <Badge variant="primary">Posts</Badge>
+                  <div style={{ minHeight: this.state.minHight }}>
+                    <PostHome />
+                  </div>
+                </>
+              }
+            />
             <Route
               path="/about"
               element={
@@ -212,34 +232,69 @@ class App extends Component {
                 </>
               }
             />
-            {/* <Route exact path="/cart">
-              <Badge variant="primary">Cart</Badge>
-              <div style={{ minHeight: this.state.minHight }}>
-                <Cart />
-              </div>
-            </Route>
-            <Route exact path="/address">
-              <Badge variant="primary">Address</Badge>
-              <div style={{ minHeight: this.state.minHight }}>
-                <Address />
-              </div>
-            </Route>
-            <Route exact path="/address/:id">
-              <div style={{ minHeight: this.state.minHight }}>
-                <AddressEdit />
-              </div>
-            </Route>
-            <Route path={["/orders/:id", "/orders"]}>
-              <Badge variant="primary">Order History</Badge>
-              <div style={{ minHeight: this.state.minHight }}>
-                <OrderHistory />
-              </div>
-            </Route>
-            <Route path="/confirm">
-              <div style={{ minHeight: this.state.minHight }}>
-                <OrderConfirm />
-              </div>
-            </Route> */}
+            <Route
+              exact
+              path="/cart"
+              element={
+                <>
+                  <Badge variant="primary">Cart</Badge>
+                  <div style={{ minHeight: this.state.minHight }}>
+                    <Cart />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              exact
+              path="/address"
+              element={
+                <>
+                  <Badge variant="primary">Address</Badge>
+                  <div style={{ minHeight: this.state.minHight }}>
+                    <Address />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              exact
+              path="/address/:id"
+              element={
+                <div style={{ minHeight: this.state.minHight }}>
+                  <AddressEdit />
+                </div>
+              }
+            />
+            <Route
+              path={'/orders'}
+              element={
+                <>
+                  <Badge variant="primary">Order History</Badge>
+                  <div style={{ minHeight: this.state.minHight }}>
+                    <OrderHistory />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path={'/orders/:id'}
+              element={
+                <>
+                  <Badge variant="primary">Order History</Badge>
+                  <div style={{ minHeight: this.state.minHight }}>
+                    <OrderHistory />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/confirm"
+              element={
+                <div style={{ minHeight: this.state.minHight }}>
+                  <OrderConfirm />
+                </div>
+              }
+            />
             <Route
               exact
               path="/customers"
