@@ -163,7 +163,7 @@ class App extends Component {
         </Navbar>
         <div>
           <Routes>
-            {/* <Route
+            <Route
               exact
               path="/"
               element={
@@ -188,7 +188,7 @@ class App extends Component {
                   </div>
                 </>
               }
-            /> */}
+            />
             <Route exact path="/pid/:id" element={<ProductDetails />} />
             <Route exact path="/prodedit/:id" element={<ProductEdit />} />
             <Route

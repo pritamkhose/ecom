@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import notfound from './../../image/notfound.svg';
 import '../home/notfound.css';
@@ -7,97 +7,82 @@ import ProductItem from './ProductItem';
 import { Row, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-class ProductList extends Component {
-  constructor(props) {
-    super(props);
+const ProductList = () => {
+  const loadingRef = useRef();
+  const { search, brand, category, sort } = useParams();
 
-    const query = new URLSearchParams(this.props.location.search);
-    this.state = {
-      curPage: 1,
-      prevY: 0,
-      aList: [],
-      showLoadMore: true,
-      showNoContent: false,
-      continueIncrement: true,
-      search: query.get('search'),
-      brand: query.get('brand'),
-      category: query.get('category'),
-      sort: query.get('sort')
-    };
-  }
+  const [curPage, setCurPage] = useState(1);
+  const [prevY, setPrevY] = useState(0);
+  const [aList, setaList] = useState([]);
+  const [showLoadMore, setShowLoadMore] = useState(true);
+  const [showNoContent, setShowNoContent] = useState(false);
+  const [continueIncrement, setContinueIncrement] = useState(true);
 
-  componentDidMount() {
-    this.getData();
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0
-    };
-    this.observer = new IntersectionObserver(this.handleObserver.bind(this), options);
-    this.observer.observe(this.loadingRef);
-  }
+  useEffect(() => {
+    getData();
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      const query = new URLSearchParams(this.props.location.search);
-      this.setState(
-        {
-          curPage: 1,
-          prevY: 0,
-          aList: [],
-          showLoadMore: true,
-          showNoContent: false,
-          continueIncrement: true,
-          search: query.get('search'),
-          brand: query.get('brand'),
-          category: query.get('category'),
-          sort: query.get('sort')
-        },
-        () => {
-          this.getData();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        console.log(entry);
+
+        if (entry.isIntersecting) {
+          console.log('It works!');
+          setCurPage(1);
+          setPrevY(0);
+          setaList([]);
+          setShowLoadMore(true);
+          setShowNoContent(false);
+          setContinueIncrement(true);
+
+          const y = entry[0].boundingClientRect.y;
+          if (continueIncrement && prevY > y) {
+            getData();
+          }
+          setCurPage(y);
         }
-      );
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      }
+    );
+    if (loadingRef.current) {
+      observer.observe(loadingRef.current);
     }
-  }
+  }, [loadingRef]);
 
-  handleObserver(entities, observer) {
-    const y = entities[0].boundingClientRect.y;
-    if (this.state.continueIncrement && this.state.prevY > y) {
-      this.getData();
-    }
-    this.setState({ prevY: y });
-  }
-
-  getData() {
+  const getData = () => {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
     let searchObj = {};
-    if (this.state.search !== null) {
+    if (search !== null) {
       searchObj = {
         $or: [
-          { product: { $regex: this.state.search, $options: 'i' } },
-          { additionalInfo: { $regex: this.state.search, $options: 'i' } },
-          { brand: { $regex: this.state.search, $options: 'i' } },
-          { category: { $regex: this.state.search, $options: 'i' } }
+          { product: { $regex: search, $options: 'i' } },
+          { additionalInfo: { $regex: search, $options: 'i' } },
+          { brand: { $regex: search, $options: 'i' } },
+          { category: { $regex: search, $options: 'i' } }
         ]
       };
     }
-    if (this.state.brand !== null && this.state.category !== null) {
-      searchObj.brand = this.state.brand;
-      searchObj.category = this.state.category;
+    if (brand !== null && category !== null) {
+      searchObj.brand = brand;
+      searchObj.category = category;
     }
-    if (this.state.brand !== null) {
-      searchObj.brand = this.state.brand;
+    if (brand !== null) {
+      searchObj.brand = brand;
     }
-    if (this.state.category !== null) {
-      searchObj.category = this.state.category;
+    if (category !== null) {
+      searchObj.category = category;
     }
+    console.log('searchObj -->', searchObj);
 
     let sortObj = {};
-    switch (this.state.sort) {
+    switch (sort) {
       case 'price':
         sortObj = { price: 1 };
         break;
@@ -138,77 +123,36 @@ class ProductList extends Component {
           price: 1,
           mrp: 1
         },
-        search: searchObj,
+        search: {},
         sort: sortObj,
         limit: 12,
-        skip: 12 * (this.state.curPage - 1)
+        skip: 12 * (curPage - 1)
       })
       .then(
         (response) => {
           if (response.status === 200) {
-            if (this.state.curPage === 1) {
-              this.setState({
-                aList: response.data,
-                curPage: this.state.curPage + 1,
-                continueIncrement: !(response.data.length < 12),
-                showLoadMore: !(response.data.length < 12)
-              });
+            if (curPage === 1) {
+              setaList(response.data);
+              setCurPage(curPage + 1);
+              setContinueIncrement(!(response.data.length < 12));
+              setShowLoadMore(!(response.data.length < 12));
             } else {
-              this.setState(
-                {
-                  aList: [...this.state.aList, ...response.data],
-                  curPage: this.state.curPage + 1
-                },
-                () => {
-                  // console.log(this.state.aList);
-                }
-              );
+              setaList([...aList, ...response.data]);
+              setCurPage(curPage + 1);
             }
           } else if (response.status === 204) {
-            this.setState({
-              showLoadMore: false,
-              showNoContent: this.state.curPage === 1,
-              continueIncrement: false
-            });
+            setShowLoadMore(false);
+            setShowNoContent(curPage === 1);
+            setContinueIncrement(false);
           }
         },
         (error) => {
           console.log(error);
         }
       );
-  }
+  };
 
-  render() {
-    const items = [];
-    for (const [index, value] of Object.entries(this.state.aList)) {
-      items.push(<ProductItem key={index} index={index} value={value} />);
-    }
-
-    return (
-      <>
-        {this.state.aList.length === 0 ? null : (
-          <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
-            {items}
-          </Row>
-        )}
-        <div ref={(loadingRef) => (this.loadingRef = loadingRef)}>
-          {this.state.showLoadMore ? this.showLoading() : null}
-          {this.state.showNoContent ? (
-            <div className="center">
-              <img src={notfound} alt={notfound} height="300" className="center"></img>
-              <br />
-              <Link to="/products" className="btn btn-primary">
-                Explore more with us!
-              </Link>
-            </div>
-          ) : null}
-        </div>
-        <ToastContainer />
-      </>
-    );
-  }
-
-  showLoading() {
+  const showLoading = () => {
     return (
       <div className="text-center py-3">
         <Spinner animation="border" role="status" variant="info">
@@ -216,7 +160,38 @@ class ProductList extends Component {
         </Spinner>
       </div>
     );
-  }
-}
+  };
+
+  const getItems = () => {
+    const items = [];
+    for (const [index, value] of Object.entries(aList)) {
+      items.push(<ProductItem key={index} index={index} value={value} />);
+    }
+    return items;
+  };
+
+  return (
+    <>
+      {aList.length === 0 ? null : (
+        <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
+          {getItems()}
+        </Row>
+      )}
+      <div ref={loadingRef}>
+        {showLoadMore ? showLoading() : null}
+        {showNoContent ? (
+          <div className="center">
+            <img src={notfound} alt={notfound} height="300" className="center"></img>
+            <br />
+            <Link to="/products" className="btn btn-primary">
+              Explore more with us!
+            </Link>
+          </div>
+        ) : null}
+      </div>
+      <ToastContainer />
+    </>
+  );
+};
 
 export default ProductList;

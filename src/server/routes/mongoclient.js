@@ -125,31 +125,36 @@ router.post('/distinct', (req, res) => {
     return res.status(422).json({ error: 'ID is missing in Request parameter' });
   }
 
-  MongoClient.connect(process.env.mongoURL, function (err, client) {
+  MongoClient.connect(process.env.mongoURL, async function (err, client) {
     if (!err) {
       const db = client.db(process.env.mongoDB);
       try {
-        db.collection(req.query.collection).distinct(req.query.id, {}, function (findErr, result) {
-          if (!findErr) {
-            if (result === undefined || result.length === 0) {
-              res.status(204).json(result);
-            } else {
-              res.status(200).json(result);
-            }
-          } else {
-            res.status(500).json({
-              error: 'Collection Error',
-              error_message: findErr
+        const myPromise = () => {
+          return new Promise((resolve, reject) => {
+            db.collection('productmyntra').distinct('brand', function (findErr, result) {
+              if (!findErr) {
+                if (result === undefined || result.length === 0) {
+                  res.status(204).json(result);
+                } else {
+                  res.status(200).json(result);
+                }
+              } else {
+                res.status(500).json({
+                  error: 'Collection Error',
+                  error_message: findErr
+                });
+              }
             });
-          }
-        });
-        client.close();
+          });
+        };
+        await myPromise();
       } catch (error) {
-        client.close();
         res.status(500).json({
           error: 'Collection Connection Error',
           error_message: error
         });
+      } finally {
+        client.close();
       }
     } else {
       res.status(500).json({

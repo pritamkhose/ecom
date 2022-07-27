@@ -47,3 +47,20 @@ yarn add eslint --dev
 yarn run eslint --init
 yarn add eslint-config-prettier eslint-plugin-prettier prettier --dev
 ```
+
+## Steps to run on Mac locally
+
+set env file REACT_APP_API_URL=http://localhost:3000
+
+```sh
+yarn install
+yarn start:web-mac
+yarn build
+yarn watch:server
+```
+
+## References
+
+- [Using Promises, async / await with MongoDB](https://school.geekwall.in/p/SJ_Tkqbi4)
+- [Mongodb-driver async-await](https://stackoverflow.com/questions/47370487/node-js-mongodb-driver-async-await-queries)
+- [Mongo Node Doc](http://mongodb.github.io/node-mongodb-native/api-generated/collection.html)
