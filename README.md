@@ -60,7 +60,8 @@ yarn watch:server
 ```
 
 ## References
-
+- [useDebounce Hooks](https://usehooks.com/useDebounce/)
+- [useLocation react-router-dom hook](https://stackoverflow.com/questions/45373742/detect-route-change-with-react-router)
 - [Using Promises, async / await with MongoDB](https://school.geekwall.in/p/SJ_Tkqbi4)
 - [Mongodb-driver async-await](https://stackoverflow.com/questions/47370487/node-js-mongodb-driver-async-await-queries)
 - [Mongo Node Doc](http://mongodb.github.io/node-mongodb-native/api-generated/collection.html)

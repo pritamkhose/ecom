@@ -1,21 +1,44 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import { debounce } from 'lodash';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+  return debouncedValue;
+}
 
 const ProductFilters = () => {
   const navigate = useNavigate();
-  const { search, brand, category, sort } = useParams();
+  const { searchNav, brandNav, categoryNav, sortNav } = useParams();
+
+  const [search, setSearch] = useState(searchNav);
+  const [brand, setBrand] = useState(brandNav);
+  const [category, setCategory] = useState(categoryNav);
+  const [sort, setSort] = useState(sortNav);
 
   const [brandList, setBrandList] = useState(JSON.parse(localStorage.getItem('brandList')));
   const [categoryList, setCategoryList] = useState(
     JSON.parse(localStorage.getItem('categoryList'))
   );
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 1500);
   useEffect(() => {
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSearchInputThrottled = debounce(this.handleChange, 1500);
+    if (debouncedSearchTerm) {
+      setSearch(debouncedSearchTerm);
+    }
+  }, [debouncedSearchTerm]);
+
+  useEffect(() => {
     if (brandList == null) {
       getData('brand');
     }
@@ -25,24 +48,42 @@ const ProductFilters = () => {
   }, []);
 
   const handleChange = (e) => {
-    // this.setState({ [e.target.name]: e.target.value }, () => {
-    //   redirectURL();
-    // });
+    const value = e.target.value;
+    switch (e.target.name) {
+      case 'search':
+        setSearch(value);
+        break;
+      case 'category':
+        setCategory(value);
+        break;
+      case 'brand':
+        setBrand(value);
+        break;
+      case 'sort':
+        setSort(value);
+        break;
+      default:
+        break;
+    }
   };
+
+  useEffect(() => {
+    redirectURL();
+  }, [search, category, brand, sort]);
 
   const redirectURL = () => {
     let url = window.location.pathname + '?';
-    if (search !== null && search !== '') {
-      url = url + 'search=' + search;
+    if (search !== undefined && search !== null && search !== '') {
+      url += 'search=' + search;
     }
-    if (category !== null && category !== '') {
-      url = url + '&category=' + category;
+    if (category !== undefined && category !== null && category !== '') {
+      url += '&category=' + category;
     }
-    if (brand !== null && brand !== '') {
-      url = url + '&brand=' + brand;
+    if (brand !== undefined && brand !== null && brand !== '') {
+      url += '&brand=' + brand;
     }
-    if (sort !== null && sort !== '') {
-      url = url + '&sort=' + sort;
+    if (sort !== undefined && sort !== null && sort !== '') {
+      url += '&sort=' + sort;
     }
     navigate(url);
   };
@@ -77,8 +118,7 @@ const ProductFilters = () => {
             name="search"
             id="search"
             defaultValue={search !== null ? search : ''}
-            // onChange={handleSearchInputThrottled} temp
-            onChange={handleChange}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div name="sort" className="col-3">
