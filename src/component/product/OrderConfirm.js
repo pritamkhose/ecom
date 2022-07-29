@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
-
-import { useStateValue } from '../../StateProvider';
-import { getBasketTotal } from '../../Reducer';
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import ReactGA from 'react-ga';
 import axios from 'axios';
-
-import { Button, Card, Spinner, Badge, Row, Col } from 'react-bootstrap';
-import OrderItem from './OrderItem';
-import CartEmpty from './CartEmpty';
+import React, { useEffect, useState } from 'react';
+import { Badge, Button, Card, Col, Row, Spinner } from 'react-bootstrap';
+import ReactGA from 'react-ga';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { getBasketTotal } from '../../Reducer';
+import { useStateValue } from '../../StateProvider';
 import logo from './../../image/logo.svg';
+import CartEmpty from './CartEmpty';
+import OrderItem from './OrderItem';
 
-const OrderConfirm = (props) => {
+const OrderConfirm = () => {
+  const navigate = useNavigate();
   const [{ basket }, dispatch] = useStateValue();
   const [cart, setCart] = useState([]);
 
@@ -59,7 +58,7 @@ const OrderConfirm = (props) => {
           }
         );
     } else {
-      props.history.push('/login');
+      navigate('/login');
     }
   }, []);
 
@@ -199,7 +198,7 @@ const OrderConfirm = (props) => {
           ReactGA.plugin.execute('ec', 'setAction', 'purchase', item);
           ReactGA.plugin.execute('ecommerce', 'send');
           ReactGA.plugin.execute('ecommerce', 'clear');
-          props.history.push('/orders/' + result.data.orderId);
+          navigate('/orders/' + result.data.orderId);
           alert('🚀 Your order ' + result.data.orderId + ' is successful put with us!');
         } else {
           alert(result.data.msg);
@@ -313,7 +312,7 @@ const OrderConfirm = (props) => {
                           background: '#dc3545',
                           border: '#dc3545'
                         }}
-                        onClick={() => props.history.push('/address')}>
+                        onClick={() => navigate('/address')}>
                         Add Delivery Address
                       </Button>
                     ) : choiceAddress !== undefined && choiceAddress.length > 2 ? (

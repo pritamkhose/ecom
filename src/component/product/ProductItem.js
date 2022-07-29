@@ -1,20 +1,18 @@
 import React from 'react';
 import { useStateValue } from '../../StateProvider';
-
-import { Card, Badge, Table, Col } from 'react-bootstrap';
-import './ProductItem.css';
-import logo from '../../image/logo.svg';
-
+import { Badge, Card, Col, Table } from 'react-bootstrap';
+import ReactGA from 'react-ga';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ReactGA from 'react-ga';
+import logo from '../../image/logo.svg';
+import './ProductItem.css';
 
 const MAX_LENGTH = 36;
 
 const ProductItem = (props) => {
   const [{}, dispatch] = useStateValue();
-
-  // const [isLogined] = useState(localStorage.getItem("name") ? true : false);
+  const navigate = useNavigate();
 
   const addCart = (obj) => {
     // dispatch the item into the data layer
@@ -49,7 +47,7 @@ const ProductItem = (props) => {
   };
 
   function openLink(id) {
-    props.history.push('/pid/' + id);
+    navigate('/pid/' + id);
   }
 
   function getURL(url) {

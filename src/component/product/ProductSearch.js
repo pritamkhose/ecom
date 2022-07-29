@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../../image/logo.svg';
 
 const ProductSearch = (props) => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="text-center py-3">
@@ -14,9 +16,8 @@ const ProductSearch = (props) => {
           onSubmit={(e) => {
             e.preventDefault();
             props.handleSearch();
-            props.history.push('/products?search=' + e.target.search.value);
+            navigate('/products?search=' + e.target.search.value);
           }}>
-          {/* action="/products" */}
           <input type="text" placeholder="Search ..." name="search" id="search" />
           <button type="submit">
             <i className="fa fa-search"></i>
