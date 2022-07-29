@@ -1,47 +1,33 @@
-import React, { Component } from 'react';
-import { Table, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import axios from 'axios';
-
-import ReactGA from 'react-ga';
+import React, { useEffect, useState } from 'react';
+import { Container, Table } from 'react-bootstrap';
 import FacebookLogin from 'react-facebook-login';
+import ReactGA from 'react-ga';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
+const Login = (props) => {
+  const navigate = useNavigate();
+  const [isLogined, setLogined] = useState(!!localStorage.getItem('name'));
+  const [accessToken, setAccessToken] = useState('');
 
+  useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       console.log(process.env);
     }
+  }, []);
 
-    this.state = {
-      isLogined: !!localStorage.getItem('name'),
-      accessToken: ''
-    };
-
-    this.login = this.login.bind(this);
-    this.handleLoginFailure = this.handleLoginFailure.bind(this);
-    this.logout = this.logout.bind(this);
-    this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
-    this.handleLoginFacebook = this.handleLoginFacebook.bind(this);
-  }
-
-  login(response) {
+  const login = (response) => {
     if (response.accessToken) {
       ReactGA.event({
         category: 'Google Login',
         action: response.profileObj.name
       });
-      this.setState((state) => ({
-        isLogined: true,
-        accessToken: response.accessToken
-      }));
+      setLogined(true);
+      setAccessToken(response.accessToken);
       localStorage.clear();
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('email', response.profileObj.email);
@@ -49,16 +35,16 @@ class Login extends Component {
       // localStorage.setItem("googleId", response.profileObj.googleId);
       localStorage.setItem('imageUrl', response.profileObj.imageUrl);
       localStorage.setItem('loginTime', new Date().toISOString());
-      this.updateInfo(response.profileObj.email, response.profileObj.name, response);
+      updateInfo(response.profileObj.email, response.profileObj.name, response);
     } else {
       ReactGA.event({
         category: 'Google Login Failed',
         action: JSON.stringify(response)
       });
     }
-  }
+  };
 
-  updateInfo(email, name, info) {
+  const updateInfo = (email, name, info) => {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
     axios
@@ -72,7 +58,7 @@ class Login extends Component {
         (response) => {
           localStorage.setItem('token', response.data.user.token);
           localStorage.setItem('uid', response.data.user.id);
-          this.updateCart(response.data.user.id);
+          updateCart(response.data.user.id);
         },
         (error) => {
           console.log(error);
@@ -80,9 +66,9 @@ class Login extends Component {
           alert('Something went Wrong! Try again...');
         }
       );
-  }
+  };
 
-  updateCart(uid) {
+  const updateCart = (uid) => {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
     axios.post(baseURL + 'mongoclient/id?collection=cart&id=' + uid, {}).then(
@@ -91,25 +77,23 @@ class Login extends Component {
         data !== undefined && data !== null
           ? localStorage.setItem('cart', JSON.stringify(response.data.data))
           : localStorage.setItem('cart', []);
-        this.props.updateLogin();
-        this.props.history.push('/');
+        props.updateLogin();
+        navigate('/');
       },
       (error) => {
         console.log(error);
         localStorage.setItem('cart', []);
       }
     );
-  }
+  };
 
-  logout(response) {
+  const logout = (response) => {
     ReactGA.event({
       category: 'Sign Out',
       action: 'logout'
     });
-    this.setState((state) => ({
-      isLogined: false,
-      accessToken: ''
-    }));
+    setLogined(false);
+    setAccessToken('');
     localStorage.clear();
     toast.warn('Logout', {
       position: 'bottom-right',
@@ -120,29 +104,30 @@ class Login extends Component {
       draggable: true,
       progress: undefined
     });
-    this.props.updateLogin();
-    this.props.history.push('/');
-  }
+    props.updateLogin();
+    navigate('/');
+  };
 
-  handleLoginFailure(response) {
+  const handleLoginFailure = (response) => {
     alert('Google - Failed to log in');
     ReactGA.event({
       category: 'Google Login Failure',
       action: JSON.stringify(response)
     });
-  }
+  };
 
-  handleLogoutFailure(response) {
+  const handleLogoutFailure = (response) => {
     alert('Google - Failed to log out');
     ReactGA.event({
       category: 'Google Logout Failure',
       action: JSON.stringify(response)
     });
-  }
+  };
 
-  handleLoginFacebook(response) {
+  const handleLoginFacebook = (response) => {
     if (response.accessToken) {
-      this.setState({ isLogined: true, accessToken: response.accessToken });
+      setLogined(true);
+      setAccessToken(response.accessToken);
       ReactGA.event({
         category: 'Facebook Login',
         action: response.name
@@ -154,7 +139,7 @@ class Login extends Component {
       localStorage.setItem('facebookId', response.userID);
       localStorage.setItem('imageUrl', response.picture.data.url);
       localStorage.setItem('loginTime', new Date().toISOString());
-      this.updateInfo(response.email, response.name, response);
+      updateInfo(response.email, response.name, response);
     } else {
       alert('Facebook - Failed to log in');
       ReactGA.event({
@@ -162,9 +147,9 @@ class Login extends Component {
         action: JSON.stringify(response)
       });
     }
-  }
+  };
 
-  getProfile() {
+  const getProfile = () => {
     return (
       <Table>
         <tbody>
@@ -204,49 +189,47 @@ class Login extends Component {
         </tbody>
       </Table>
     );
-  }
+  };
 
-  render() {
-    return (
-      <Container fluid className="center">
-        <div>
-          {this.state.isLogined ? (
-            <>
-              {this.getProfile()}
-              <GoogleLogout
-                clientId={GOOGLE_CLIENT_ID}
-                buttonText="Logout"
-                onLogoutSuccess={this.logout}
-                onFailure={this.handleLogoutFailure}></GoogleLogout>
-              <ToastContainer />
-            </>
-          ) : (
-            <div>
-              <GoogleLogin
-                clientId={GOOGLE_CLIENT_ID}
-                buttonText="Sign in with Google"
-                onSuccess={this.login}
-                onFailure={this.handleLoginFailure}
-                cookiePolicy={'single_host_origin'}
-                responseType="code,token"
-              />
-              <br />
-              <br />
-              <br />
-              <FacebookLogin
-                appId="396350414949326"
-                autoLoad={false}
-                fields="name,email,picture"
-                // onClick={this.componentClicked}
-                icon="fa-facebook"
-                callback={this.handleLoginFacebook}
-              />
-            </div>
-          )}
-        </div>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container fluid className="center">
+      <div>
+        {isLogined ? (
+          <>
+            {getProfile()}
+            <GoogleLogout
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Logout"
+              onLogoutSuccess={logout}
+              onFailure={handleLogoutFailure}></GoogleLogout>
+            <ToastContainer />
+          </>
+        ) : (
+          <div>
+            <GoogleLogin
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Sign in with Google"
+              onSuccess={login}
+              onFailure={handleLoginFailure}
+              cookiePolicy={'single_host_origin'}
+              responseType="code,token"
+            />
+            <br />
+            <br />
+            <br />
+            <FacebookLogin
+              appId="396350414949326"
+              autoLoad={false}
+              fields="name,email,picture"
+              // onClick={componentClicked}
+              icon="fa-facebook"
+              callback={handleLoginFacebook}
+            />
+          </div>
+        )}
+      </div>
+    </Container>
+  );
+};
 
 export default Login;
