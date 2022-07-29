@@ -1,21 +1,17 @@
 import React from 'react';
-
-import { useStateValue } from '../../StateProvider';
 import cartcount from '../../image/cartcount.svg';
-
-import { Row } from 'react-bootstrap';
+import { useStateValue } from '../../StateProvider';
 import './ProductItem.css';
 
-const CartCount = (props) => {
+const CartCount = () => {
   const [{ basket }] = useStateValue();
 
   return (
-    <Row style={{ margin: '0px' }}>
-      <img src={cartcount} alt="Cart" height="35"></img>
+    <div style={{ margin: '0px' }}>
       <p className="CartText" style={{ margin: '0px', padding: '0px', paddingTop: '3px' }}>
-        {basket.length}
+        <img src={cartcount} alt="Cart" height="35" /> {basket.length}
       </p>
-    </Row>
+    </div>
   );
 };
 

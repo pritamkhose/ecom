@@ -118,7 +118,7 @@ class App extends Component {
                 </li>
               </Nav>
             </Navbar.Collapse>
-            <Navbar.Collapse id="basic-navbar-nav">
+            <div id="basic-navbar-nav">
               <Nav onClick={this.setNavClose} className="ml-auto">
                 {this.state.isLogin ? (
                   <li className="nav-item active">
@@ -146,7 +146,7 @@ class App extends Component {
                   </li>
                 )}
               </Nav>
-            </Navbar.Collapse>
+            </div>
             <div className="navbar-link" onClick={this.setNavClose}>
               <img onClick={this.handleSearch} src={icsearch} alt="Search" height="35"></img>
             </div>
