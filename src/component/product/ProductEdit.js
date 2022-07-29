@@ -1,43 +1,42 @@
-import React, { Component } from 'react';
-
-import { Container, Spinner, Badge, Button, Card, Row } from 'react-bootstrap';
-import { Label } from 'reactstrap';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
-import { FieldArray } from 'react-final-form-arrays';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-import FormFieldText from './FormFieldText';
-import FormFieldNumber from './FormFieldNumber';
+import arrayMutators from 'final-form-arrays';
+import { Badge, Button, Card, Container, Row, Spinner } from 'react-bootstrap';
+import { Form } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Label } from 'reactstrap';
 import FormFieldCheckBox from './FormFieldCheckBox';
+import FormFieldNumber from './FormFieldNumber';
+import FormFieldText from './FormFieldText';
 import './ProductEdit.css';
 
-class ProductEdit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: props.match.params.id,
-      aObj: {},
-      isLogined: !!localStorage.getItem('name')
-    };
-  }
+const ProductEdit = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [aObj, setaObj] = useState({});
+  const [isLoading, setLoading] = useState(false);
+  const [isEdit, setEdit] = useState(false);
+  const [isLogined, setLogined] = useState(!!localStorage.getItem('name'));
 
-  componentDidMount() {
+  useEffect(() => {
     if (localStorage.getItem('uid')) {
-      if (this.state.id === 'new') {
-        this.setState({ isLoading: false, isEdit: false });
+      if (id === 'new') {
+        setLoading(false);
+        setEdit(false);
       } else {
-        this.setState({ isLoading: true, isEdit: true });
-        this.getData(this.state.id);
+        setLoading(true);
+        setEdit(true);
+        getData(id);
       }
     } else {
-      this.props.history.push('/login');
+      navigate('/login');
     }
-  }
+  }, []);
 
-  getData(id) {
+  const getData = (id) => {
     if (id === 'new') {
-      console.log('-->', 'new id');
+      console.log('id -->', id);
     } else {
       const baseURL =
         (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
@@ -45,60 +44,50 @@ class ProductEdit extends Component {
       axios.post(baseURL + 'mongoclient/id?collection=productmyntra&id=' + id, {}).then(
         (response) => {
           if (response.status === 200) {
-            this.setState({ isLoading: false, aObj: response.data });
+            setLoading(false);
+            setaObj(response.data);
           } else {
-            this.setState({ isLoading: false });
+            setLoading(false);
             alert('Something went Wrong! Try again...');
-            this.openLink(true);
+            openLink(true);
           }
         },
         (error) => {
           console.log(error);
-          this.setState({ isLoading: false });
+          setLoading(false);
           alert('Invaild ID!');
-          this.openLink(true);
+          openLink(true);
         }
       );
     }
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <Badge variant="primary">Product {this.state.isEdit ? 'Edit' : 'Add'}</Badge>
-        {this.state.isLoading ? this.showLoading() : this.showData()}
-      </div>
-    );
-  }
-
-  showData() {
+  const showData = () => {
     return (
       <Container>
         <Form
-          onSubmit={(values) => this.onFormSubmit(values)}
+          onSubmit={(values) => onFormSubmit(values)}
           initialValues={{
-            category: this.state.aObj.category,
-            brand: this.state.aObj.brand,
-            product: this.state.aObj.product,
-            productName: this.state.aObj.productName,
-            additionalInfo: this.state.aObj.additionalInfo,
-            gender: this.state.aObj.gender,
-            primaryColour: this.state.aObj.primaryColour,
-            season: this.state.aObj.season,
-            rating: this.state.aObj.rating,
-            ratingCount: this.state.aObj.ratingCount,
-            discountDisplayLabel: this.state.aObj.discountDisplayLabel,
-            discount: this.state.aObj.discount,
-            mrp: this.state.aObj.mrp,
-            price: this.state.aObj.price,
-            sizes: this.state.aObj.sizes,
-            searchImage: this.state.aObj.searchImage,
-            landingPageUrl: this.state.aObj.landingPageUrl,
-            images: this.state.aObj.images !== undefined ? this.state.aObj.images : [],
-            productVideos:
-              this.state.aObj.productVideos !== undefined ? this.state.aObj.productVideos : [],
-            inventoryInfo:
-              this.state.aObj.inventoryInfo !== undefined ? this.state.aObj.inventoryInfo : []
+            category: aObj.category,
+            brand: aObj.brand,
+            product: aObj.product,
+            productName: aObj.productName,
+            additionalInfo: aObj.additionalInfo,
+            gender: aObj.gender,
+            primaryColour: aObj.primaryColour,
+            season: aObj.season,
+            rating: aObj.rating,
+            ratingCount: aObj.ratingCount,
+            discountDisplayLabel: aObj.discountDisplayLabel,
+            discount: aObj.discount,
+            mrp: aObj.mrp,
+            price: aObj.price,
+            sizes: aObj.sizes,
+            searchImage: aObj.searchImage,
+            landingPageUrl: aObj.landingPageUrl,
+            images: aObj.images !== undefined ? aObj.images : [],
+            productVideos: aObj.productVideos !== undefined ? aObj.productVideos : [],
+            inventoryInfo: aObj.inventoryInfo !== undefined ? aObj.inventoryInfo : []
           }}
           mutators={{
             ...arrayMutators
@@ -116,34 +105,26 @@ class ProductEdit extends Component {
             return (
               <form onSubmit={handleSubmit}>
                 <Card>
-                  <p>ProductId : {this.state.aObj.productId}</p>
-                  <p>Date: {this.state.aObj.catalogDate}</p>
+                  <p>ProductId : {aObj.productId}</p>
+                  <p>Date: {aObj.catalogDate}</p>
                 </Card>
                 <Card>
-                  <FormFieldText name="category" hint="Category" value={this.state.aObj.category} />
-                  <FormFieldText name="brand" hint="Brand" value={this.state.aObj.brand} />
+                  <FormFieldText name="category" hint="Category" value={aObj.category} />
+                  <FormFieldText name="brand" hint="Brand" value={aObj.brand} />
                 </Card>
                 <Card>
-                  <FormFieldText name="product" hint="Product" value={this.state.aObj.product} />
-                  <FormFieldText
-                    name="productName"
-                    hint="Product Name"
-                    value={this.state.aObj.productName}
-                  />
+                  <FormFieldText name="product" hint="Product" value={aObj.product} />
+                  <FormFieldText name="productName" hint="Product Name" value={aObj.productName} />
                   <FormFieldText
                     name="additionalInfo"
                     hint="Additional Info"
-                    value={this.state.aObj.additionalInfo}
+                    value={aObj.additionalInfo}
                   />
                 </Card>
                 <Card>
-                  <FormFieldText name="gender" hint="Gender" value={this.state.aObj.gender} />
-                  <FormFieldText
-                    name="primaryColour"
-                    hint="Colour"
-                    value={this.state.aObj.primaryColour}
-                  />
-                  <FormFieldText name="season" hint="Season" value={this.state.aObj.season} />
+                  <FormFieldText name="gender" hint="Gender" value={aObj.gender} />
+                  <FormFieldText name="primaryColour" hint="Colour" value={aObj.primaryColour} />
+                  <FormFieldText name="season" hint="Season" value={aObj.season} />
                 </Card>
                 <Card>
                   <FormFieldNumber
@@ -154,54 +135,48 @@ class ProductEdit extends Component {
                     minLength="1"
                     maxLength="1"
                     step="0.01"
-                    value={this.state.aObj.rating}
+                    value={aObj.rating}
                   />
                   <FormFieldNumber
                     name="ratingCount"
                     hint="Rating Total Count"
                     min="0"
                     minLength="1"
-                    value={this.state.aObj.ratingCount}
+                    value={aObj.ratingCount}
                   />
                 </Card>
                 <Card>
                   <FormFieldText
                     name="discountDisplayLabel"
                     hint="Discount Display Label"
-                    value={this.state.aObj.discountDisplayLabel}
+                    value={aObj.discountDisplayLabel}
                   />
                   <FormFieldNumber
                     name="discount"
                     hint="Discount"
                     min="0"
                     minLength="1"
-                    value={this.state.aObj.discount}
+                    value={aObj.discount}
                   />
-                  <FormFieldNumber
-                    name="mrp"
-                    hint="MRP"
-                    min="0"
-                    minLength="1"
-                    value={this.state.aObj.mrp}
-                  />
+                  <FormFieldNumber name="mrp" hint="MRP" min="0" minLength="1" value={aObj.mrp} />
                   <FormFieldNumber
                     name="price"
                     hint="Price"
                     min="0"
                     minLength="1"
-                    value={this.state.aObj.price}
+                    value={aObj.price}
                   />
                 </Card>
                 <Card>
                   <FormFieldText
                     name="searchImage"
                     hint="Search Image URL"
-                    value={this.state.aObj.searchImage}
+                    value={aObj.searchImage}
                   />
                   <FormFieldText
                     name="landingPageUrl"
                     hint="Landing Page URL"
-                    value={this.state.aObj.landingPageUrl}
+                    value={aObj.landingPageUrl}
                   />
                 </Card>
                 <Card>
@@ -224,9 +199,8 @@ class ProductEdit extends Component {
                               hint="Type"
                               label={false}
                               value={
-                                this.state.aObj.images !== undefined &&
-                                this.state.aObj.images[index] !== undefined
-                                  ? this.state.aObj.images[index].view
+                                aObj.images !== undefined && aObj.images[index] !== undefined
+                                  ? aObj.images[index].view
                                   : ''
                               }
                             />
@@ -237,9 +211,8 @@ class ProductEdit extends Component {
                               hint="URL"
                               label={false}
                               value={
-                                this.state.aObj.images !== undefined &&
-                                this.state.aObj.images[index] !== undefined
-                                  ? this.state.aObj.images[index].src
+                                aObj.images !== undefined && aObj.images[index] !== undefined
+                                  ? aObj.images[index].src
                                   : ''
                               }
                             />
@@ -278,9 +251,9 @@ class ProductEdit extends Component {
                               hint="Type"
                               label={false}
                               value={
-                                this.state.aObj.productVideos !== undefined &&
-                                this.state.aObj.productVideos[index] !== undefined
-                                  ? this.state.aObj.productVideos[index].view
+                                aObj.productVideos !== undefined &&
+                                aObj.productVideos[index] !== undefined
+                                  ? aObj.productVideos[index].view
                                   : ''
                               }
                             />
@@ -291,9 +264,9 @@ class ProductEdit extends Component {
                               hint="URL"
                               label={false}
                               value={
-                                this.state.aObj.productVideos !== undefined &&
-                                this.state.aObj.productVideos[index] !== undefined
-                                  ? this.state.aObj.productVideos[index].src
+                                aObj.productVideos !== undefined &&
+                                aObj.productVideos[index] !== undefined
+                                  ? aObj.productVideos[index].src
                                   : ''
                               }
                             />
@@ -311,7 +284,7 @@ class ProductEdit extends Component {
                   </FieldArray>
                 </Card>
                 <Card>
-                  <FormFieldText name="sizes" hint="Sizes" value={this.state.aObj.sizes} />
+                  <FormFieldText name="sizes" hint="Sizes" value={aObj.sizes} />
                 </Card>
                 <Card>
                   <Container className="row" style={{ paddingStart: '25px' }}>
@@ -337,9 +310,9 @@ class ProductEdit extends Component {
                               min="0"
                               minLength="1"
                               value={
-                                this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !== undefined
-                                  ? this.state.aObj.inventoryInfo[index].skuId
+                                aObj.inventoryInfo !== undefined &&
+                                aObj.inventoryInfo[index] !== undefined
+                                  ? aObj.inventoryInfo[index].skuId
                                   : ''
                               }
                             />
@@ -350,9 +323,9 @@ class ProductEdit extends Component {
                               hint="Label"
                               label={false}
                               value={
-                                this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !== undefined
-                                  ? this.state.aObj.inventoryInfo[index].label
+                                aObj.inventoryInfo !== undefined &&
+                                aObj.inventoryInfo[index] !== undefined
+                                  ? aObj.inventoryInfo[index].label
                                   : ''
                               }
                             />
@@ -365,9 +338,9 @@ class ProductEdit extends Component {
                               min="0"
                               minLength="1"
                               value={
-                                this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !== undefined
-                                  ? this.state.aObj.inventoryInfo[index].inventory
+                                aObj.inventoryInfo !== undefined &&
+                                aObj.inventoryInfo[index] !== undefined
+                                  ? aObj.inventoryInfo[index].inventory
                                   : ''
                               }
                             />
@@ -377,9 +350,9 @@ class ProductEdit extends Component {
                               name={`${name}.available`}
                               hint="Available"
                               value={
-                                this.state.aObj.inventoryInfo !== undefined &&
-                                this.state.aObj.inventoryInfo[index] !== undefined
-                                  ? this.state.aObj.inventoryInfo[index].available
+                                aObj.inventoryInfo !== undefined &&
+                                aObj.inventoryInfo[index] !== undefined
+                                  ? aObj.inventoryInfo[index].available
                                   : false
                               }
                             />
@@ -398,15 +371,15 @@ class ProductEdit extends Component {
                 </Card>
                 <div className="buttons">
                   <br />
-                  {this.state.id === 'new' ? null : (
+                  {id === 'new' ? null : (
                     <>
-                      <Button className="btn btn-danger" onClick={() => this.deleteData()}>
+                      <Button className="btn btn-danger" onClick={() => deleteData()}>
                         Delete
                       </Button>
                       &nbsp;&nbsp;&nbsp;
                     </>
                   )}
-                  <Button className="btn btn-warning" onClick={() => this.openLink(false)}>
+                  <Button className="btn btn-warning" onClick={() => openLink(false)}>
                     Cancel
                   </Button>
                   &nbsp;&nbsp;&nbsp;
@@ -425,92 +398,72 @@ class ProductEdit extends Component {
                   </Button>
                 </div>
                 {/* <pre>{JSON.stringify(values, 0, 2)}</pre>
-                <pre>{JSON.stringify(this.state.aObj, 0, 2)}</pre> */}
+                <pre>{JSON.stringify(aObj, 0, 2)}</pre> */}
               </form>
             );
           }}
         />
       </Container>
     );
-  }
+  };
 
-  openLink(isListOpen) {
-    if (isListOpen || this.state.id === 'new') {
-      this.props.history.push('/products');
+  const openLink = (isListOpen) => {
+    if (isListOpen || id === 'new') {
+      navigate('/products');
     } else {
-      this.props.history.push('/pid/' + this.state.id);
+      navigate('/pid/' + id);
     }
-  }
+  };
 
-  onFormSubmit(values) {
+  const onFormSubmit = (values) => {
     values.catalogDate = new Date().getTime();
     values.date = new Date().toISOString();
     values.uid = localStorage.getItem('uid');
-    if (this.state.id === 'new') {
+    if (id === 'new') {
       const min = 10000000;
       const max = 99999999;
       values.productId = Math.floor(min + Math.random() * max);
     } else {
-      values.productId = this.state.aObj.productId;
+      values.productId = aObj.productId;
     }
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
-    this.setState({
-      isLoading: true
-    });
+    setLoading(true);
     const actionURL =
-      this.state.id === 'new'
+      id === 'new'
         ? baseURL + 'mongoclient/insert' + '?collection=productmyntra'
-        : baseURL + 'mongoclient/updateone' + '?collection=productmyntra&id=' + this.state.aObj._id;
+        : baseURL + 'mongoclient/updateone' + '?collection=productmyntra&id=' + aObj._id;
     axios.put(actionURL, values).then(
       (response) => {
-        // console.log(response.data);
-        this.props.history.push('/products');
+        navigate('/products');
       },
       (error) => {
-        this.setState(
-          {
-            isLoading: false
-          },
-          function () {
-            console.log(error);
-            alert('Something went Wrong! Try again...');
-          }
-        );
+        setLoading(false);
+        console.log(error);
+        alert('Something went Wrong! Try again...');
       }
     );
-  }
+  };
 
-  deleteData() {
+  const deleteData = () => {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
-    this.setState({
-      isLoading: true
-    });
-    axios
-      .delete(baseURL + 'mongoclient/delete?collection=productmyntra&id=' + this.state.aObj._id, {})
-      .then(
-        (response) => {
-          // console.log(response.data);
-          this.props.history.push('/products');
-        },
-        (error) => {
-          this.setState(
-            {
-              isLoading: false
-            },
-            function () {
-              console.log(error);
-              alert('Something went Wrong! Try again...');
-            }
-          );
-        }
-      );
-  }
+    setLoading(true);
+    axios.delete(baseURL + 'mongoclient/delete?collection=productmyntra&id=' + aObj._id, {}).then(
+      (response) => {
+        navigate('/products');
+      },
+      (error) => {
+        setLoading(false);
+        console.log(error);
+        alert('Something went Wrong! Try again...');
+      }
+    );
+  };
 
-  showLoading() {
+  const showLoading = () => {
     return (
       <div className="text-center py-3">
         <Spinner animation="border" role="status" variant="info">
@@ -518,18 +471,14 @@ class ProductEdit extends Component {
         </Spinner>
       </div>
     );
-  }
+  };
 
-  isMobile() {
-    // if we want a more complete list use this: http://detectmobilebrowsers.com/
-    // str.test() is more efficent than str.match() remember str.test is case sensitive
-    const isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
-      navigator.userAgent.toLowerCase()
-    );
-    // console.log(navigator.userAgent.toLowerCase());
-    // console.log(isMobile);
-    return isMobile;
-  }
-}
+  return (
+    <div>
+      <Badge variant="primary">Product {isEdit ? 'Edit' : 'Add'}</Badge>
+      {isLoading ? showLoading() : showData()}
+    </div>
+  );
+};
 
 export default ProductEdit;

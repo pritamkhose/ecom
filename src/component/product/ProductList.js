@@ -17,6 +17,7 @@ const ProductList = () => {
   const [brand, setBrand] = useState(brandNav);
   const [category, setCategory] = useState(categoryNav);
   const [sort, setSort] = useState(sortNav);
+  const [curPage, setCurPage] = useState(0);
 
   const location = useLocation();
   useEffect(() => {
@@ -37,7 +38,8 @@ const ProductList = () => {
   }, [location]);
 
   useEffect(() => {
-    getData();
+    // getData();
+    console.log('-->', 'Nav change');
   }, [search, category, brand, sort]);
 
   const [data, setData] = useState({
@@ -54,23 +56,17 @@ const ProductList = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           const y = entry?.boundingClientRect.y;
-          console.log('y-->', data.continueIncrement, data.prevY, y, data.prevY > data.y);
+          console.log('y-->', data.continueIncrement, data.prevY, y, data.prevY < data.y);
           if (data.continueIncrement && data.prevY < y) {
-            setData(
-              {
-                ...data,
-                curPage: 1,
-                prevY: y,
-                // aList: [],
-                showLoadMore: true,
-                showNoContent: false,
-                continueIncrement: true
-              },
-              () => {
-                console.log('curPage-->', data.curPage);
-                getData();
-              }
-            );
+            setData({
+              ...data,
+              // curPage: data.curPage + 1,
+              prevY: y,
+              showLoadMore: true,
+              showNoContent: false,
+              continueIncrement: true
+            });
+            setCurPage(curPage + 1);
           }
         }
       },
@@ -84,6 +80,11 @@ const ProductList = () => {
       observer.observe(loadingRef.current);
     }
   }, [loadingRef]);
+
+  useEffect(() => {
+    console.log('curPage-->', curPage);
+    getData();
+  }, [curPage]);
 
   const getData = () => {
     const baseURL =
@@ -157,12 +158,12 @@ const ProductList = () => {
         search: {}, // searchObj,
         sort: sortObj,
         limit: 12,
-        skip: 12 * (data.curPage - 1)
+        skip: 12 * (curPage - 1)
       })
       .then(
         (response) => {
           if (response.status === 200) {
-            if (data.curPage === 1) {
+            if (curPage === 1) {
               // setaList(response.data);
               // setCurPage(curPage + 1);
               // setContinueIncrement(!(response.data.length < 12));
@@ -170,7 +171,7 @@ const ProductList = () => {
               setData({
                 ...data,
                 aList: response.data,
-                curPage: data.curPage + 1,
+                // curPage: curPage + 1,
                 continueIncrement: !(response.data.length < 12),
                 showLoadMore: !(response.data.length < 12)
               });
@@ -179,8 +180,8 @@ const ProductList = () => {
               // setCurPage(curPage + 1);
               setData({
                 ...data,
-                aList: [...data.aList, ...response.data],
-                curPage: data.curPage + 1
+                aList: [...data.aList, ...response.data]
+                // curPage: curPage + 1
               });
             }
           } else if (response.status === 204) {
@@ -190,7 +191,7 @@ const ProductList = () => {
             setData({
               ...data,
               showLoadMore: false,
-              showNoContent: data.curPage === 1,
+              showNoContent: curPage === 1,
               continueIncrement: false
             });
           }

@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import './ProductItem.css';
 import { Card, Spinner } from 'reactstrap';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 import addaddress from '../../image/addaddress.svg';
 
 const Address = (props) => {
+  const navigate = useNavigate();
   const [address, setAddress] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
@@ -36,9 +37,33 @@ const Address = (props) => {
           }
         );
     } else {
-      props.history.push('/login');
+      navigate('/login');
     }
   }, []);
+
+  const showLoading = () => {
+    return (
+      <div className="text-center py-3">
+        <Spinner animation="border" role="status" variant="primary" />
+      </div>
+    );
+  };
+
+  const openLink = (props, id) => {
+    navigate('/address/' + id);
+  };
+
+  const setEmptyAddress = (props) => {
+    return (
+      <Card className="Card" key="empty" onClick={() => openLink(props, 'new')}>
+        <h5>
+          <img src={addaddress} alt="Cart" height="50" width="50" style={{ margin: 20 }}></img>
+          <br />
+          Add Address
+        </h5>
+      </Card>
+    );
+  };
 
   return (
     <div>
@@ -65,30 +90,6 @@ const Address = (props) => {
         </div>
       )}
     </div>
-  );
-};
-
-const showLoading = () => {
-  return (
-    <div className="text-center py-3">
-      <Spinner animation="border" role="status" variant="primary" />
-    </div>
-  );
-};
-
-const openLink = (props, id) => {
-  props.history.push('/address/' + id);
-};
-
-const setEmptyAddress = (props) => {
-  return (
-    <Card className="Card" key="empty" onClick={() => openLink(props, 'new')}>
-      <h5>
-        <img src={addaddress} alt="Cart" height="50" width="50" style={{ margin: 20 }}></img>
-        <br />
-        Add Address
-      </h5>
-    </Card>
   );
 };
 

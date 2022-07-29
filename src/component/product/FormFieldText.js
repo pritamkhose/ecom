@@ -26,7 +26,7 @@ const FormFieldText = (props) => {
             placeholder={
               props.placeholder !== undefined ? props.placeholder : 'Enter ' + props.hint
             }
-            defaultValue={props.value !== undefined && props.value.length > 0 ? props.value : ''}
+            initialValue={props.value !== undefined && props.value.length > 0 ? props.value : ''}
           />
           {meta.error && meta.touched && <span>{meta.error}</span>}
         </FormGroup>

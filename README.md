@@ -65,3 +65,5 @@ yarn watch:server
 - [Using Promises, async / await with MongoDB](https://school.geekwall.in/p/SJ_Tkqbi4)
 - [Mongodb-driver async-await](https://stackoverflow.com/questions/47370487/node-js-mongodb-driver-async-await-queries)
 - [Mongo Node Doc](http://mongodb.github.io/node-mongodb-native/api-generated/collection.html)
+- [Intersectionobserver hook](https://stackoverflow.com/questions/58341787/intersectionobserver-with-react-hooks)
+- [useIntersectionObserver](https://usehooks-ts.com/react-hook/use-intersection-observer)

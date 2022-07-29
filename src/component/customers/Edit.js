@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Spinner, Badge } from 'react-bootstrap';
-
 import gql from 'graphql-tag';
-import { Query, Mutation } from 'react-apollo';
+import React, { useState } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import { Badge, Spinner } from 'react-bootstrap';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const GET_CUSTOMER = gql`
   query customer($id: ID!) {
@@ -46,83 +45,12 @@ const DELETE_CUSTOMER = gql`
   }
 `;
 
-class Edit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: props.match.params.id,
-      isEdit: !!props.match.params.id
-    };
-  }
+const Edit = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [isEdit, setEdit] = useState(!!id);
 
-  render() {
-    return (
-      <div>
-        <Badge variant="primary">Customer {this.state.isEdit ? 'Edit' : 'Add'}</Badge>
-        <h4>
-          <Link to="/customers" className="btn btn-primary">
-            Customer List
-          </Link>
-        </h4>
-        <hr />
-        {this.state.isEdit ? (
-          <Query query={GET_CUSTOMER} variables={{ id: this.state.id }}>
-            {({ loading, error, data }) => {
-              if (loading) return this.showLoading();
-              if (error) return `Error! ${error.message}`;
-
-              return (
-                <>
-                  <Mutation
-                    mutation={UPDATE_CUSTOMER}
-                    onCompleted={() => this.props.history.push('/customers')}>
-                    {(updateCustomer, { loading, error }) =>
-                      this.showForm(updateCustomer, loading, error, data)
-                    }
-                  </Mutation>
-                  <Mutation
-                    mutation={DELETE_CUSTOMER}
-                    key={data.customer.id}
-                    onCompleted={() => this.props.history.push('/customers')}>
-                    {(deleteCustomer, { loading, error }) => (
-                      <div>
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            deleteCustomer({
-                              variables: { id: data.customer.id }
-                            });
-                          }}>
-                          <div className="container panel-body">
-                            <p></p>
-                            <button type="submit" className="btn btn-danger">
-                              Delete
-                            </button>
-                          </div>
-                        </form>
-                        {loading && this.showLoading()}
-                        {error && <p>Error :( Please try again</p>}
-                      </div>
-                    )}
-                  </Mutation>
-                </>
-              );
-            }}
-          </Query>
-        ) : (
-          <Mutation
-            mutation={ADD_CUSTOMER}
-            onCompleted={(customer) => {
-              this.props.history.push(`${'/customer/edit'}/${customer.addCustomer.id}`);
-            }}>
-            {(addCustomer, { loading, error }) => this.showForm(addCustomer, loading, error, null)}
-          </Mutation>
-        )}
-      </div>
-    );
-  }
-
-  showForm(action, loading, error, data) {
+  const showForm = (action, loading, error, data) => {
     let name, producer, rating;
     return (
       <div className="container">
@@ -135,10 +63,10 @@ class Edit extends Component {
               onSubmit={(e) => {
                 e.preventDefault();
 
-                this.state.isEdit
+                isEdit
                   ? action({
                       variables: {
-                        id: this.state.id,
+                        id,
                         name: name.value,
                         producer: producer.value,
                         rating: parseInt(rating.value)
@@ -195,19 +123,20 @@ class Edit extends Component {
                   defaultValue={data ? data.customer.rating : ''}
                 />
               </div>
+              <br />
               <button type="submit" className="btn btn-success">
                 Submit
               </button>
             </form>
-            {loading && this.showLoading()}
+            {loading && showLoading()}
             {error && <p>Error :( Please try again</p>}
           </div>
         </div>
       </div>
     );
-  }
+  };
 
-  showLoading() {
+  const showLoading = () => {
     return (
       <div className="text-center py-3">
         <Spinner animation="border" role="status" variant="info">
@@ -215,7 +144,74 @@ class Edit extends Component {
         </Spinner>
       </div>
     );
-  }
-}
+  };
+
+  return (
+    <div>
+      <Badge variant="primary">Customer {isEdit ? 'Edit' : 'Add'}</Badge>
+      <br />
+      <br />
+      <h4>
+        <Link to="/customers" className="btn btn-primary">
+          Customer List
+        </Link>
+      </h4>
+      <hr />
+      {isEdit ? (
+        <Query query={GET_CUSTOMER} variables={{ id }}>
+          {({ loading, error, data }) => {
+            if (loading) return showLoading();
+            if (error) return `Error! ${error.message}`;
+
+            return (
+              <>
+                <Mutation mutation={UPDATE_CUSTOMER} onCompleted={() => navigate('/customers')}>
+                  {(updateCustomer, { loading, error }) =>
+                    showForm(updateCustomer, loading, error, data)
+                  }
+                </Mutation>
+                <Mutation
+                  mutation={DELETE_CUSTOMER}
+                  key={data.customer.id}
+                  onCompleted={() => navigate('/customers')}>
+                  {(deleteCustomer, { loading, error }) => (
+                    <div>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          deleteCustomer({
+                            variables: { id: data.customer.id }
+                          });
+                        }}>
+                        <div className="container panel-body">
+                          <br />
+                          <button type="submit" className="btn btn-danger">
+                            Delete
+                          </button>
+                          <br />
+                          <br />
+                        </div>
+                      </form>
+                      {loading && showLoading()}
+                      {error && <p>Error :( Please try again</p>}
+                    </div>
+                  )}
+                </Mutation>
+              </>
+            );
+          }}
+        </Query>
+      ) : (
+        <Mutation
+          mutation={ADD_CUSTOMER}
+          onCompleted={(customer) => {
+            navigate(`${'/customer/edit'}/${customer.addCustomer.id}`);
+          }}>
+          {(addCustomer, { loading, error }) => showForm(addCustomer, loading, error, null)}
+        </Mutation>
+      )}
+    </div>
+  );
+};
 
 export default Edit;

@@ -21,7 +21,7 @@ const FormFieldCheckBox = (props) => {
             name={props.name}
             className=""
             component="input"
-            defaultValue={props.value !== undefined && props.value.length > 0 ? props.value : false}
+            initialValue={props.value !== undefined && props.value.length > 0 ? props.value : false}
           />
           {props.label === false ? null : <Label> {props.hint}</Label>}
           {meta.error && meta.touched && <span>{meta.error}</span>}

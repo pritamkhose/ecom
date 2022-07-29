@@ -123,8 +123,9 @@ const ProductFilters = () => {
         </div>
         <div name="sort" className="col-3">
           <label>Sort :</label>
+          <br />
           <select
-            className="custom-select"
+            className="form-control"
             name="sort"
             id="sort"
             value={sort !== null ? sort : ''}
@@ -141,8 +142,9 @@ const ProductFilters = () => {
         {brandList !== null ? (
           <div name="brand" className="col-3">
             <label>Brand :</label>
+            <br />
             <select
-              className="custom-select"
+              className="form-control"
               name="brand"
               id="brand"
               defaultValue={brand !== null ? brand : ''}
@@ -161,8 +163,9 @@ const ProductFilters = () => {
         {categoryList !== null ? (
           <div name="category" className="col-3">
             <label>Category :</label>
+            <br />
             <select
-              className="custom-select"
+              className="form-control"
               name="category"
               id="category"
               defaultValue={category}

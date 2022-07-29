@@ -231,7 +231,9 @@ const OrderConfirm = (props) => {
   function showAddress() {
     return (
       <div>
-        {address.length !== 0 ? <Badge variant="success">Select a delivery address</Badge> : null}
+        {address.length !== 0 ? (
+          <Badge className="badge bg-success">Select a delivery address</Badge>
+        ) : null}
         {address?.map((item, i) => (
           <Card
             className="CardAddress"

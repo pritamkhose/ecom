@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-
-import './ProductItem.css';
-import { Card, Spinner, Button } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-import OrderItem from './OrderItem';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card, Spinner } from 'reactstrap';
 import CartEmpty from './CartEmpty';
+import OrderItem from './OrderItem';
+import './ProductItem.css';
 
-const OrderHistory = (props) => {
+const OrderHistory = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [orderId, setOrderID] = useState(props.match.params.id);
+  const { id } = useParams();
+  const [orderId, setOrderID] = useState(id);
 
   useEffect(() => {
     if (localStorage.getItem('uid')) {
@@ -43,7 +44,7 @@ const OrderHistory = (props) => {
           }
         );
     } else {
-      props.history.push('/login');
+      navigate('/login');
     }
   }, []);
 

@@ -179,7 +179,7 @@ class App extends Component {
               element={
                 <>
                   <div style={{ background: '#e5faf4' }}>
-                    <Badge variant="success">Products Filters</Badge>
+                    <Badge className="badge bg-success">Products Filters</Badge>
                     <ProductFilters />
                   </div>
                   <Badge variant="primary">Products</Badge>

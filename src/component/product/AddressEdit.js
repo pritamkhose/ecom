@@ -1,32 +1,30 @@
-import React, { Component } from 'react';
-
-import { Container, Spinner, Badge, Button, FormGroup, Label } from 'reactstrap';
-import { Form, Field } from 'react-final-form';
 import axios from 'axios';
-import FormFieldText from './FormFieldText';
+import React, { useEffect, useState } from 'react';
+import { Field, Form } from 'react-final-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Badge, Button, Container, FormGroup, Label, Spinner } from 'reactstrap';
 import FormFieldNumber from './FormFieldNumber';
+import FormFieldText from './FormFieldText';
 
-class AddressEdit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      addressID: props.match.params.id,
-      isLoading: props.match.params.id !== 'new',
-      address: []
-    };
+const AddressEdit = () => {
+  const navigate = useNavigate();
+  const [address, setAddress] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const { id } = useParams();
 
+  useEffect(() => {
     if (localStorage.getItem('uid')) {
-      this.getData(this.state.addressID);
+      getData(id);
     } else {
-      this.props.history.push('/login');
+      navigate('/login');
     }
-  }
+  }, [id]);
 
-  getData(addressID) {
-    if (addressID === 'new') {
-      // console.log(addressID);
-    } else if (addressID === undefined) {
-      this.props.history.push('/address');
+  const getData = (id) => {
+    if (id === 'new') {
+      // console.log(id);
+    } else if (id === undefined) {
+      navigate('/address');
     } else {
       const baseURL =
         (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') +
@@ -35,38 +33,30 @@ class AddressEdit extends Component {
         .post(baseURL + 'mongoclient?collection=address', {
           search: {
             uid: localStorage.getItem('uid'),
-            addrid: this.state.addressID
+            addrid: id
           }
         })
         .then(
           (response) => {
-            this.setState(
-              {
-                isLoading: false,
-                address: response.data
-              },
-              function () {
-                if (
-                  this.state.address.length === 1 &&
-                  this.state.address[0].addrid === this.state.addressID
-                ) {
-                  console.log('-->', 'success');
-                } else {
-                  this.props.history.push('/address');
-                }
-              }
-            );
+            setLoading(false);
+            const tempAddr = response.data;
+            if (tempAddr.length === 1 && tempAddr[0].addrid === id) {
+              setAddress(tempAddr);
+            } else {
+              navigate('/address');
+            }
           },
           (error) => {
             console.log(error);
-            this.setState({ isLoading: false, address: [] });
+            setLoading(false);
+            setAddress([]);
             alert('Something went Wrong! Try again...');
           }
         );
     }
-  }
+  };
 
-  onFormSubmit(values) {
+  const onFormSubmit = (values) => {
     values.date = new Date().toISOString();
     values.uid = localStorage.getItem('uid');
     const length = 9;
@@ -77,101 +67,61 @@ class AddressEdit extends Component {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
-    this.setState({
-      isLoading: true
-    });
+    setLoading(true);
     const actionURL =
-      this.state.addressID === 'new'
+      id === 'new'
         ? baseURL + 'mongoclient/insert' + '?collection=address'
-        : baseURL + 'mongoclient/updateone' + '?collection=address&id=' + this.state.address[0]._id;
+        : baseURL + 'mongoclient/updateone' + '?collection=address&id=' + address[0]._id;
     axios.put(actionURL, values).then(
       (response) => {
-        // console.log(response.data);
-        this.props.history.push('/address');
+        navigate('/address');
       },
       (error) => {
-        this.setState(
-          {
-            isLoading: false
-          },
-          function () {
-            console.log(error);
-            alert('Something went Wrong! Try again...');
-          }
-        );
+        setLoading(true);
+        console.log(error);
+        alert('Something went Wrong! Try again...');
       }
     );
-  }
+  };
 
-  deleteData() {
+  const deleteData = () => {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
-    this.setState({
-      isLoading: true
-    });
-    axios
-      .delete(baseURL + 'mongoclient/delete?collection=address&id=' + this.state.address[0]._id, {})
-      .then(
-        (response) => {
-          // console.log(response.data);
-          this.props.history.push('/address');
-        },
-        (error) => {
-          this.setState(
-            {
-              isLoading: false
-            },
-            function () {
-              console.log(error);
-              alert('Something went Wrong! Try again...');
-            }
-          );
-        }
-      );
-  }
-
-  render() {
-    return (
-      <div>
-        <Badge variant="primary" style={{ background: '#007bff' }}>
-          {this.state.addressID !== undefined && this.state.addressID === 'new'
-            ? 'Add new address'
-            : 'Edit address'}
-        </Badge>
-        {this.state.isLoading ? this.showLoading() : this.showData()}
-      </div>
+    setLoading(true);
+    axios.delete(baseURL + 'mongoclient/delete?collection=address&id=' + address[0]._id, {}).then(
+      (response) => {
+        // console.log(response.data);
+        navigate('/address');
+      },
+      (error) => {
+        setLoading(false);
+        console.log(error);
+        alert('Something went Wrong! Try again...');
+      }
     );
-  }
+  };
 
-  showLoading() {
+  const showLoading = () => {
     return (
       <div className="text-center py-3">
         <Spinner animation="border" role="status" variant="primary" />
       </div>
     );
-  }
+  };
 
-  isMobile() {
-    const isMobile = /iphone|ipod|android|ie|blackberry|fennec/.test(
-      navigator.userAgent.toLowerCase()
-    );
-    return isMobile;
-  }
+  const openLink = () => {
+    navigate('/address');
+  };
 
-  openLink() {
-    this.props.history.push('/address');
-  }
-
-  showData() {
+  const showData = () => {
     return (
       <Container>
-        {/* {addressID}-- {JSON.stringify(data)} */}
         <Form
-          onSubmit={(values) => this.onFormSubmit(values)}
+          onSubmit={(values) => onFormSubmit(values)}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
             <form onSubmit={handleSubmit}>
-              <Field name="atype" validate={this.composeValidators(this.required)}>
+              <Field name="atype" validate={composeValidators(required)}>
                 {({ input, meta }) => (
                   <FormGroup>
                     <Label>Address Type</Label>
@@ -180,9 +130,7 @@ class AddressEdit extends Component {
                       name="atype"
                       component="select"
                       className="form-control"
-                      defaultValue={
-                        this.state.address.length === 1 ? this.state.address[0].atype : 'Home'
-                      }>
+                      defaultValue={address?.[0]?.atype?.length > 0 ? address[0].atype : 'Home'}>
                       <option value="Home">Home</option>
                       <option value="Office">Office</option>
                       <option value="Billing">Billing</option>
@@ -195,12 +143,12 @@ class AddressEdit extends Component {
               <FormFieldText
                 name="firstName"
                 hint="First Name"
-                value={this.state.address.length === 1 ? this.state.address[0].firstName : ''}
+                value={address?.[0]?.firstName?.length > 0 ? address[0].firstName : ''}
               />
               <FormFieldText
                 name="lastName"
                 hint="Last Name"
-                value={this.state.address.length === 1 ? this.state.address[0].lastName : ''}
+                value={address.length === 1 ? address[0].lastName : ''}
               />
               <FormFieldNumber
                 name="mobileno"
@@ -209,29 +157,29 @@ class AddressEdit extends Component {
                 maxLength="10"
                 min="999999999"
                 max="9999999999"
-                value={this.state.address.length === 1 ? this.state.address[0].mobileno : ''}
+                value={address.length === 1 ? address[0].mobileno : ''}
               />
               <FormFieldText
                 name="address"
                 hint="Flat, House no., Building, Company, Apartment"
-                value={this.state.address.length === 1 ? this.state.address[0].address : ''}
+                value={address.length === 1 ? address[0].address : ''}
               />
               <FormFieldText
                 name="area"
                 hint="Area, Colony, Street, Sector, Village"
                 placeholder="Enter Area"
-                value={this.state.address.length === 1 ? this.state.address[0].area : ''}
+                value={address.length === 1 ? address[0].area : ''}
               />
               <FormFieldText
                 name="landmark"
                 hint="Landmark"
                 placeholder="E.g. Near Flyover, Behind Cinema, etc."
-                value={this.state.address.length === 1 ? this.state.address[0].landmark : ''}
+                value={address.length === 1 ? address[0].landmark : ''}
               />
               <FormFieldText
                 name="country"
                 hint="Country"
-                value={this.state.address.length === 1 ? this.state.address[0].country : ''}
+                value={address.length === 1 ? address[0].country : ''}
               />
               <FormFieldNumber
                 name="pincode"
@@ -240,28 +188,28 @@ class AddressEdit extends Component {
                 maxLength="6"
                 min="99999"
                 max="999999"
-                value={this.state.address.length === 1 ? this.state.address[0].pincode : ''}
+                value={address.length === 1 ? address[0].pincode : ''}
               />
               <FormFieldText
                 name="state"
                 hint="State"
-                value={this.state.address.length === 1 ? this.state.address[0].state : ''}
+                value={address.length === 1 ? address[0].state : ''}
               />
               <FormFieldText
                 name="city"
                 hint="City"
-                value={this.state.address.length === 1 ? this.state.address[0].city : ''}
+                value={address.length === 1 ? address[0].city : ''}
               />
               <div className="buttons">
-                {this.state.addressID === 'new' ? null : (
+                {id === 'new' ? null : (
                   <>
-                    <Button color="danger" type="button" onClick={() => this.deleteData()}>
+                    <Button color="danger" type="button" onClick={() => deleteData()}>
                       Delete
                     </Button>
                     &nbsp;&nbsp;&nbsp;
                   </>
                 )}
-                <Button color="warning" type="button" onClick={() => this.openLink()}>
+                <Button color="warning" type="button" onClick={() => openLink()}>
                   Cancel
                 </Button>
                 <>&nbsp;&nbsp;&nbsp;</>
@@ -283,20 +231,25 @@ class AddressEdit extends Component {
         />
       </Container>
     );
-  }
+  };
 
-  required(value) {
+  const required = (value) => {
     return value ? undefined : '';
-  }
+  };
 
-  mustBeNumber(value) {
-    return isNaN(value) ? 'Must be a number' : undefined;
-  }
-
-  composeValidators =
+  const composeValidators =
     (...validators) =>
     (value) =>
       validators.reduce((error, validator) => error || validator(value), undefined);
-}
+
+  return (
+    <div>
+      <Badge variant="primary" style={{ background: '#007bff' }}>
+        {id !== undefined && id === 'new' ? 'Add new address' : 'Edit address'}
+      </Badge>
+      {isLoading ? showLoading() : showData()}
+    </div>
+  );
+};
 
 export default AddressEdit;

@@ -39,7 +39,7 @@ const FormFieldNumber = (props) => {
             placeholder={
               props.placeholder !== undefined ? props.placeholder : 'Enter ' + props.hint
             }
-            defaultValue={props.value !== undefined ? props.value : 0}
+            initialValue={props.value !== undefined ? props.value : 0}
           />
           {meta.error && meta.touched && <span>{meta.error}</span>}
         </FormGroup>

@@ -48,7 +48,7 @@ class Home extends Component {
             ) : null}
             {this.state.dataObj.category !== undefined ? (
               <>
-                <Badge variant="danger">Category</Badge>
+                <Badge className="badge bg-danger">Category</Badge>
                 <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
                   {this.state.dataObj.category.map((val) =>
                     val !== null && val.enable ? this.getCategory(val) : null
@@ -69,7 +69,7 @@ class Home extends Component {
             ) : null}
             {this.state.dataObj.brand !== undefined ? (
               <>
-                <Badge variant="danger">Brand</Badge>
+                <Badge className="badge bg-danger">Brand</Badge>
                 <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
                   {this.state.dataObj.brand.map((val) => (val != null ? this.getBrand(val) : null))}
                 </Row>
