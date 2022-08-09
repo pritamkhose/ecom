@@ -11,7 +11,6 @@ import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 const queryString = require('query-string');
 
 const ProductList = () => {
-  console.log('-->', 'ProductList load');
   const loadingRef = useRef();
   const { searchNav, brandNav, categoryNav, sortNav } = useParams();
   const [search, setSearch] = useState(searchNav);

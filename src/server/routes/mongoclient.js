@@ -186,45 +186,41 @@ router.put('/updateone', (req, res) => {
       const newvalues = { $set: req.body };
       db.collection(req.query.collection).updateOne(myquery, newvalues, function (findErr, result) {
         if (!findErr) {
-          if (result.modifiedCount === 0) {
-            createObjByID(req, res, db, req.query.collection, client);
+          if (result.matchedCount === 0) {
+            const reqbody = {
+              _id: new mongodb.ObjectID(req.query.id),
+              data: req.body.data
+            };
+            db.collection(req.query.collection).insertOne(reqbody, function (findErrI, resultI) {
+              if (!findErrI) {
+                client.close();
+                res.status(200).json(resultI);
+              } else {
+                res.status(500).json({
+                  error: 'Database Connection Error insert',
+                  error_message: findErrI
+                });
+              }
+            });
           } else {
+            client.close();
             res.status(200).json(result);
           }
         } else {
           res.status(500).json({
-            error: 'Collection Error',
+            error: 'Collection Error update',
             error_message: findErr
           });
         }
-        client.close();
       });
     } else {
       res.status(500).json({
-        error: 'Database Connection Error',
+        error: 'Database Connection Error update',
         error_message: err
       });
     }
   });
 });
-
-const createObjByID = function (req, res, db, collectionname, client) {
-  const reqbody = {
-    _id: new mongodb.ObjectID(req.query.id),
-    data: req.body.data
-  };
-  db.collection(collectionname).insert(reqbody, function (findErr, result) {
-    if (!findErr) {
-      res.status(200).json(result);
-    } else {
-      res.status(500).json({
-        error: 'Database Connection Error',
-        error_message: findErr
-      });
-    }
-    client.close();
-  });
-};
 
 // insert one
 router.put('/insert', (req, res) => {

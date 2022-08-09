@@ -182,9 +182,9 @@ const App = () => {
                   <ProductFilters />
                 </div>
                 <Badge variant="primary">Products</Badge>
-                {/* <div style={{ minHeight: minHightFilter }}>
-                    <ProductList />
-                  </div> */}
+                <div style={{ minHeight: minHightFilter }}>
+                  <ProductList />
+                </div>
               </>
             }
           />
