@@ -51,7 +51,7 @@
     "node": "17.x"
   },
   "scripts": {
-    "start": "yarn build && yarn start:server",
+    "start": "node src/server",
     "start:build": "npm-run-all --parallel watch:server build",
     "start:local": "npm-run-all --parallel watch:localserver start:web",
     "start:web-mac": "PORT=3001 react-scripts start",
