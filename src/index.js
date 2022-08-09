@@ -1,25 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-import { ApolloProvider } from 'react-apollo';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import { ApolloProvider } from 'react-apollo';
+import ReactDOM from 'react-dom';
 import client from './apollo';
+import App from './App';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 import reducer, { initialState } from './Reducer';
 import { StateProvider } from './StateProvider';
 
-ReactDOM.render(
-  // <React.StrictMode>
-  <ApolloProvider client={client}>
-    <StateProvider initialState={initialState} reducer={reducer}>
-      <App />
-    </StateProvider>
-  </ApolloProvider>,
-  // </React.StrictMode>,
-  document.getElementById('root')
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <ApolloProvider client={client}>
+      <StateProvider initialState={initialState} reducer={reducer}>
+        <App />
+      </StateProvider>
+    </ApolloProvider>
+    ,
+  </React.StrictMode>
 );
 
 if (module.hot) module.hot.accept();

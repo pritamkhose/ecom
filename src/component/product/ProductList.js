@@ -7,22 +7,24 @@ import ProductItem from './ProductItem';
 import { Row, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 const queryString = require('query-string');
 
 const ProductList = () => {
+  console.log('-->', 'ProductList load');
   const loadingRef = useRef();
   const { searchNav, brandNav, categoryNav, sortNav } = useParams();
   const [search, setSearch] = useState(searchNav);
   const [brand, setBrand] = useState(brandNav);
   const [category, setCategory] = useState(categoryNav);
   const [sort, setSort] = useState(sortNav);
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
+  const [aList, setaList] = useState([]);
 
   const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     const query = queryString.parse(location.search);
-    // console.log('Location changed', query);
     if (query?.search?.length > 0) {
       setSearch(query?.search);
     }
@@ -38,14 +40,44 @@ const ProductList = () => {
   }, [location]);
 
   useEffect(() => {
-    // getData();
     console.log('-->', 'Nav change');
+    setCurPage(0);
+    const query = queryString.parse(location.search);
+    const search = query?.search;
+    const category = query?.category;
+    const brand = query?.brand;
+    const sort = query?.sort;
+    if (search?.length > 0) {
+      setSearch(search);
+    }
+    if (category?.length > 0) {
+      setCategory(category);
+    }
+    if (brand?.length > 0) {
+      setBrand(brand);
+    }
+    if (sort?.length > 0) {
+      setSort(sort);
+    }
+    // getData(0);
+    // let url = window.location.pathname + '?';
+    // if (search !== undefined && search !== null && search !== '') {
+    //   url += 'search=' + search;
+    // }
+    // if (category !== undefined && category !== null && category !== '') {
+    //   url += '&category=' + category;
+    // }
+    // if (brand !== undefined && brand !== null && brand !== '') {
+    //   url += '&brand=' + brand;
+    // }
+    // if (sort !== undefined && sort !== null && sort !== '') {
+    //   url += '&sort=' + sort;
+    // }
+    // navigate(url);
   }, [search, category, brand, sort]);
 
   const [data, setData] = useState({
-    curPage: 1,
     prevY: 0,
-    aList: [],
     showLoadMore: true,
     showNoContent: false,
     continueIncrement: true
@@ -56,17 +88,16 @@ const ProductList = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           const y = entry?.boundingClientRect.y;
-          console.log('y-->', data.continueIncrement, data.prevY, y, data.prevY < data.y);
+          // console.log('y-->', data.continueIncrement, data.prevY, y, data.prevY < y);
           if (data.continueIncrement && data.prevY < y) {
+            console.log('y curPage-->', curPage);
             setData({
-              ...data,
-              // curPage: data.curPage + 1,
               prevY: y,
-              showLoadMore: true,
-              showNoContent: false,
-              continueIncrement: true
+              showLoadMore: data.showLoadMore,
+              showNoContent: data.showNoContent,
+              continueIncrement: data.continueIncrement
             });
-            setCurPage(curPage + 1);
+            getData(curPage);
           }
         }
       },
@@ -81,12 +112,7 @@ const ProductList = () => {
     }
   }, [loadingRef]);
 
-  useEffect(() => {
-    console.log('curPage-->', curPage);
-    getData();
-  }, [curPage]);
-
-  const getData = () => {
+  const getData = (currentPage) => {
     const baseURL =
       (process.env.REACT_APP_API_URL !== undefined ? process.env.REACT_APP_API_URL : '') + '/api/';
 
@@ -111,7 +137,7 @@ const ProductList = () => {
     if (category !== null) {
       searchObj.category = category;
     }
-    console.log('searchObj -->', searchObj);
+    // console.log('searchObj -->', searchObj);
 
     let sortObj = {};
     switch (sort) {
@@ -158,38 +184,29 @@ const ProductList = () => {
         search: {}, // searchObj,
         sort: sortObj,
         limit: 12,
-        skip: 12 * (curPage - 1)
+        skip: 12 * (currentPage - 1)
       })
       .then(
         (response) => {
           if (response.status === 200) {
+            const tempPage = 1 + currentPage;
             if (curPage === 1) {
-              // setaList(response.data);
-              // setCurPage(curPage + 1);
-              // setContinueIncrement(!(response.data.length < 12));
-              // setShowLoadMore(!(response.data.length < 12));
               setData({
-                ...data,
-                aList: response.data,
-                // curPage: curPage + 1,
-                continueIncrement: !(response.data.length < 12),
-                showLoadMore: !(response.data.length < 12)
+                prevY: data.prevY,
+                showLoadMore: !(response.data.length < 12),
+                showNoContent: data.showNoContent,
+                continueIncrement: !(response.data.length < 12)
               });
+              setaList(response.data);
+              setCurPage(tempPage);
             } else {
-              // setaList([...aList, ...response.data]);
-              // setCurPage(curPage + 1);
-              setData({
-                ...data,
-                aList: [...data.aList, ...response.data]
-                // curPage: curPage + 1
-              });
+              setaList([...aList, ...response.data]);
+              setCurPage(tempPage + 1);
             }
+            console.log('tempPage set -->', tempPage);
           } else if (response.status === 204) {
-            // setShowLoadMore(false);
-            // setShowNoContent(curPage === 1);
-            // setContinueIncrement(false);
             setData({
-              ...data,
+              prevY: data.prevY,
               showLoadMore: false,
               showNoContent: curPage === 1,
               continueIncrement: false
@@ -214,7 +231,7 @@ const ProductList = () => {
 
   const getItems = () => {
     const items = [];
-    for (const [index, value] of Object.entries(data.aList)) {
+    for (const [index, value] of Object.entries(aList)) {
       items.push(<ProductItem key={index} index={index} value={value} />);
     }
     return items;
@@ -222,7 +239,7 @@ const ProductList = () => {
 
   return (
     <>
-      {data.aList.length === 0 ? null : (
+      {aList.length === 0 ? null : (
         <Row xs="2" sm="2" md="4" lg="6" xl="8" style={{ margin: '0px' }}>
           {getItems()}
         </Row>
