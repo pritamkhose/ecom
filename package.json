@@ -48,7 +48,7 @@
     "web-vitals": "^0.2.4"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "scripts": {
     "start": "node src/server",
